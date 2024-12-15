@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 
 <head>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Mis tareas</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-      </head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis tareas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <style>
+        .formulario {
+            display: none
+        }
+    </style>
 </head>
 
 <body>
@@ -36,9 +39,50 @@
         </ul>
         </div>
     </section>
+    <div class="tarea">
+        <button class="ml-6 button is-link is-light is-rounded is-medium is-responsive" id="agregar_tarea">Agregar Tarea</button>
+        <div class="formulario" id="formulario">
+            <form id="formulario_tarea">
+                <input class="ml-6 mt-3 input is-info is-normal" id="nombre_tarea" type="text" placeholder="Nombre de la tarea"/>
+                <textarea class="ml-6 mt-3 textarea is-info" id="descripcion" placeholder="Descripcion"></textarea>
+                <input class="ml-6 mt-3 input is-info is-normal" id="fecha_inicio" type="text" placeholder="Fecha de inicio"/>
+                <input class="ml-6 mt-3 input is-info is-normal" id="fecha_limite" type="text" placeholder="Fecha limite"/>
+                <div class="field is-grouped">
+                    <div class="mt-3 ml-6 control">
+                        <button class="button is-link" id="enviar_tarea">Enviar</button>
+                    </div>
+                    <div class="mt-3 control">
+                        <button class="button is-link is-light" id="cancelar">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+   
+    <script>
+        document.getElementById('agregar_tarea').addEventListener('click', function() {
+            const formulario = document.getElementById('formulario')
+            formulario.style.display = formulario.style.display === 'block' ? 'none' : 'block'
+        })
 
-    <a class="ml-6 button is-link is-light is-rounded is-medium is-responsive">Agregar Tarea</a>
-    <a class="button is-link is-light is-rounded is-medium is-responsive">Eliminar Tarea</a>
+        document.getElementById('cancelar').addEventListener('click', function() {
+            document.getElementById('formulario').reset()
+        })
+
+        document.getElementById('enviar_tarea').addEventListener('click', function() {
+            const nombre = document.getElementById('nombre_tarea').value.trim()
+            const descripcion = document.getElementById('descripcion').value.trim()
+            const fecha_inicio = document.getElementById('fecha_inicio').value.trim()
+            const fecha_limite = document.getElementById('fecha_limite').value.trim()
+
+            if (!nombre || !descripcion || !fecha_inicio || !fecha_limite) {
+                alert('Hay campos incompletos, completalos por favor antes de enviar!!')
+            } else {
+                alert('Tarea enviada con éxito!!')
+                document.getElementById('formulario').reset()
+            }
+        })
+    </script>
 
     <h1 class="ml-6 mt-6 title">Tareas actuales:</h1>
     <table class="ml-6 table is-bordered is-striped is-narrow is-hoverable">
@@ -46,20 +90,26 @@
             <tr>
               <th>N°</th>
               <th>Nombre</th>
+              <th>Fecha de inicio</th>
               <th>Descripcion</th>
+              <th>Fecha limite</th>
               <th>Progreso</th>
+              <th>Objetivos</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-                <th>1</th>
+                <th>...</th>
                 <td>...</td>
+                <td>../../..</td>
                 <td>...</td>
+                <td>../../..</td>
                 <td><progress class="progress is-small" value="5" max="100">5%</progress></td>
+                <td><a>...</a></td>
+                <td><button class="delete is-large"></button></td>>
               </tr>
               <tr>
     </table>
      
-    <!-- <progress class="progress is-small" value="20" max="100">20%</progress> -->
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
 </body>
