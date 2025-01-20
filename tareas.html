@@ -108,6 +108,10 @@
                 fecha_fin: fecha_fin
             }
 
+            if (!body.nombre || !body.descripcion || !body.fecha_ini || !body.fecha_fin) {
+                alert("Campos incompletos")
+                return
+            }
             limpiarFormulario()
         }
     </script>
