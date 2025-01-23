@@ -39,7 +39,7 @@
             <div class="mt-6 card column is-three-fifths is-offset-one-fifth has-background-link-85">
                 <div class="columns is-mobile is-multiline is-centered">
                     <div class="column is-narrow">
-                        <h1 class="title is-2 is-size-2-mobile has-text-link">Nueva Tarea</h1>
+                        <h1 class="title is-2 is-size-2-mobile has-text-link">Editar Tarea</h1>
                     </div>
                 </div>
                 <div class="card-content py-2">
@@ -68,8 +68,8 @@
                         </div>
                         <div class="field is-grouped is-grouped-centered pt-4">
                             <div class="control">
-                                <button class="button is-primary" onclick="agregarTarea()">
-                                    Agregar
+                                <button class="button is-primary" onclick="editarTarea()">
+                                    Editar
                                 </button>
                             </div>
                             <div class="control">
@@ -97,7 +97,7 @@
                 document.getElementById('fecha_fin').value = ""
             }
 
-            function agregarTarea() {
+            function editarTarea() {
                 event.preventDefault()
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
@@ -109,11 +109,6 @@
                     descripcion: descripcion,
                     fecha_ini: fecha_inicio,
                     fecha_fin: fecha_fin
-                }
-
-                if (!body.nombre || !body.fecha_ini || !body.fecha_fin) {
-                    alert("Campos incompletos")
-                    return
                 }
 
                 fetch('http://127.0.0.1:3000/api/v1/tareas', {
