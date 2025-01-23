@@ -38,24 +38,85 @@
     <section class="section">
         <div class="columns is-mobile is-multiline is-centered">
             <div class="column is-narrow">
-                <h1 class="title is-1 is-size-2-mobile has-text-primary">
-                    Mis tareas
-                </h1>
+                <h1 class="title is-1 is-size-2-mobile has-text-primary">Mis tareas</h1>
             </div>
         </div>
         <div class="columns is-mobile is-multiline is-centered">
             <div class="column is-narrow">
                 <a class="button has-background-link-85 has-text-link-85-invert is-rounded" href="agregar_tarea.html">
-                    <div class="icon_text">
-                        <span>Agregar tarea</span>
-                    </div>
+                    Agregar tarea
                 </a>
-            </div>
-            <div class="column is-narrow">
-                <button class="button has-background-link-85 has-text-link-85-invert is-rounded">
-                    <span>Ver tareas</span>
-                </button>
             </div>
         </div>
     </section>
+
+    <section class="section" id="tareas_pendientes">
+        <table class="table is-bordered is-hoverable">
+            <thead>
+                <tr class="has-background-success-light">
+                    <th>N°</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de finalizacion</th>
+                    <th>Objetivos</th>
+                </tr>
+            </thead>
+            <tbody id="info_tareas">
+            </tbody>
+        </table>
+        <div class="field is-grouped pt-4">
+            <div class="control">
+                <a class="button is-warning" href="editar_tarea.html">Editar tarea</a>
+            </div>
+        </div>
+    </section>
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+    <script>
+        fetch('http://127.0.0.1:3000/api/v1/tareas')
+        .then(response => response.json())
+        .then(tarea => {
+            let table = document.getElementById('info_tareas')
+            table.innerHTML = ''
+            tarea.forEach(element => {
+                let id = document.createElement('th')
+                id.textContent = element.id
+                let nombre = document.createElement('td')
+                nombre.textContent = element.nombre
+                let descripcion = document.createElement('td')
+                descripcion.textContent = element.descripcion
+                let fecha_inicio = document.createElement('td')
+                fecha_inicio.textContent = element.fecha_inicio
+                let fecha_fin = document.createElement('td')
+                fecha_fin.textContent = element.fecha_fin
+
+                let borrar = document.createElement('td')
+                let button = document.createElement('button')
+                button.textContent = 'Eliminar'
+                button.className = 'button is-danger is-small'
+                button.onclick = function() { eliminarTarea(element.id) }
+                borrar.appendChild(button)
+
+                tr.appendChild(id)
+                tr.appendChild(nombre)
+                tr.appendChild(descripcion)
+                tr.appendChild(fecha_inicio)
+                tr.appendChild(fecha_fin)
+                tr.appendChild(borrar)
+                table.append(tr)
+            });
+        })
+
+        eliminarTarea = function(id) {
+            alert('Eliminando tarea ' + id)
+            fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(response => {
+                let tr = document.getElementById('tarea-' + response.id)
+                tr.remove()
+            })
+        }
+    </script>
 </body>

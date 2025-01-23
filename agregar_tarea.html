@@ -24,9 +24,9 @@
                         </div>
                     </div>
                     <div class="field">
-                        <label class="label has-text-link">Descripción</label>
+                        <label class="label has-text-link">Descripción (opcional)</label>
                         <div class="control">
-                            <input id="descripcion" class="input has-background-link-75" type="text" placeholder="Descripción">
+                            <input id="descripcion" class="input has-background-link-75" type="text" placeholder="Descripción breve">
                         </div>
                     </div>
                     <div class="field">
@@ -71,6 +71,7 @@
         }
 
         function agregarTarea() {
+            event.preventDefault()
             const nombre = document.getElementById('nombre').value
             const descripcion = document.getElementById('descripcion').value
             const fecha_inicio = document.getElementById('fecha_inicio').value
@@ -83,11 +84,26 @@
                 fecha_fin: fecha_fin
             }
 
-            if (!body.nombre || !body.descripcion || !body.fecha_ini || !body.fecha_fin) {
+            if (!body.nombre || !body.fecha_ini || !body.fecha_fin) {
                 alert("Campos incompletos")
                 return
             }
-            limpiarFormulario()
+
+            fetch('http://127.0.0.1:3000/api/v1/tareas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    alert('Tarea agregada con exito')
+                    limpiarFormulario()
+                } else {
+                    alert('Error al agregar personaje')
+                }
+            })
         }
     </script>
 </body>
