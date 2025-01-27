@@ -57,7 +57,7 @@
                     </tr>
                 </thead>
                 <tbody id="info_tareas">
-                    <th>ej</th>
+                    <!-- <th>ej</th>
                     <td>ej</td>
                     <td>ej</td>
                     <td>ej</td>
@@ -76,12 +76,12 @@
                     </td>
                     <td>
                         <button class="button is-danger is-outlined">
-                            <span>Eliminar</span>
+                            <span>Eliminar</span> -->
                             <!-- <span class="icon is-small">
                               <i class="fas fa-times"></i>
                             </span> -->
-                        </button>
-                    </td>
+                        <!-- </button>
+                    </td> -->
                 </tbody>
             </table>
             <div class="field is-grouped pt-4">
@@ -92,41 +92,46 @@
         </section>
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
-            fetch('http://127.0.0.1:3000/api/v1/tareas')
-            .then(response => response.json())
-            .then(tarea => {
-                let table = document.getElementById('info_tareas')
-                table.innerHTML = ''
-                tarea.forEach(element => {
-                    let tr = document.createElement('tr')
-                    let id = document.createElement('th')
-                    id.textContent = element.id
-                    let nombre = document.createElement('td')
-                    nombre.textContent = element.nombre
-                    let descripcion = document.createElement('td')
-                    descripcion.textContent = element.descripcion
-                    let fecha_inicio = document.createElement('td')
-                    fecha_inicio.textContent = element.fecha_inicio
-                    let fecha_fin = document.createElement('td')
-                    fecha_fin.textContent = element.fecha_fin
+            window.onload = function() {
+                mostrarTareas()
+            }
+            mostrarTareas = function() {
+                fetch('http://127.0.0.1:3000/api/v1/tareas')
+                .then(response => response.json())
+                .then(tarea => {
+                    let table = document.getElementById('info_tareas')
+                    table.innerHTML = ''
+                    tarea.forEach(element => {
+                        let tr = document.createElement('tr')
+                        let id = document.createElement('th')
+                        id.textContent = element.id
+                        let nombre = document.createElement('td')
+                        nombre.textContent = element.nombre
+                        let descripcion = document.createElement('td')
+                        descripcion.textContent = element.descripcion
+                        let fecha_inicio = document.createElement('td')
+                        fecha_inicio.textContent = element.fecha_inicio
+                        let fecha_fin = document.createElement('td')
+                        fecha_fin.textContent = element.fecha_fin
 
-                    let borrar = document.createElement('td')
-                    let button = document.createElement('button')
-                    button.textContent = 'Eliminar'
-                    button.className = 'button is-danger is-small'
-                    button.onclick = function() { eliminarTarea(element.id) }
-                    borrar.appendChild(button)
+                        let borrar = document.createElement('td')
+                        let button = document.createElement('button')
+                        button.textContent = 'Eliminar'
+                        button.className = 'button is-danger is-small'
+                        button.onclick = function() { eliminarTarea(element.id) }
+                        borrar.appendChild(button)
 
-                    tr.appendChild(id)
-                    tr.appendChild(nombre)
-                    tr.appendChild(descripcion)
-                    tr.appendChild(fecha_inicio)
-                    tr.appendChild(fecha_fin)
-                    tr.appendChild(borrar)
-                    table.append(tr)
-                });
-            })
-
+                        tr.appendChild(id)
+                        tr.appendChild(nombre)
+                        tr.appendChild(descripcion)
+                        tr.appendChild(fecha_inicio)
+                        tr.appendChild(fecha_fin)
+                        tr.appendChild(borrar)
+                        table.append(tr)
+                    });
+                })
+            }
+            
             eliminarTarea = function(id) {
                 alert('Eliminando tarea ' + id)
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {

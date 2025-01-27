@@ -3,14 +3,19 @@ const app = express()
 const port = 3000
 app.use(express.json())
 
-let tareas = []
+let tareas = [{
+    id: 1,
+    nombre: "Final",
+    fecha_inicio: "27/1/2025",
+    fecha_fin: "2/2/2025"
+}]
 
 app.get('/', (req, res) => {
     res.send('Mis tareas')
 })
 
 app.get('/api/v1/tareas', (req, res) => {
-    res.json(users)
+    res.json(tareas)
 })
 
 app.get('/api/v1/tareas/:id', (req, res) => {
@@ -20,7 +25,7 @@ app.get('/api/v1/tareas/:id', (req, res) => {
         res.sendStatus(404)
         return
     }
-    res.json(user)
+    res.json(tarea)
 })
 
 app.post('/api/v1/tareas', (req, res) => {

@@ -107,16 +107,16 @@
                 let body = {
                     nombre: nombre,
                     descripcion: descripcion,
-                    fecha_ini: fecha_inicio,
+                    fecha_inicio: fecha_inicio,
                     fecha_fin: fecha_fin
                 }
 
-                if (!body.nombre || !body.fecha_ini || !body.fecha_fin) {
+                if (!body.nombre || !body.fecha_inicio || !body.fecha_fin) {
                     alert("Campos incompletos")
                     return
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas', {
+                fetch('http://localhost:3000/api/v1/tareas', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
