@@ -111,6 +111,11 @@
                     fecha_fin: fecha_fin
                 }
 
+                if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
+                    alert('Fechas inválidas')
+                    return
+                }
+
                 fetch('http://127.0.0.1:3000/api/v1/tareas', {
                     method: 'POST',
                     headers: {

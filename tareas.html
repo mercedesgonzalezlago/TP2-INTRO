@@ -17,14 +17,12 @@
                         <span>Inicio</span>
                     </a>
                 </li>
-
                 <li>
                     <a class="has-background-link-85 has-text-link-85-invert" href="usuarios.html">
                         <span class="icon is-small"><i class="fas fa-user"></i></span>
                         <span>Usuarios</span>
                     </a>
                 </li>
-
                 <li>
                     <a class="has-background-link-85 has-text-link-85-invert" href="grupos.html">
                         <span class="icon is-small"><i class="fas fa-user-group"></i></span>
@@ -52,36 +50,11 @@
                         <th>Descripción</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
-                        <th>Objetivos</th>
-                        <th>Progreso</th>
+                        <!-- <th>Objetivos</th>
+                        <th>Progreso</th> -->
                     </tr>
                 </thead>
                 <tbody id="info_tareas">
-                    <!-- <th>ej</th>
-                    <td>ej</td>
-                    <td>ej</td>
-                    <td>ej</td>
-                    <td>ej</td>
-                    <td>ej</td>
-                    <td>
-                        <progress class="progress is-success" value="60" max="100">
-                            60%
-                        </progress>
-                    </td>
-                    <td>
-                        <a class="button is-warning is-outlined" href="editar_tarea.html">Editar tarea</a>
-                    </td>
-                    <td>
-                        <button class="button is-success is-outlined">Completada</button>
-                    </td>
-                    <td>
-                        <button class="button is-danger is-outlined">
-                            <span>Eliminar</span> -->
-                            <!-- <span class="icon is-small">
-                              <i class="fas fa-times"></i>
-                            </span> -->
-                        <!-- </button>
-                    </td> -->
                 </tbody>
             </table>
             <div class="field is-grouped pt-4">
@@ -95,6 +68,7 @@
             window.onload = function() {
                 mostrarTareas()
             }
+
             mostrarTareas = function() {
                 fetch('http://127.0.0.1:3000/api/v1/tareas')
                 .then(response => response.json())
@@ -103,6 +77,7 @@
                     table.innerHTML = ''
                     tarea.forEach(element => {
                         let tr = document.createElement('tr')
+                        tr.id = 'tarea-' + element.id
                         let id = document.createElement('th')
                         id.textContent = element.id
                         let nombre = document.createElement('td')
@@ -113,7 +88,10 @@
                         fecha_inicio.textContent = element.fecha_inicio
                         let fecha_fin = document.createElement('td')
                         fecha_fin.textContent = element.fecha_fin
-
+                        // let objetivos = document.createElement('td')
+                        // objetivos.textContent = element.objetivos || ''
+                        // let progreso = document.createElement('td')
+                        // progreso.textContent = element.progreso || '0%'
                         let borrar = document.createElement('td')
                         let button = document.createElement('button')
                         button.textContent = 'Eliminar'
@@ -126,8 +104,10 @@
                         tr.appendChild(descripcion)
                         tr.appendChild(fecha_inicio)
                         tr.appendChild(fecha_fin)
+                        // tr.appendChild(objetivos)
+                        // tr.appendChild(progreso)
                         tr.appendChild(borrar)
-                        table.append(tr)
+                        table.appendChild(tr)
                     });
                 })
             }

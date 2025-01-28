@@ -1,14 +1,11 @@
 const express = require("express")
+const cors = require('cors')
 const app = express()
 const port = 3000
+app.use(cors())
 app.use(express.json())
 
-let tareas = [{
-    id: 1,
-    nombre: "Final",
-    fecha_inicio: "27/1/2025",
-    fecha_fin: "2/2/2025"
-}]
+let tareas = []
 
 app.get('/', (req, res) => {
     res.send('Mis tareas')
@@ -33,8 +30,10 @@ app.post('/api/v1/tareas', (req, res) => {
         id: tareas.length + 1,
         nombre: req.body.nombre,
         descripcion: req.body.descripcion,
-        fecha_inicio: req.body.fecha_inicio,
-        fecha_fin: req.body.fecha_fin
+        fecha_inicio: req.body.inicio_tarea,
+        fecha_fin: req.body.fin_tarea
+        // objetivos: req.body.objetivos ?? '',
+        // progreso: req.body.progreso ?? '0%'
     }
     tareas.push(tarea)
     res.status(201).send(tarea)
@@ -62,8 +61,8 @@ app.put('/api/v1/tareas/:id', (req, res) => {
 
     tareas[tarea_id].nombre = req.body.nombre ?? tareas[tarea_id].nombre
     tareas[tarea_id].descripcion = req.body.descripcion ?? tareas[tarea_id].descripcion
-    tareas[tarea_id].fecha_inicio = req.body.fecha_inicio ?? tareas[tarea_id].fecha_inicio
-    tareas[tarea_id].fecha_fin = req.body.fecha_fin ?? tareas[tarea_id].fecha_fin
+    tareas[tarea_id].fecha_inicio = req.body.inicio_tarea ?? tareas[tarea_id].fecha_inicio
+    tareas[tarea_id].fecha_fin = req.body.fin_tarea ?? tareas[tarea_id].fecha_fin
 
     res.send(tareas[tarea_id])
 })

@@ -45,7 +45,7 @@
                 <div class="card-content py-2">
                     <div class="content">
                         <div class="field">
-                            <label class="label has-text-link">Nombre</label>
+                            <label class="label has-text-link">Nombre (*)</label>
                             <div class="control">
                                 <input id="nombre" class="input has-background-link-75" type="text" placeholder="Nombre de la tarea">
                             </div>
@@ -58,11 +58,11 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <label class="label has-text-link">Fecha inicio</label>
+                                <label class="label has-text-link">Fecha de inicio (*)</label>
                                 <input id="fecha_inicio" class="input has-background-link-75" type="date">
                             </div>
-                            <div class="control">
-                                <label class="label has-text-link">Fecha fin</label>
+                            <div class="mt-2 control">
+                                <label class="label has-text-link">Fecha de finalización (*)</label>
                                 <input id="fecha_fin" class="input has-background-link-75" type="date">
                             </div>
                         </div>
@@ -90,13 +90,6 @@
         
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
-            function limpiarFormulario() {
-                document.getElementById('nombre').value = ""
-                document.getElementById('descripcion').value = ""
-                document.getElementById('fecha_inicio').value = ""
-                document.getElementById('fecha_fin').value = ""
-            }
-
             function agregarTarea() {
                 event.preventDefault()
                 const nombre = document.getElementById('nombre').value
@@ -107,15 +100,21 @@
                 let body = {
                     nombre: nombre,
                     descripcion: descripcion,
-                    fecha_inicio: fecha_inicio,
-                    fecha_fin: fecha_fin
+                    inicio_tarea: fecha_inicio,
+                    fin_tarea: fecha_fin,
                 }
 
-                if (!body.nombre || !body.fecha_inicio || !body.fecha_fin) {
+                if (!body.nombre || !body.inicio_tarea || !body.fin_tarea) {
                     alert("Campos incompletos")
                     return
                 }
 
+                if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
+                    alert('Fechas inválidas')
+                    return
+                }
+
+                console.log(body)
                 fetch('http://localhost:3000/api/v1/tareas', {
                     method: 'POST',
                     headers: {
@@ -125,12 +124,21 @@
                 })
                 .then(response => {
                     if (response.status === 201) {
-                        alert('Tarea agregada con exito')
+                        alert('Tarea agregada con éxito')
                         limpiarFormulario()
+                        return
                     } else {
                         alert('Error al agregar personaje')
+                        return
                     }
                 })
+            }
+
+            function limpiarFormulario() {
+                document.getElementById('nombre').value = ""
+                document.getElementById('descripcion').value = ""
+                document.getElementById('fecha_inicio').value = ""
+                document.getElementById('fecha_fin').value = ""
             }
         </script>
     </body>
