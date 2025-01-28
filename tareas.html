@@ -109,6 +109,13 @@
                         edit_button.href = `editar_tarea.html?id=${element.id}`
                         editar.appendChild(edit_button)
 
+                        let tarea_completada = document.createElement('td')
+                        let complete = document.createElement('button')
+                        complete.textContent = 'Completada'
+                        complete.className = 'button is-primary is-small'
+                        complete.onclick = function() { tareaCompletada() }
+                        tarea_completada.appendChild(complete)
+
                         tr.appendChild(id)
                         tr.appendChild(nombre)
                         tr.appendChild(descripcion)
@@ -118,6 +125,7 @@
                         // tr.appendChild(progreso)
                         tr.appendChild(borrar)
                         tr.appendChild(editar)
+                        tr.appendChild(tarea_completada)
                         table.appendChild(tr)
                     });
                 })
