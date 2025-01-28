@@ -131,8 +131,14 @@
                 })
             }
             
+            // tareaCompletada = function() {
+            
+            // }
+
             eliminarTarea = function(id) {
-                alert('Eliminando tarea ' + id)
+                if (!confirm('Se eliminará la tarea ' + id)) {
+                    return
+                }
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
                     method: 'DELETE'
                 })

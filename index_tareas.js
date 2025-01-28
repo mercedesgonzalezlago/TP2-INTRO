@@ -18,7 +18,7 @@ app.get('/api/v1/tareas', (req, res) => {
 app.get('/api/v1/tareas/:id', (req, res) => {
     const tarea = tareas.find((element) => element.id == req.params.id)
 
-    if (user === undefined) {
+    if (tarea === undefined) {
         res.sendStatus(404)
         return
     }
