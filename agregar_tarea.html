@@ -51,7 +51,7 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label class="label has-text-link">Descripción (opcional)</label>
+                            <label class="label has-text-link">Descripción (*)</label>
                             <div class="control">
                                 <input id="descripcion" class="input has-background-link-75" type="text" placeholder="Descripción breve">
                             </div>
@@ -104,7 +104,7 @@
                     fin_tarea: fecha_fin,
                 }
 
-                if (!body.nombre || !body.inicio_tarea || !body.fin_tarea) {
+                if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
                     alert("Campos incompletos")
                     return
                 }
