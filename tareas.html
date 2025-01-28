@@ -111,7 +111,7 @@
                         edit_button.href = `editar_tarea.html?id=${element.id}`
                         editar.appendChild(edit_button)
 
-                        completada = {
+                        let completada = {
                             id: element.id,
                             nombre: element.nombre,
                             descripcion: element.descripcion,
@@ -144,9 +144,11 @@
             }
             
             tareaCompletada = function(tarea_finalizada) {
+                let eliminar = eliminarTarea(tarea_finalizada.id)
+                if (!eliminar) {
+                    return
+                }
                 let table = document.getElementById('tareas_completadas')
-                table.innerHTML = ''
-
                 let tr = document.createElement('tr')
                 tr.id = 'tarea-' + tarea_finalizada.id
                 let id = document.createElement('th')
@@ -177,12 +179,12 @@
                 tr.appendChild(objetivo)
                 tr.appendChild(progreso)
                 table.appendChild(tr)
-                eliminarTarea(tarea_finalizada.id)
+                
             }
 
             eliminarTarea = function(id) {
                 if (!confirm('Se eliminará la tarea ' + id + ' de tareas pendientes')) {
-                    return
+                    return false
                 }
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
                     method: 'DELETE'
@@ -192,6 +194,7 @@
                     let tr = document.getElementById('tarea-' + response.id)
                     tr.remove()
                 })
+                return true
             }
         </script>
 
