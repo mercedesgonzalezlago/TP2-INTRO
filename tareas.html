@@ -54,7 +54,7 @@
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
                         <th>ID objetivo</th>
-                        <th>Progreso</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody id="info_tareas">
@@ -126,11 +126,7 @@
                         tarea_completada.appendChild(complete)
 
                         let progreso = document.createElement('td')
-                        let progress_bar = document.createElement('progress')
-                        progress_bar.className = 'progress is-success'
-                        progress_bar.value = 45
-                        progress_bar.max = 100
-                        progreso.appendChild(progress_bar)
+                        progreso.textContent = 'En proceso'
 
                         tr.appendChild(id)
                         tr.appendChild(nombre)
@@ -171,11 +167,7 @@
                 ref_objetivo.href = "objetivos.html"
                 objetivo.appendChild(ref_objetivo)
                 let progreso = document.createElement('td')
-                let progress_bar = document.createElement('progress')
-                progress_bar.className = 'progress is-success'
-                progress_bar.value = 100
-                progress_bar.max = 100
-                progreso.appendChild(progress_bar)
+                progreso.textContent = 'Finalizada'
 
                 tr.appendChild(id)
                 tr.appendChild(nombre)
@@ -216,7 +208,7 @@
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
                         <th>ID objetivo</th>
-                        <th>Progreso</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
                 <tbody id="tareas_completadas">
