@@ -109,11 +109,18 @@
                         edit_button.href = `editar_tarea.html?id=${element.id}`
                         editar.appendChild(edit_button)
 
+                        completada = {
+                            id: element.id,
+                            nombre: element.nombre,
+                            descripcion: element.descripcion,
+                            inicio: element.fecha_inicio,
+                            fin: element.fecha_fin
+                        }
                         let tarea_completada = document.createElement('td')
                         let complete = document.createElement('button')
                         complete.textContent = 'Completada'
                         complete.className = 'button is-primary is-small'
-                        complete.onclick = function() { tareaCompletada() }
+                        complete.onclick = function() { tareaCompletada(completada) }
                         tarea_completada.appendChild(complete)
 
                         tr.appendChild(id)
@@ -131,9 +138,30 @@
                 })
             }
             
-            // tareaCompletada = function() {
-            
-            // }
+            tareaCompletada = function(tarea_finalizada) {
+                let table = document.getElementById('tareas_completadas')
+                table.innerHTML = ''
+
+                let tr = document.createElement('tr')
+                tr.id = 'tarea-' + tarea_finalizada.id
+                let id = document.createElement('th')
+                id.textContent = tarea_finalizada.id
+                let nombre = document.createElement('td')
+                nombre.textContent = tarea_finalizada.nombre
+                let descripcion = document.createElement('td')
+                descripcion.textContent = tarea_finalizada.descripcion
+                let fecha_inicio = document.createElement('td')
+                fecha_inicio.textContent = tarea_finalizada.inicio
+                let fecha_fin = document.createElement('td')
+                fecha_fin.textContent = tarea_finalizada.fin
+
+                tr.appendChild(id)
+                tr.appendChild(nombre)
+                tr.appendChild(descripcion)
+                tr.appendChild(fecha_inicio)
+                tr.appendChild(fecha_fin)
+                table.appendChild(tr)
+            }
 
             eliminarTarea = function(id) {
                 if (!confirm('Se eliminará la tarea ' + id)) {
@@ -150,7 +178,7 @@
             }
         </script>
 
-        <section class="section" id="tareas_completadas">
+        <section class="section">
             <div class="column is-narrow">
                 <h1 class="title is-2 has-text-warning">Completadas:</h1>
             </div>
@@ -166,7 +194,7 @@
                         <th>Progreso</th> -->
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="tareas_completadas">
                 </tbody>
             </table>
         </section>
