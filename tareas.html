@@ -161,10 +161,11 @@
                 tr.appendChild(fecha_inicio)
                 tr.appendChild(fecha_fin)
                 table.appendChild(tr)
+                eliminarTarea(tarea_finalizada.id)
             }
 
             eliminarTarea = function(id) {
-                if (!confirm('Se eliminará la tarea ' + id)) {
+                if (!confirm('Se eliminará la tarea ' + id + 'de tareas pendientes')) {
                     return
                 }
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
