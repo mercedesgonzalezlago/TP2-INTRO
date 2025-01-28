@@ -42,6 +42,9 @@
         </section>
 
         <section class="section" id="tareas_pendientes">
+            <div class="column is-narrow">
+                <h1 class="title is-2 has-text-danger">Pendientes:</h1>
+            </div>
             <table class="table is-bordered is-hoverable">
                 <thead>
                     <tr class="has-background-success-light">
@@ -99,6 +102,13 @@
                         button.onclick = function() { eliminarTarea(element.id) }
                         borrar.appendChild(button)
 
+                        let editar = document.createElement('td')
+                        let edit_button = document.createElement('a')
+                        edit_button.textContent = 'Editar'
+                        edit_button.className = 'button is-warning is-small'
+                        edit_button.href = `editar_tarea.html?id=${element.id}`
+                        editar.appendChild(edit_button)
+
                         tr.appendChild(id)
                         tr.appendChild(nombre)
                         tr.appendChild(descripcion)
@@ -107,6 +117,7 @@
                         // tr.appendChild(objetivos)
                         // tr.appendChild(progreso)
                         tr.appendChild(borrar)
+                        tr.appendChild(editar)
                         table.appendChild(tr)
                     });
                 })
@@ -124,5 +135,27 @@
                 })
             }
         </script>
+
+        <section class="section" id="tareas_completadas">
+            <div class="column is-narrow">
+                <h1 class="title is-2 has-text-warning">Completadas:</h1>
+            </div>
+            <table class="table is-bordered is-hoverable">
+                <thead>
+                    <tr class="has-background-success-light">
+                        <th>N°</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha de finalización</th>
+                        <!-- <th>Objetivos</th>
+                        <th>Progreso</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+
     </body>
 </html>
