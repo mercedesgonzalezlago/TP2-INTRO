@@ -48,12 +48,12 @@
             <table class="table is-bordered is-hoverable">
                 <thead>
                     <tr class="has-background-success-light">
-                        <th>N°</th>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
-                        <!-- <th>Objetivos</th> -->
+                        <th>ID objetivo</th>
                         <th>Progreso</th>
                     </tr>
                 </thead>
@@ -91,8 +91,12 @@
                         fecha_inicio.textContent = element.fecha_inicio
                         let fecha_fin = document.createElement('td')
                         fecha_fin.textContent = element.fecha_fin
-                        // let objetivos = document.createElement('td')
-                        // objetivos.textContent = element.objetivos || ''
+                        let objetivo = document.createElement('td')
+                        let ref_objetivo = document.createElement('a')
+                        ref_objetivo.textContent = '1'
+                        ref_objetivo.className = 'is-link'
+                        ref_objetivo.href = 'objetivos.html'
+                        objetivo.appendChild(ref_objetivo)
                         let borrar = document.createElement('td')
                         let button = document.createElement('button')
                         button.textContent = 'Eliminar'
@@ -133,7 +137,7 @@
                         tr.appendChild(descripcion)
                         tr.appendChild(fecha_inicio)
                         tr.appendChild(fecha_fin)
-                        // tr.appendChild(objetivos)
+                        tr.appendChild(objetivo)
                         tr.appendChild(progreso)
                         tr.appendChild(borrar)
                         tr.appendChild(editar)
@@ -160,6 +164,12 @@
                 let fecha_fin = document.createElement('td')
                 fecha_fin.textContent = tarea_finalizada.fin
 
+                let objetivo = document.createElement('td')
+                let ref_objetivo = document.createElement('a')
+                ref_objetivo.textContent = '1'
+                ref_objetivo.className = 'is-link'
+                ref_objetivo.href = "objetivos.html"
+                objetivo.appendChild(ref_objetivo)
                 let progreso = document.createElement('td')
                 let progress_bar = document.createElement('progress')
                 progress_bar.className = 'progress is-success'
@@ -172,6 +182,7 @@
                 tr.appendChild(descripcion)
                 tr.appendChild(fecha_inicio)
                 tr.appendChild(fecha_fin)
+                tr.appendChild(objetivo)
                 tr.appendChild(progreso)
                 table.appendChild(tr)
                 eliminarTarea(tarea_finalizada.id)
@@ -199,12 +210,12 @@
             <table class="table is-bordered is-hoverable">
                 <thead>
                     <tr class="has-background-success-light">
-                        <th>N°</th>
+                        <th>ID</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
-                        <!-- <th>Objetivos</th> -->
+                        <th>ID objetivo</th>
                         <th>Progreso</th>
                     </tr>
                 </thead>
