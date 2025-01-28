@@ -53,8 +53,8 @@
                         <th>Descripción</th>
                         <th>Fecha de inicio</th>
                         <th>Fecha de finalización</th>
-                        <!-- <th>Objetivos</th>
-                        <th>Progreso</th> -->
+                        <!-- <th>Objetivos</th> -->
+                        <th>Progreso</th>
                     </tr>
                 </thead>
                 <tbody id="info_tareas">
@@ -123,13 +123,20 @@
                         complete.onclick = function() { tareaCompletada(completada) }
                         tarea_completada.appendChild(complete)
 
+                        let progreso = document.createElement('td')
+                        let progress_bar = document.createElement('progress')
+                        progress_bar.className = 'progress is-success'
+                        progress_bar.value = 45
+                        progress_bar.max = 100
+                        progreso.appendChild(progress_bar)
+
                         tr.appendChild(id)
                         tr.appendChild(nombre)
                         tr.appendChild(descripcion)
                         tr.appendChild(fecha_inicio)
                         tr.appendChild(fecha_fin)
                         // tr.appendChild(objetivos)
-                        // tr.appendChild(progreso)
+                        tr.appendChild(progreso)
                         tr.appendChild(borrar)
                         tr.appendChild(editar)
                         tr.appendChild(tarea_completada)
