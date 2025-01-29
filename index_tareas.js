@@ -84,7 +84,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
         where: {
             id: tarea.id
         },
-        data : {
+        data: {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
             inicio_tarea: req.body.inicio_tarea,
@@ -93,7 +93,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
         }
     })
 
-    res.send(tarea)
+    res.status(201).send(tarea)
 })
 
 app.listen(port, () => {
