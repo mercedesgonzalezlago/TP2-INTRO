@@ -88,9 +88,9 @@
                         let descripcion = document.createElement('td')
                         descripcion.textContent = element.descripcion
                         let fecha_inicio = document.createElement('td')
-                        fecha_inicio.textContent = element.fecha_inicio
+                        fecha_inicio.textContent = element.inicio_tarea
                         let fecha_fin = document.createElement('td')
-                        fecha_fin.textContent = element.fecha_fin
+                        fecha_fin.textContent = element.fin_tarea
                         let objetivo = document.createElement('td')
                         let ref_objetivo = document.createElement('a')
                         ref_objetivo.textContent = '1'
@@ -115,8 +115,8 @@
                             id: element.id,
                             nombre: element.nombre,
                             descripcion: element.descripcion,
-                            inicio: element.fecha_inicio,
-                            fin: element.fecha_fin
+                            inicio: element.inicio_tarea,
+                            fin: element.fin_tarea
                         }
                         let tarea_completada = document.createElement('td')
                         let complete = document.createElement('button')

@@ -14,10 +14,10 @@ datasource db {
 }
 
 model Tarea {
-  id          Int    @id @default(autoincrement())
-  nombre      String
-  descripcion String
-  inicio      String
-  fin         String
-  id_objetivo Int
+  id           Int    @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  inicio_tarea String
+  fin_tarea    String
+  id_objetivo  Int
 }

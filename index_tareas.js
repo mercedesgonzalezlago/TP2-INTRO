@@ -39,8 +39,8 @@ app.post('/api/v1/tareas', async (req, res) => {
         data: {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            inicio: req.body.inicio_tarea,
-            fin: req.body.fin_tarea,
+            inicio_tarea: req.body.inicio_tarea,
+            fin_tarea: req.body.fin_tarea,
             id_objetivo: req.body.id_objetivo
         }
     })
@@ -87,8 +87,9 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
         data : {
             nombre: req.body.nombre,
             descripcion: req.body.descripcion,
-            inicio: req.body.inicio_tarea,
-            fin: req.body.fin_tarea
+            inicio_tarea: req.body.inicio_tarea,
+            fin_tarea: req.body.fin_tarea,
+            id_objetivo: req.body.id_objetivo
         }
     })
 
