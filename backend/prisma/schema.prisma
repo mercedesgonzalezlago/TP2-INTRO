@@ -6,3 +6,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model categoria{
+  id Int @id @default(autoincrement())
+  nombre String
+  color String
+  icono String
+}
