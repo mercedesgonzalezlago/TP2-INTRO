@@ -1,30 +1,28 @@
 import db from '../db.js';
 
 const createTable = `
-    CREATE TABLE IF NOT EXISTS customer (
+    CREATE TABLE IF NOT EXISTS tarea (
         id SERIAL PRIMARY KEY,
-        nombre VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        fecha_creacion DATE NOT NULL
+        descripcion TEXT NOT NULL,
+        fecha_limite DATE,
+        estado VARCHAR(20) NOT NULL,
+        objetivo_id INT REFERENCES objetivo(id) ON DELETE CASCADE
         );
 `;
 
 db.query(createTable, err => {
     if (err) {
-        console.error('Error al crear la tabla customer: ', err);
+        console.error('Error al crear la tabla objetivo: ', err);
     } else {
-        console.log('Tabla customer creada correctamente');
+        console.log('Tabla objetivo creada correctamente');
     }
 });
 
-
-const CUSTOMER = 'customer';
-
-const Customer = {
-    create: (nombre, email) => {
-        const query = 'INSERT INTO ' + CUSTOMER + ' (nombre, email, fecha_creacion) VALUES (?, ?, ?)';
+const Tarea = {
+    create: (titulo, descripcion, customer_id, categoria_id) => {
         return new Promise((resolve, reject) => {
-            db.query(query, [nombre, email, new Date()], (err, result) => {
+            const query = `INSERT INTO objetivo (titulo, descripcion, estado, fecha_creacion, fecha_fin, customer_id, categoria_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+            db.query(query, [titulo, descripcion, estado, new Date(), fecha_fin, customer_id, categoria_id], (err, result) => {
                 if (err) {
                     console.error('Error ejecutando la consulta:', err);
                     return reject(err);
@@ -34,7 +32,7 @@ const Customer = {
         });
     },
     getAll: () => {
-        const query = 'SELECT * FROM CUSTOMER';
+        const query = 'SELECT * FROM objetivo';
         return new Promise((resolve, reject) => {
             db.query(query, (err, results) => {
                 if (err) reject(err);
@@ -43,7 +41,7 @@ const Customer = {
         });
     },
     getById: (id) => {
-        const query = 'SELECT * FROM CUSTOMER WHERE id = ?';
+        const query = 'SELECT * FROM objetivo WHERE id = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
                 if (err) reject(err);
@@ -51,17 +49,8 @@ const Customer = {
             });
         });
     },
-    update: (id, name, email) => {
-        const query = 'UPDATE CUSTOMER SET name = ?, email = ?  WHERE id = ?';
-        return new Promise((resolve, reject) => {
-            db.query(query, [name, email, id], (err, result) => {
-                if (err) reject(err);
-                resolve(result);
-            });
-        });
-    },
     delete: (id) => {
-        const query = 'DELETE FROM CUSTOMER WHERE id = ?';
+        const query = 'DELETE FROM objetivo WHERE id = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, result) => {
                 if (err) reject(err);
@@ -71,4 +60,4 @@ const Customer = {
     }
 };
 
-export default Customer;
+export default Tarea;

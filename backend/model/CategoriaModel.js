@@ -1,26 +1,23 @@
 import db from '../db.js';
 
 const createTable = `
-    CREATE TABLE IF NOT EXISTS customer (
+    CREATE TABLE IF NOT EXISTS categoria (
         id SERIAL PRIMARY KEY,
-        nombre VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL UNIQUE,
-        fecha_creacion DATE NOT NULL
+        nombre VARCHAR(50) NOT NULL,
+        descripcion TEXT
         );
 `;
-
 db.query(createTable, err => {
     if (err) {
-        console.error('Error al crear la tabla customer: ', err);
+        console.error('Error al crear la tabla categoria: ', err);
     } else {
-        console.log('Tabla customer creada correctamente');
+        console.log('Tabla categoria creada correctamente');
     }
 });
 
-
 const CUSTOMER = 'customer';
 
-const Customer = {
+const Categoria = {
     create: (nombre, email) => {
         const query = 'INSERT INTO ' + CUSTOMER + ' (nombre, email, fecha_creacion) VALUES (?, ?, ?)';
         return new Promise((resolve, reject) => {
@@ -71,4 +68,4 @@ const Customer = {
     }
 };
 
-export default Customer;
+export default Categoria;
