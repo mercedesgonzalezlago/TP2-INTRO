@@ -1,0 +1,21 @@
+meta {
+  name: Editar Categoria
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/api/v1/categorias/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 4
+}
+
+body:json {
+  {
+    "color": "danger"
+  }
+}

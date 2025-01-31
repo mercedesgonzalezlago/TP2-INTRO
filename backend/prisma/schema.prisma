@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model categoria{
+model categorias{
   id Int @id @default(autoincrement())
   nombre String
   color String

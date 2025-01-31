@@ -1,0 +1,19 @@
+meta {
+  name: Crear Categoria
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/api/v1/categorias
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "otros",
+    "color": "success",
+    "icono": "house"
+  }
+}
