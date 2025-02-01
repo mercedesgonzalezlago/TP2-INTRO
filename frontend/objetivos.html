@@ -32,52 +32,143 @@
         </div>
     </section>
 
-    <section id="objetivos" class="section pt-0">
-        <div class="card column is-three-fifths is-offset-one-fifth has-background-primary-dark">
-            <header class="card-header">
-                <p class="card-header-title has-text-primary">Ejemplo</p>
-                
-                <div class="card-header-icon">
-                    <span class="icon ">
-                        <i class="fa-solid fa-gift"></i>
-                    </span>
-                </div>
-            </header>
-
-            <div class="card-content">
-                <div class="content has-text-primary-85">Esto es un ejemplo.</div>
-            </div>
-            
-            <footer class="card-footer">
-                <a href="#" class="card-footer-item has-text-primary">
-                    <div class="icon-text">
-                        <span class="icon">
-                            <i class="fa-solid fa-list"></i>
-                        </span>
-                        <span>Ver Tareas</span>
-                    </div>
-                </a>
-                <a href="editar-objetivo.html" class="card-footer-item has-text-primary">
-                    <div class="icon-text">
-                        <span class="icon">
-                            <i class="fa-solid fa-pencil"></i>
-                        </span>
-                        <span>Editar</span>
-                    </div>
-                </a>
-                <button class="card-footer-item has-text-primary">
-                    <div class="icon-text">
-                        <span class="icon">
-                            <i class="fa-solid fa-trash"></i>
-                        </span>
-                        <span>Eliminar</span>
-                    </div>
-                </button>
-            </footer>
-        </div>
-    </section>
+    <section id="objetivos" class="section pt-0"></section>
 
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+
+    <script>
+        window.onload = function () {
+            mostrarObjetivos()
+        }
+
+        function agregarClase(campo, texto) {
+            for (let i = 0; i < campo.length; i++) {
+                campo[i].classList.add(`${texto}`)
+            }
+        }
+
+        function mostrarCategoria(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias/${id}`)
+                .then(response => response.json())
+                .then(categoria => {
+                    color = categoria.color;
+                    icono = categoria.icono;
+                    agregarClase(document.getElementsByClassName(`color-fondo-${id}`), `has-background-${color}-dark`);
+                    agregarClase(document.getElementsByClassName(`color-descripcion-${id}`), `has-text-${color}-85`);
+                    agregarClase(document.getElementsByClassName(`color-progreso-${id}`), `is-${color}`);
+                    agregarClase(document.getElementsByClassName(`icono-${id}`), `fa-${icono}`);
+                    agregarClase(document.getElementsByClassName(`color-texto-${id}`), `has-text-${color}`);
+                });
+        }
+
+        function mostrarProgreso(id) {
+            /*
+            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+                .then(response => response.json())
+                .then(tareas => {
+
+                    tareas.forEach(tarea => {
+                        let cantTareas = 0;
+                        let cantTareasCompletadas = 0;
+                        tareas.forEach(tarea => {
+                            if (tarea.id === id) {
+                                cant_tareas++;
+                                if (tarea.estado === "finalizado") {
+                                    cant_tareas_completadas++;
+                                }
+                            }
+                        document.getElementById(`progreso-${id}`).setAttribute("value", `${cantTareasCompletadas}`)
+                        document.getElementById(`progreso-${id}`).setAttribute("max", ${cantTareas})
+                        });
+                    });
+
+                    })
+                    */
+
+
+            //datos para probar
+            document.getElementById(`progreso-${id}`).setAttribute("value", 3)
+            document.getElementById(`progreso-${id}`).setAttribute("max", 5)
+
+        }
+
+        function eliminarObjetivo(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/objetivos/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    let objetivo = document.getElementById(`objetivo-${id}`);
+                    objetivo.remove();
+                })
+        }
+
+        function mostrarObjetivos() {
+            fetch('http://127.0.0.1:8000/api/v1/objetivos')
+                .then(response => response.json())
+                .then(objetivos => {
+
+                    const tarjetas_objetivos = document.getElementById('objetivos');
+
+                    objetivos.forEach(objetivo => {
+                        const id = objetivo.id;
+                        const titulo = objetivo.titulo;
+                        const descripcion = objetivo.descripcion;
+                        const categoria_id = objetivo.categoria_id;
+                        const link_tareas = `tareas.html?id=${id}`;
+                        
+
+                        tarjetas_objetivos.innerHTML +=
+                            `<div id="objetivo-${id}" class="card column is-three-fifths is-offset-one-fifth color-fondo-${categoria_id}">
+                                <header class="card-header">
+                                    <p class="card-header-title color-texto-${categoria_id}">${titulo}</p>
+                                    
+                                    <div class="card-header-icon">
+                                        <span class="icon">
+                                            <i class="fa-solid icono-${categoria_id}"></i>
+                                        </span>
+                                    </div>
+                                </header>
+    
+                                <div class="card-content">
+                                    <div class="content color-descripcion-${categoria_id}">${descripcion}.</div>
+                                    <progress id="progreso-${id}" class="progress color-progreso-${categoria_id} value="" max=""></progress>
+                                </div>
+                                
+                                <footer class="card-footer">
+                                    <a href="${link_tareas}" class="card-footer-item color-texto-${categoria_id}">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-list"></i>
+                                            </span>
+                                            <span>Ver Tareas</span>
+                                        </div>
+                                    </a>
+                                    <a href="editar-objetivo.html?id=${id}" class="card-footer-item color-texto-${categoria_id}">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-pencil"></i>
+                                            </span>
+                                            <span>Editar</span>
+                                        </div>
+                                    </a>
+                                    <button class="card-footer-item color-texto-${categoria_id}" onclick="eliminarObjetivo(${id})">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </span>
+                                            <span id="objetivo-${id}">Eliminar</span>
+                                        </div>
+                                    </button>
+                                </footer>
+                            </div>`;
+                            mostrarCategoria(categoria_id);
+                            mostrarProgreso(id);
+                    });
+                })
+        }
+    </script>
+
 </body>
 
 </html>
