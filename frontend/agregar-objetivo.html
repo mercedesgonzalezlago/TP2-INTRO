@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Objetivos Personales</title>
+    <title>Agregar Objetivo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
 </head>
 
@@ -25,16 +25,20 @@
                                 placeholder="Ingrese un titulo">
                         </div>
                     </div>
-                    
+
                     <div class="field">
                         <label class="label has-text-link">Categoria:</label>
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select class="has-background-link-75">
-                                    <option>ejemplo</option>
-                                    <option>otro ejemplo</option>
+                                <select label="Selecciona una Categoria"id="categorias" class="has-background-link-75">
+                                    <option selected value="">Selecciona una categoria</option>
                                 </select>
                             </div>
+                            <div class="field is-grouped is-grouped-centered pt-4">
+                                <div class="control">
+                                    <a class="button has-background-link-75" href="crear-categoria.html">Crear nueva categoria</a>
+                                </div>
+                            
                         </div>
 
                     </div>
@@ -85,6 +89,34 @@
 
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
     <script>
+
+        window.onload = function () {
+            agregarCategorias()
+        }
+
+        function validarTexto(texto, campo){
+            if (texto === "") {
+                alert(`Falta ${campo}`);
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function agregarCategorias() {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias`)
+                .then(response => response.json())
+                .then(categorias => {
+                    let opciones = document.getElementById("categorias")
+                    categorias.forEach(categoria => {
+                        let opcion = document.createElement('option')
+                        opcion.value = `${categoria.id}`
+                        opcion.textContent = `${categoria.nombre}`
+                        opciones.appendChild(opcion)
+                    });
+                });
+        }
+
         function limpiarFormulario() {
             document.getElementById('titulo').value = "";
             document.getElementById('descripcion').value = "";
@@ -97,20 +129,43 @@
             const descripcion = document.getElementById('descripcion').value;
             const fechaInicio = document.getElementById('fecha-inicio').value;
             const fechaFin = document.getElementById('fecha-fin').value;
-            const categorias = document.getElementById('categorias').value;
+            const categoria = document.getElementById('categorias').value;
+            let datosValidos = true
 
-            let body = {
-                nombre: titulo,
-                descripcion: descripcion,
-                fechaInicio: fechaInicio,
-                fechaFin: fechaFin,
-                categoria: categorias
+            datosValidos = validarTexto(titulo, "el titulo")
+            datosValidos = validarTexto(descripcion, "la descripcion")
+            datosValidos = validarTexto(fechaInicio, "la Fecha de inicio")
+            datosValidos = validarTexto(fechaFin, "la Fecha de Fin")
+            datosValidos = validarTexto(categoria, "la categoria")
+
+            if (!datosValidos) {
+                return
             }
 
-            limpiarFormulario()
+            let body = {
+                titulo: titulo,
+                descripcion: descripcion,
+                categoria_id: parseInt(categoria),
+                fecha_inicio: fechaInicio,
+                fecha_fin: fechaFin,
+                usuario_id: 5
+            }
+            
+            fetch('http://127.0.0.1:8000/api/v1/objetivos',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }).then(response => {
+                if (response.status === 201) {
+                    alert('Objetivo Creado con exito');
+                    limpiarFormulario()
+                } else{
+                    alert('Error al crear el objetivo');
+                }
+            })
         }
-
-
     </script>
 </body>
 
