@@ -68,19 +68,14 @@
                         </div>
                         <div class="field is-grouped is-grouped-centered pt-4">
                             <div class="control">
-                                <button class="button is-primary" onclick="agregarTarea()">
+                                <a class="button is-primary" onclick="agregarTarea()">
                                     Agregar
-                                </button>
+                                </a>
                             </div>
                             <div class="control">
                                 <button class="button is-warning" onclick="limpiarFormulario()">
                                     Eliminar
                                 </button>
-                            </div>
-                            <div class="control">
-                                <a class="button is-danger" href="tareas.html">
-                                    Volver
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -115,7 +110,6 @@
                     return
                 }
 
-                console.log(body)
                 fetch('http://localhost:3000/api/v1/tareas', {
                     method: 'POST',
                     headers: {
@@ -127,6 +121,7 @@
                     if (response.status === 201) {
                         alert('Tarea agregada con éxito')
                         limpiarFormulario()
+                        window.location.href = 'tareas.html'
                         return
                     } else {
                         alert('Error al agregar la tarea')

@@ -77,11 +77,6 @@
                                     Eliminar
                                 </button>
                             </div>
-                            <div class="control">
-                                <a class="button is-danger" href="tareas.html">
-                                    Volver
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,6 +123,7 @@
                     if (response.status === 201) {
                         alert('Tarea editada con éxito')
                         limpiarFormulario()
+                        window.location.href = 'tareas.html'
                         return
                     } else {
                         alert('Error al editar la tarea')
