@@ -3,12 +3,12 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Mis tareas</title>
+        <title>Agregar tarea</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     </head>
 
     <body>
-        <div class="mt-5 container is-fullhd">
+        <!-- <div class="mt-5 container is-fullhd">
             <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
             <ul>
                 <li class="is-active">
@@ -33,15 +33,23 @@
                 </li>
             </ul>
             </div>
-        </div>
+        </div> -->
+
+        <section class="section">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-1 has-text-dark">Nueva tarea</h1>
+                </div>
+            </div>
+        </section>
 
         <div class="container">
-            <div class="mt-6 card column is-three-fifths is-offset-one-fifth has-background-link-85">
-                <div class="columns is-mobile is-multiline is-centered">
+            <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                <!-- <div class="columns is-mobile is-multiline is-centered">
                     <div class="column is-narrow">
                         <h1 class="title is-2 is-size-2-mobile has-text-link">Nueva Tarea</h1>
                     </div>
-                </div>
+                </div> -->
                 <div class="card-content py-2">
                     <div class="content">
                         <div class="field">
@@ -78,9 +86,9 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <button class="button is-danger" href="tareas.html">
+                                <a class="button is-danger" href="tareas.html">
                                     Volver
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
