@@ -77,6 +77,11 @@
                                     Eliminar
                                 </button>
                             </div>
+                            <div class="control">
+                                <button class="button is-danger" href="tareas.html">
+                                    Volver
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,27 +90,44 @@
         
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
-            function limpiarFormulario() {
-                document.getElementById('nombre').value = ""
-                document.getElementById('descripcion').value = ""
-                document.getElementById('fecha_inicio').value = ""
-                document.getElementById('fecha_fin').value = ""
+            document.addEventListener('DOMContentLoaded', function() {
+                cargarDatosActuales()
+            })
+
+            function cargarDatosActuales() {
+                const params = new URLSearchParams(window.location.search)
+                const id = params.get('id')
+
+                // if (!id) {
+
+                // }
+
+                fetch('http://localhost:3000/api/v1/tareas/' + id)
+                .then(response => response.json())
+                .then(tarea => {
+                    document.getElementById('nombre').value = tarea.nombre
+                    document.getElementById('descripcion').value = tarea.descripcion
+                    document.getElementById('fecha_inicio').value = tarea.inicio_tarea
+                    document.getElementById('fecha_fin').value = tarea.fin_tarea
+                })
             }
 
             function editarTarea() {
                 event.preventDefault()
                 const params = new URLSearchParams(window.location.search)
                 const id = params.get('id')
+
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
                 const fecha_fin = document.getElementById('fecha_fin').value
 
-                let body = {}
-                if (nombre) body.nombre = nombre
-                if (descripcion) body.descripcion = descripcion
-                if (fecha_inicio) body.inicio_tarea = fecha_inicio
-                if (fecha_fin) body.fin_tarea = fecha_fin
+                let body = {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    inicio_tarea: fecha_inicio,
+                    fin_tarea: fecha_fin
+                }
                 
                 if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
                     alert('Fechas inválidas')
@@ -130,6 +152,13 @@
                         return
                     }
                 })
+            }
+
+            function limpiarFormulario() {
+                document.getElementById('nombre').value = ""
+                document.getElementById('descripcion').value = ""
+                document.getElementById('fecha_inicio').value = ""
+                document.getElementById('fecha_fin').value = ""
             }
         </script>
     </body>
