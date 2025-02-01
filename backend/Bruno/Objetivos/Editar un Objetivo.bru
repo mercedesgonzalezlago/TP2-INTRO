@@ -1,0 +1,21 @@
+meta {
+  name: Editar un Objetivo
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:8000/api/v1/objetivos/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 4
+}
+
+body:json {
+  {
+    "categoria_id": 3
+  }
+}

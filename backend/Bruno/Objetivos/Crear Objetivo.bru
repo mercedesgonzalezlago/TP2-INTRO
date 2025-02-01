@@ -1,0 +1,22 @@
+meta {
+  name: Crear Objetivo
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/api/v1/objetivos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "estudiar",
+    "descripcion": "preparar los finales",
+    "categoria_id": 1,
+    "fecha_inicio": "2025-04-25",
+    "fecha_fin": "2025-04-25",
+    "usuario_id": 5
+  }
+}

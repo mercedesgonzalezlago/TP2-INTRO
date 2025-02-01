@@ -13,3 +13,13 @@ model categorias{
   color String
   icono String
 }
+
+model objetivos{
+  id Int @id @default(autoincrement())
+  titulo String
+  descripcion String
+  categoria_id Int
+  fecha_inicio String
+  fecha_fin String
+  usuario_id Int
+}
