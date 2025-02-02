@@ -168,9 +168,9 @@
                         </div>
 
                         <div class="control">
-                            <a class="button is-danger" href="agregar-objetivo.html">
+                            <button class="button is-danger" onclick="window.history.back()">
                                 Volver
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -240,7 +240,7 @@
                         alert('Error al crear la categoria');
                     }
                 })
-            window.location = "agregar-objetivo.html"
+            window.history.back();
         }
     </script>
 </body>
