@@ -83,18 +83,20 @@
                     // card_tareas.innerHTML = ''
                     tareas.forEach(tarea => {
                         card_tareas.innerHTML += `
-                        <div class="card">
+                        <div id="tarea-${tarea.id}"class="card column is-three-fifths">
                             <header class="card-header">
-                                <p class="card-header-title"></p>
+                                <p class="card-header-title">${tarea.id} | ${tarea.nombre}</p>
                             </header>
                             <div class="card-content">
-                                <div class="content">
-                                </div>
+                                <div class="content">${tarea.descripcion}.</div>
+                                <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                <div class="content">Fecha de finalizacion: ${tarea.fin_tarea}</div>
                             </div>
                             <footer class="card-footer">
+                                <button class="card-footer-item" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}">Editar</a>
                             </footer>
-                        </div>
-                        `
+                        </div>`
                     });
                 })
             }
@@ -218,8 +220,8 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    let tr = document.getElementById('tarea-' + response.id)
-                    tr.remove()
+                    let card = document.getElementById('tarea-' + response.id)
+                    card.remove()
                 })
                 return true
             }
@@ -229,7 +231,7 @@
             <div class="column is-narrow">
                 <h1 class="mb-2 title is-2 has-text-warning">Completadas:</h1>
             </div>
-            <table class="table is-bordered is-hoverable">
+            <!-- <table class="table is-bordered is-hoverable">
                 <thead>
                     <tr class="has-background-success-light">
                         <th>ID</th>
@@ -243,7 +245,7 @@
                 </thead>
                 <tbody id="tareas_completadas">
                 </tbody>
-            </table>
+            </table> -->
         </section>
 
     </body>
