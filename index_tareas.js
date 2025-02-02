@@ -8,8 +8,6 @@ const prisma = new PrismaClient()
 app.use(cors())
 app.use(express.json())
 
-let tareas = []
-
 app.get('/', (req, res) => {
     res.send('Mis tareas')
 })
@@ -41,6 +39,7 @@ app.post('/api/v1/tareas', async (req, res) => {
             descripcion: req.body.descripcion,
             inicio_tarea: req.body.inicio_tarea,
             fin_tarea: req.body.fin_tarea,
+            estado: req.body.estado,
             id_objetivo: req.body.id_objetivo
         }
     })
@@ -76,7 +75,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
     })
 
     if (tarea === null) {
-        res,sendStatus(404)
+        res.sendStatus(404)
         return
     }
 
@@ -89,6 +88,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
             descripcion: req.body.descripcion,
             inicio_tarea: req.body.inicio_tarea,
             fin_tarea: req.body.fin_tarea,
+            estado: req.body.estado,
             id_objetivo: req.body.id_objetivo
         }
     })
