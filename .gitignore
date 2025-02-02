@@ -3,3 +3,4 @@
 /package.json
 /psql_data/
 /.env
+/prisma/
