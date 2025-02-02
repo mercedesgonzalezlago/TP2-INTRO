@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html class="has-background-dark">
 
 <head>
@@ -17,7 +16,6 @@
                     <h1 class="title is-2 is-size-2-mobile has-text-link">CREAR CATEGORIA</h1>
                 </div>
             </div>
-
             <div class="card-content py-2">
                 <div class="content">
                     <div class="field">
@@ -35,27 +33,22 @@
                                 <input type="radio" name="color" value="primary" />
                                 Verde Claro
                             </label>
-
                             <label class="radio">
                                 <input type="radio" name="color" value="link" />
                                 Azul
                             </label>
-
                             <label class="radio">
                                 <input type="radio" name="color" value="info" />
                                 Celeste
                             </label>
-
                             <label class="radio">
                                 <input type="radio" name="color" value="success" />
                                 Verde Oscuro
                             </label>
-
                             <label class="radio">
                                 <input type="radio" name="color" value="warning" />
                                 Amarillo
                             </label>
-
                             <label class="radio">
                                 <input type="radio" name="color" value="danger" />
                                 Rojo
@@ -67,13 +60,14 @@
                         <label class="label has-text-link">Icono:</label>
                         <div class="control">
                             <div class="radios has-text-black">
+
                                 <label class="radio">
                                     <input type="radio" name="icono" value="laptop-code" />
                                     <span class="icon">
                                         <i class="fa-solid fa-laptop-code"></i>
                                     </span>
-                                </label>
 
+                                </label>
                                 <label class="radio">
                                     <input type="radio" name="icono" value="heart" />
                                     <span class="icon">
@@ -168,7 +162,7 @@
                         </div>
 
                         <div class="control">
-                            <button class="button is-danger" onclick="window.history.back()">
+                            <button class="button is-danger" onclick="regresar()">
                                 Volver
                             </button>
                         </div>
@@ -179,8 +173,14 @@
     </section>
 
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
-
     <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const paginaUrl = parametrosUrl.get('link');
+
+        function regresar() {
+            window.location = `${paginaUrl}.html`
+        }
+
         function limpiarFormulario() {
             document.getElementById('nombre').value = "";
             document.querySelectorAll('[name=color]').forEach((element) => element.checked = false);
@@ -209,8 +209,8 @@
             const nombre = document.getElementById('nombre').value;
             const color = document.querySelector('input[name="color"]:checked')
             const icono = document.querySelector('input[name="icono"]:checked')
-
             let datosValidos = true
+
             datosValidos = validarTexto(nombre, "nombre")
             datosValidos = validarSeleccion(color, "color")
             datosValidos = validarSeleccion(icono, "icono")
@@ -240,7 +240,7 @@
                         alert('Error al crear la categoria');
                     }
                 })
-            window.history.back();
+            window.location = `${url}.html`
         }
     </script>
 </body>
