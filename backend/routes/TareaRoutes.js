@@ -1,3 +1,4 @@
+/*
 import { Router } from 'express';
 import {
     crearTarea,
@@ -16,3 +17,6 @@ router.put('/:id', actualizarTarea);
 router.delete('/:id', eliminarTarea);
 
 export default router;
+
+
+ */

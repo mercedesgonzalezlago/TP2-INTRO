@@ -1,3 +1,4 @@
+/*
 import { Router } from 'express';
 import {
     crearObjetivo,
@@ -16,3 +17,6 @@ router.put('/:id', actualizarObjetivo);
 router.delete('/:id', eliminarObjetivo);
 
 export default router;
+
+
+ */

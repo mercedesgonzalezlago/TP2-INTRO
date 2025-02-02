@@ -1,3 +1,4 @@
+/*
 import Categoria from "../model/CategoriaModel.js";
 
 export const crearCategoria = async (req, res) => {
@@ -58,3 +59,5 @@ export const eliminarCategoria = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar el cliente' });
     }
 };
+
+ */

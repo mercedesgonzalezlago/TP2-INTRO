@@ -1,3 +1,4 @@
+/*
 import Tarea from "../model/TareaModel.js";
 
 export const crearTarea = async (req, res) => {
@@ -58,3 +59,5 @@ export const eliminarTarea = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar el cliente' });
     }
 };
+
+ */

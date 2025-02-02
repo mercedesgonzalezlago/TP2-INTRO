@@ -1,3 +1,4 @@
+/*
 import Objetivo from "../model/ObjetivosModel.js";
 
 export const crearObjetivo = async (req, res) => {
@@ -58,3 +59,5 @@ export const eliminarObjetivo = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar el cliente' });
     }
 };
+
+ */
