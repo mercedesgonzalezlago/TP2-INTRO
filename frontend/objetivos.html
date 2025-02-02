@@ -4,38 +4,39 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Objetivos Personales</title>
+    <title>Objetivos</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
 </head>
 
 <body>
     <section class="section">
         <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
-        <ul>
-            <li>
-                <a class="has-background-link-85 has-text-link-85-invert" href="inicio.html">
-                    <span class="icon is-small"><i class="fas fa-house"></i></span>
-                    <span>Inicio</span>
-                </a>
-            </li>
+            <ul>
+                <li>
+                    <a class="has-background-link-85 has-text-link-85-invert" href="inicio.html">
+                        <span class="icon is-small"><i class="fas fa-house"></i></span>
+                        <span>Inicio</span>
+                    </a>
+                </li>
 
-            <li class="is-active">
-                <a  href="usuarios.html">
-                    <span class="icon is-small"><i class="fas fa-user"></i></span>
-                    <span>Usuarios</span>
-                </a>
-            </li>
+                <li class="is-active">
+                    <a href="objetivos.html">
+                        <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
+                        <span>Objetivos</span>
+                    </a>
+                </li>
 
-            <li>
-                <a class="has-background-link-85 has-text-link-85-invert" href="grupos.html">
-                    <span class="icon is-small"><i class="fas fa-user-group"></i></span>
-                    <span>Grupos</span>
-                </a>
-            </li>
-        </ul>
+                <li>
+                    <a class="has-background-link-85 has-text-link-85-invert" href="categorias.html">
+                        <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
+                        <span>Categorias</span>
+                    </a>
+                </li>
+            </ul>
         </div>
     </section>
-    <section class="section">
+
+    <section class="section pt-1">
         <div class="columns is-mobile is-multiline is-centered">
             <div class="column is-narrow">
                 <h1 class="title is-1 is-size-2-mobile has-text-primary">
@@ -119,10 +120,10 @@
         }
 
         function eliminarObjetivo(id, titulo) {
-            if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)){
+            if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)) {
                 return
             };
-            
+
             fetch(`http://127.0.0.1:8000/api/v1/objetivos/${id}`, {
                 method: 'DELETE'
             })
@@ -146,7 +147,6 @@
                         const descripcion = objetivo.descripcion;
                         const categoria_id = objetivo.categoria_id;
                         const link_tareas = `tareas.html?id=${id}`;
-                        
 
                         tarjetas_objetivos.innerHTML +=
                             `<div id="objetivo-${id}" class="card column is-three-fifths is-offset-one-fifth color-fondo-${categoria_id}">
@@ -192,8 +192,8 @@
                                     </button>
                                 </footer>
                             </div>`;
-                            mostrarCategoria(categoria_id);
-                            mostrarProgreso(id);
+                        mostrarCategoria(categoria_id);
+                        mostrarProgreso(id);
                     });
                 })
         }
