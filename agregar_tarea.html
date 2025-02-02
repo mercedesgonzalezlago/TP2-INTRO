@@ -68,6 +68,9 @@
         <script>
             function agregarTarea() {
                 event.preventDefault()
+                const params = new URLSearchParams(window.location.search)
+                const id_objetivo = params.get('id')
+
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
@@ -78,7 +81,7 @@
                     descripcion: descripcion,
                     inicio_tarea: fecha_inicio,
                     fin_tarea: fecha_fin,
-                    id_objetivo: 0
+                    id_objetivo: id_objetivo
                 }
 
                 if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
