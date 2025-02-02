@@ -44,26 +44,8 @@
         </section>
 
         <section class="section">
-            <div class="column is-narrow">
-                <h1 class="mb-2 title is-2 has-text-danger">Pendientes:</h1>
-            </div>
-            <!-- <table class="table is-bordered is-hoverable">
-                <thead>
-                    <tr class="has-background-success-light">
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de finalización</th>
-                        <th>ID objetivo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="info_tareas">
-                </tbody>
-            </table> -->
-            <div id="tareas_pendientes"></div>
-            <div class="field is-grouped pt-4">
+            <div id="tareas"></div>
+            <div class="field is-grouped is-grouped-centered pt-4">
                 <a class="button is-primary is-rounded" href="agregar_tarea.html">
                     Agregar tarea
                 </a>
@@ -79,98 +61,28 @@
                 fetch('http://127.0.0.1:3000/api/v1/tareas')
                 .then(response => response.json())
                 .then(tareas => {
-                    let card_tareas = document.getElementById('tareas_pendientes')
-                    // card_tareas.innerHTML = ''
+                    let card_tareas = document.getElementById('tareas')
                     tareas.forEach(tarea => {
                         card_tareas.innerHTML += `
-                        <div id="tarea-${tarea.id}"class="card column is-three-fifths">
-                            <header class="card-header">
-                                <p class="card-header-title">${tarea.id} | ${tarea.nombre}</p>
+                        <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-light">
+                            <header class="card-header has-background-primary">
+                                <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                             </header>
                             <div class="card-content">
                                 <div class="content">${tarea.descripcion}.</div>
                                 <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
                                 <div class="content">Fecha de finalizacion: ${tarea.fin_tarea}</div>
+                                <div class="content">Estado: pendiente</div>
                             </div>
-                            <footer class="card-footer">
-                                <button class="card-footer-item" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                            <footer class="card-footer has-background-primary">
+                                <button class="card-footer-item has-text-link" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                 <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}">Editar</a>
+                                <button class="card-footer-item has-text-link" onclick="tareaCompletada(${tarea})">Completada</button>
                             </footer>
                         </div>`
                     });
                 })
             }
-
-            // mostrarTareas = function() {
-            //     fetch('http://127.0.0.1:3000/api/v1/tareas')
-            //     .then(response => response.json())
-            //     .then(tarea => {
-            //         let table = document.getElementById('info_tareas')
-            //         table.innerHTML = ''
-            //         tarea.forEach(element => {
-            //             let tr = document.createElement('tr')
-            //             tr.id = 'tarea-' + element.id
-            //             let id = document.createElement('th')
-            //             id.textContent = element.id
-            //             let nombre = document.createElement('td')
-            //             nombre.textContent = element.nombre
-            //             let descripcion = document.createElement('td')
-            //             descripcion.textContent = element.descripcion
-            //             let fecha_inicio = document.createElement('td')
-            //             fecha_inicio.textContent = element.inicio_tarea
-            //             let fecha_fin = document.createElement('td')
-            //             fecha_fin.textContent = element.fin_tarea
-            //             let objetivo = document.createElement('td')
-            //             let ref_objetivo = document.createElement('a')
-            //             ref_objetivo.textContent = '1'
-            //             ref_objetivo.className = 'is-link'
-            //             ref_objetivo.href = 'objetivos.html'
-            //             objetivo.appendChild(ref_objetivo)
-            //             let borrar = document.createElement('td')
-            //             let button = document.createElement('button')
-            //             button.textContent = 'Eliminar'
-            //             button.className = 'button is-danger is-small'
-            //             button.onclick = function() { eliminarTarea(element.id) }
-            //             borrar.appendChild(button)
-
-            //             let editar = document.createElement('td')
-            //             let edit_button = document.createElement('a')
-            //             edit_button.textContent = 'Editar'
-            //             edit_button.className = 'button is-warning is-small'
-            //             edit_button.href = `editar_tarea.html?id=${element.id}`
-            //             editar.appendChild(edit_button)
-
-            //             let completada = {
-            //                 id: element.id,
-            //                 nombre: element.nombre,
-            //                 descripcion: element.descripcion,
-            //                 inicio: element.inicio_tarea,
-            //                 fin: element.fin_tarea
-            //             }
-            //             let tarea_completada = document.createElement('td')
-            //             let complete = document.createElement('button')
-            //             complete.textContent = 'Completada'
-            //             complete.className = 'button is-primary is-small'
-            //             complete.onclick = function() { tareaCompletada(completada) }
-            //             tarea_completada.appendChild(complete)
-
-            //             let progreso = document.createElement('td')
-            //             progreso.textContent = 'En proceso'
-
-            //             tr.appendChild(id)
-            //             tr.appendChild(nombre)
-            //             tr.appendChild(descripcion)
-            //             tr.appendChild(fecha_inicio)
-            //             tr.appendChild(fecha_fin)
-            //             tr.appendChild(objetivo)
-            //             tr.appendChild(progreso)
-            //             tr.appendChild(borrar)
-            //             tr.appendChild(editar)
-            //             tr.appendChild(tarea_completada)
-            //             table.appendChild(tr)
-            //         });
-            //     })
-            // }
             
             tareaCompletada = function(tarea_finalizada) {
                 let eliminar = eliminarTarea(tarea_finalizada.id)
@@ -226,27 +138,5 @@
                 return true
             }
         </script>
-
-        <section class="section">
-            <div class="column is-narrow">
-                <h1 class="mb-2 title is-2 has-text-warning">Completadas:</h1>
-            </div>
-            <!-- <table class="table is-bordered is-hoverable">
-                <thead>
-                    <tr class="has-background-success-light">
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Fecha de inicio</th>
-                        <th>Fecha de finalización</th>
-                        <th>ID objetivo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="tareas_completadas">
-                </tbody>
-            </table> -->
-        </section>
-
     </body>
 </html>
