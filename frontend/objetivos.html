@@ -118,7 +118,11 @@
 
         }
 
-        function eliminarObjetivo(id) {
+        function eliminarObjetivo(id, titulo) {
+            if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)){
+                return
+            };
+            
             fetch(`http://127.0.0.1:8000/api/v1/objetivos/${id}`, {
                 method: 'DELETE'
             })
@@ -178,7 +182,7 @@
                                             <span>Editar</span>
                                         </div>
                                     </a>
-                                    <button class="card-footer-item color-texto-${categoria_id}" onclick="eliminarObjetivo(${id})">
+                                    <button class="card-footer-item color-texto-${categoria_id}" onclick="eliminarObjetivo(${id}, '${titulo}')">
                                         <div class="icon-text">
                                             <span class="icon">
                                                 <i class="fa-solid fa-trash"></i>
