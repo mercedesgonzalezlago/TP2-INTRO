@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Categorias</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+</head>
+
+<body>
+    <section class="section">
+        <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
+            <ul>
+                <li>
+                    <a class="has-background-link-85 has-text-link-85-invert" href="inicio.html">
+                        <span class="icon is-small"><i class="fas fa-house"></i></span>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="has-background-link-85 has-text-link-85-invert" href="objetivos.html">
+                        <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
+                        <span>Objetivos</span>
+                    </a>
+                </li>
+
+                <li class="is-active">
+                    <a href="categorias.html">
+                        <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
+                        <span>Categorias</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section pt-1">
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <h1 class="title is-1 is-size-2-mobile has-text-primary">
+                    CATEGORIAS CREADAS
+                </h1>
+            </div>
+        </div>
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <a class="button has-background-link-85 has-text-link-85-invert is-rounded" href="crear-categoria.html?link=categorias">
+                    <div class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-solid fa-plus"></i>
+                        </span>
+                        <span>Crear Categoria</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0 ">
+        <div class="field is-grouped is-grouped-centered">
+            <table class="table table is-fullwidth">
+                <thead>
+                    <tr class="has-background-link">
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Color</th>
+                        <th>Icono</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="tabla-categorias" class="has-background-link-75"></tbody>
+            </table>
+        </div>
+
+
+    </section>
+
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+
+    <script>
+        window.onload = function () {
+            mostrarCategorias()
+        }
+
+        function eliminarCategoria(){
+            console.log("eliminada")
+        }
+
+        function mostrarCategorias() {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias`)
+            .then(response => response.json())
+            .then(categorias => {
+
+                    const tablaCategorias = document.getElementById('tabla-categorias')
+
+                    categorias.forEach(categoria => {
+                        const id = categoria.id;
+                        const nombre = categoria.nombre;
+                        const color = categoria.color;
+                        const icono = categoria.icono;
+                        const linkEditar = `editar-categoria.html?id=${id}`;
+
+                        tablaCategorias.innerHTML += `
+                        <tr>
+                            <th>${id}</th>
+
+                            <td>${nombre}</td>
+
+                            <td><i class="fa-solid fa-square fa-xl has-text-${color}"></i></td>
+
+                            <td><i class="fa-solid fa-${icono} fa-xl"></i> </td>
+
+                            <td>
+                                <a href='${linkEditar}'>
+                                    <i class="button fa-solid fa-pencil is-small is-fullwidth is-rounded is-warning"></i>
+                                </a>
+                            </td>
+
+                            <td><i class="button fa-solid fa-trash is-small is-fullwidth is-rounded is-danger" onclick="eliminarCategoria()"></i></td>
+                        </tr>`
+                    });
+                });
+        }
+    </script>
+
+</body>
+
+</html>
