@@ -165,6 +165,11 @@
                 return
             }
 
+            if (new Date(fechaInicio) > new Date(fechaFin)) {
+                alert('Fechas inválidas')
+                return
+            }
+
             let body = {
                 titulo: titulo,
                 descripcion: descripcion,
