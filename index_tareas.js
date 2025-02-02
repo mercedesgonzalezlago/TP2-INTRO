@@ -55,7 +55,7 @@ app.delete('/api/v1/tareas/:id', async (req, res) => {
     })
 
     if (tarea === null) {
-        res,sendStatus(404)
+        res.sendStatus(404)
         return
     }
 
