@@ -75,9 +75,9 @@
                         </div>
 
                         <div class="control">
-                            <a class="button is-danger" href="objetivos.html">
+                            <button class="button is-danger" onclick="window.history.back()">
                                 Volver
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                     alert('Error al crear el objetivo');
                 }
             })
-            window.location = "objetivos.html"
+            window.history.back();
         }
     </script>
 </body>
