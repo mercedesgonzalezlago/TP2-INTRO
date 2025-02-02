@@ -3,7 +3,7 @@ import { Persona } from '../model/personaModel.js';
 export const obtenerPersonas = async (req, res) => {
     try {
         const personas = await Persona.obtenerPersonas();
-        res.json(personas);
+        res.status(200).json(personas);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener personas" });
     }

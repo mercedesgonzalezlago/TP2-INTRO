@@ -1,4 +1,3 @@
-/*
 import { Router } from 'express';
 import {
     crearObjetivo,
@@ -10,13 +9,10 @@ import {
 
 const router = Router();
 
-router.post('/', crearObjetivo);
 router.get('/', obtenerObjetivos);
 router.get('/:id', obtenerObjetivoPorId);
+router.post('/', crearObjetivo);
 router.put('/:id', actualizarObjetivo);
 router.delete('/:id', eliminarObjetivo);
 
 export default router;
-
-
- */

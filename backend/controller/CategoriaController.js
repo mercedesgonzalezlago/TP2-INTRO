@@ -1,10 +1,9 @@
-/*
-import Categoria from "../model/CategoriaModel.js";
+import {Categoria} from "../model/CategoriaModel.js";
 
 export const crearCategoria = async (req, res) => {
     const { titulo, descripcion, customer_id, categoria_id } = req.body;
     try {
-        const result = await Categoria.create(titulo, descripcion, customer_id, categoria_id);
+        const result = await Categoria.crearCategoria(titulo, descripcion, customer_id, categoria_id);
         res.status(201).json({ id: result.insertId, nombre, email });
     } catch (err) {
         res.status(500).json({ error: 'Error al crear el cliente' });
@@ -13,7 +12,7 @@ export const crearCategoria = async (req, res) => {
 
 export const obtenerCategoria = async (req, res) => {
     try {
-        const results = await Categoria.getAll();
+        const results = await Categoria.obtenerCategorias();
         res.status(200).json(results);
     } catch (err) {
         res.status(500).json({ error: 'Error al obtener los clientes' });
@@ -23,7 +22,7 @@ export const obtenerCategoria = async (req, res) => {
 export const obtenerCategoriaPorId = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await Categoria.getById(id);
+        const result = await Categoria.obtenerCategoriaPorId(id);
         if (result.length === 0) {
             return res.status(404).json({ error: 'Cliente no encontrado' });
         }
@@ -37,7 +36,7 @@ export const actualizarCategoria = async (req, res) => {
     const { id } = req.params;
     const { name, email } = req.body;
     try {
-        const result = await Categoria.update(id, name, email);
+        const result = await Categoria.actualizarCategoria(id, name, email);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Cliente no encontrado' });
         }
@@ -50,7 +49,7 @@ export const actualizarCategoria = async (req, res) => {
 export const eliminarCategoria = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await Categoria.delete(id);
+        const result = await Categoria.eliminarCategoria(id);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Cliente no encontrado' });
         }
@@ -60,4 +59,3 @@ export const eliminarCategoria = async (req, res) => {
     }
 };
 
- */

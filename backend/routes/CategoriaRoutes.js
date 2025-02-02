@@ -1,4 +1,3 @@
-/*
 import { Router } from 'express';
 import {
     crearCategoria,
@@ -17,5 +16,3 @@ router.put('/:id', actualizarCategoria);
 router.delete('/:id', eliminarCategoria);
 
 export default router;
-
- */
