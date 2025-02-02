@@ -30,59 +30,62 @@
                         <label class="label has-text-link">Categoria:</label>
                         <div class="control">
                             <div class="select is-fullwidth">
-                                <select label="Selecciona una Categoria"id="categorias" class="has-background-link-75">
+                                <select label="Selecciona una Categoria" id="categorias" class="has-background-link-75">
                                     <option selected value="">Selecciona una categoria</option>
                                 </select>
                             </div>
                             <div class="field is-grouped is-grouped-centered pt-4">
                                 <div class="control">
-                                    <a class="button has-background-link-75" href="crear-categoria.html">Crear nueva categoria</a>
+                                    <a class="button has-background-link-75"
+                                        href="crear-categoria.html?link=agregar-objetivo">
+                                        Crear nuevacategoria
+                                    </a>
                                 </div>
-                            
+
+                            </div>
+
+                        </div>
+                        <div class="field">
+                            <label class="label has-text-link">Descripcion:</label>
+                            <div class="control">
+                                <textarea id="descripcion" class="textarea has-background-link-75"
+                                    placeholder="Ingrese una descripcion"></textarea>
+                            </div>
                         </div>
 
-                    </div>
-                    <div class="field">
-                        <label class="label has-text-link">Descripcion:</label>
-                        <div class="control">
-                            <textarea id="descripcion" class="textarea has-background-link-75"
-                                placeholder="Ingrese una descripcion"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="field is-grouped is-grouped-centered">
-                        <div class="control">
-                            <label class="label has-text-link">Fecha de Inicio:</label>
-                            <input id="fecha-inicio" class="input has-background-link-75" type="date">
-                        </div>
-                        <div class="control">
-                            <label class="label has-text-link">Fecha de Fin:</label>
-                            <input id="fecha-fin" class="input has-background-link-75" type="date">
-                        </div>
-                    </div>
-
-                    <div class="field is-grouped is-grouped-centered pt-4">
-                        <div class="control">
-                            <button class="button is-primary" onclick="crearObjetivo()">
-                                Agregar
-                            </button>
+                        <div class="field is-grouped is-grouped-centered">
+                            <div class="control">
+                                <label class="label has-text-link">Fecha de Inicio:</label>
+                                <input id="fecha-inicio" class="input has-background-link-75" type="date">
+                            </div>
+                            <div class="control">
+                                <label class="label has-text-link">Fecha de Fin:</label>
+                                <input id="fecha-fin" class="input has-background-link-75" type="date">
+                            </div>
                         </div>
 
-                        <div class="control">
-                            <button class="button is-warning" onclick="limpiarFormulario()">
-                                Limpiar
-                            </button>
-                        </div>
+                        <div class="field is-grouped is-grouped-centered pt-4">
+                            <div class="control">
+                                <button class="button is-primary" onclick="crearObjetivo()">
+                                    Agregar
+                                </button>
+                            </div>
 
-                        <div class="control">
-                            <button class="button is-danger" onclick="window.history.back()">
-                                Volver
-                            </button>
+                            <div class="control">
+                                <button class="button is-warning" onclick="limpiarFormulario()">
+                                    Limpiar
+                                </button>
+                            </div>
+
+                            <div class="control">
+                                <a class="button is-danger" href="objetivos.html">
+                                    Volver
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
     </section>
 
@@ -94,7 +97,7 @@
             agregarCategorias()
         }
 
-        function validarTexto(texto, campo){
+        function validarTexto(texto, campo) {
             if (texto === "") {
                 alert(`Falta ${campo}`);
                 return false;
@@ -155,8 +158,8 @@
                 fecha_fin: fechaFin,
                 usuario_id: 5
             }
-            
-            fetch('http://127.0.0.1:8000/api/v1/objetivos',{
+
+            fetch('http://127.0.0.1:8000/api/v1/objetivos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -166,11 +169,11 @@
                 if (response.status === 201) {
                     alert('Objetivo Creado con exito');
                     limpiarFormulario()
-                } else{
+                } else {
                     alert('Error al crear el objetivo');
                 }
             })
-            window.history.back();
+            window.history.back()
         }
     </script>
 </body>
