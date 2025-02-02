@@ -76,9 +76,9 @@
                             </div>
 
                             <div class="control">
-                                <button class="button is-danger" onclick="window.history.back()">
-                                     Volver
-                                </button>
+                                <a class="button is-danger" href="objetivos.html">
+                                    Volver
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,6 @@
             agregarCategorias()
             cargarDatos()
         }
-
 
         function validarTexto(texto, campo) {
             if (texto === "") {
@@ -160,7 +159,7 @@
             datosValidos = validarTexto(fechaInicio, "la Fecha de inicio")
             datosValidos = validarTexto(fechaFin, "la Fecha de Fin")
             datosValidos = validarTexto(categoria, "la categoria")
-
+    
             if (!datosValidos) {
                 return
             }
@@ -194,7 +193,7 @@
                     alert('Error al crear el objetivo');
                 }
             })
-            window.history.back();
+            window.location = "objetivos.html"
         }
     </script>
 </body>
