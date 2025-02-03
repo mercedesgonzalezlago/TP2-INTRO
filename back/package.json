@@ -1,0 +1,23 @@
+{
+  "name": "tp2-git",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index_tareas.js",
+  "scripts": {
+    "dev": "nodemon index_tareas.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^6.3.0",
+    "bulma": "^1.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "prisma": "^6.3.0"
+  }
+}
