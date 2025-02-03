@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Agregar tarea</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    </head>
+
+    <body>
+        <section class="section">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-1 has-text-light">Nueva tarea</h1>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                <div class="card-content py-2">
+                    <div class="content">
+                        <div class="field">
+                            <label class="label has-text-link">Nombre (*)</label>
+                            <div class="control">
+                                <input id="nombre" class="input has-background-link-75" type="text" placeholder="Nombre de la tarea">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label has-text-link">Descripción (*)</label>
+                            <div class="control">
+                                <input id="descripcion" class="input has-background-link-75" type="text" placeholder="Descripción breve">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="label has-text-link">Fecha de inicio (*)</label>
+                                <input id="fecha_inicio" class="input has-background-link-75" type="date">
+                            </div>
+                            <div class="mt-2 control">
+                                <label class="label has-text-link">Fecha de finalización (*)</label>
+                                <input id="fecha_fin" class="input has-background-link-75" type="date">
+                            </div>
+                        </div>
+                        <div class="field is-grouped is-grouped-centered pt-4">
+                            <div class="control">
+                                <button class="button is-primary" onclick="agregarTarea()">
+                                    Agregar
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-warning" onclick="limpiarFormulario()">
+                                    Eliminar
+                                </button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-danger" href="tareas.html">
+                                    Volver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+        <script>
+            function agregarTarea() {
+                event.preventDefault()
+                const params = new URLSearchParams(window.location.search)
+                const id_objetivo = params.get('id')
+
+                const nombre = document.getElementById('nombre').value
+                const descripcion = document.getElementById('descripcion').value
+                const fecha_inicio = document.getElementById('fecha_inicio').value
+                const fecha_fin = document.getElementById('fecha_fin').value
+                const estado = "Pendiente"
+
+                let body = {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    inicio_tarea: fecha_inicio,
+                    fin_tarea: fecha_fin,
+                    estado: estado,
+                    id_objetivo: id_objetivo
+                }
+
+                if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
+                    alert("Campos incompletos")
+                    return
+                }
+
+                if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
+                    alert('Fechas inválidas')
+                    return
+                }
+
+                fetch('http://localhost:3000/api/v1/tareas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => {
+                    if (response.status === 201) {
+                        alert('Tarea agregada con éxito')
+                        limpiarFormulario()
+                        window.location.href = 'tareas.html'
+                        return
+                    } else {
+                        alert('Error al agregar la tarea')
+                        return
+                    }
+                })
+            }
+
+            function limpiarFormulario() {
+                document.getElementById('nombre').value = ""
+                document.getElementById('descripcion').value = ""
+                document.getElementById('fecha_inicio').value = ""
+                document.getElementById('fecha_fin').value = ""
+            }
+        </script>
+    </body>
+</html>
