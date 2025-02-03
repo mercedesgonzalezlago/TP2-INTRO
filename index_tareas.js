@@ -90,6 +90,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
             descripcion: req.body.descripcion,
             inicio_tarea: req.body.inicio_tarea,
             fin_tarea: req.body.fin_tarea,
+            estado: req.body.estado
         }
     })
 
