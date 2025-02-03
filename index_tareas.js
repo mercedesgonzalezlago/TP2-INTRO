@@ -40,7 +40,7 @@ app.post('/api/v1/tareas', async (req, res) => {
             inicio_tarea: req.body.inicio_tarea,
             fin_tarea: req.body.fin_tarea,
             estado: req.body.estado,
-            id_objetivo: req.body.id_objetivo
+            id_objetivo: parseInt(req.body.id_objetivo)
         }
     })
     res.status(201).send(tarea)
@@ -89,11 +89,11 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
             inicio_tarea: req.body.inicio_tarea,
             fin_tarea: req.body.fin_tarea,
             estado: req.body.estado,
-            id_objetivo: req.body.id_objetivo
+            id_objetivo: parseInt(req.body.id_objetivo)
         }
     })
 
-    res.status(201).send(tarea)
+    res.send(tarea)
 })
 
 app.listen(port, () => {
