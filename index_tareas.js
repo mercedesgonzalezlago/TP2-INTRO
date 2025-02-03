@@ -13,7 +13,9 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/v1/tareas', async (req, res) => {
-    const tareas = await prisma.tarea.findMany()
+    const tareas = await prisma.tarea.findMany({
+        orderBy: {id: 'asc'}
+    })
     res.json(tareas)
 })
 
@@ -92,6 +94,7 @@ app.put('/api/v1/tareas/:id', async (req, res) => {
             id_objetivo: parseInt(req.body.id_objetivo)
         }
     })
+
 
     res.send(tarea)
 })
