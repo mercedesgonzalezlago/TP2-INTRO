@@ -74,8 +74,7 @@
                     card_compl.innerHTML = ''
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
-                        const formato = { day: '2-digit', month: '2-digit', year: 'numeric'}
-                        const fecha_completada = fecha_actual.toLocaleDateString('es-ES', formato)
+                        const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
                         if (tarea.estado === "Completada") {
                             card_compl.innerHTML += `
                             <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
