@@ -72,8 +72,9 @@
             }
 
             mostrarTareas = function() {
-                const params = new URLSearchParams(window.location.search)
-                const id_objetivo = params.get('id')
+                // const params = new URLSearchParams(window.location.search)
+                // const id_objetivo = params.get('id')
+                const id_objetivo = 3
 
                 document.getElementById('nueva_tarea').href = `agregar_tarea.html?id=${id_objetivo}`
                 document.getElementById('pendientes').href = `tareas_pendientes.html?id=${id_objetivo}`
