@@ -107,7 +107,7 @@
                     if (response.status === 201) {
                         alert('Tarea agregada con éxito')
                         limpiarFormulario()
-                        window.location.href = 'tareas.html'
+                        window.location.href = `tareas.html?id=${id_objetivo}`
                         return
                     } else {
                         alert('Error al agregar la tarea')
