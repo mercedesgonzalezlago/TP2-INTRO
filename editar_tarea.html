@@ -129,23 +129,12 @@
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
                 const fecha_fin = document.getElementById('fecha_fin').value
-                let estado = ""
-                let objetivo_id = ""
-
-                fetch('http://localhost:3000/api/v1/tareas/' + id)
-                .then(response => response.json())
-                .then(tarea => {
-                    estado = tarea.estado
-                    objetivo_id = tarea.id_objetivo
-                })
 
                 let body = {
                     nombre: nombre,
                     descripcion: descripcion,
                     inicio_tarea: fecha_inicio,
-                    fin_tarea: fecha_fin,
-                    estado: estado,
-                    id_objetivo: objetivo_id
+                    fin_tarea: fecha_fin
                 }
                 
                 if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
@@ -161,7 +150,7 @@
                     body: JSON.stringify(body)
                 })
                 .then(response => {
-                    if (response.status === 201) {
+                    if (response.status === 200) {
                         alert('Tarea editada con éxito')
                         limpiarFormulario()
                         window.location.href = 'tareas.html'
