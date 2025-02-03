@@ -86,8 +86,8 @@
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
                         if (tarea.estado === "Pendiente") {
                             card_tareas.innerHTML += `
-                            <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
-                                <header id="header_tarea" class="card-header has-background-primary">
+                            <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-65">
+                                <header id="header_tarea" class="card-header has-background-primary-35">
                                     <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                 </header>
                                 <div class="card-content">
@@ -96,7 +96,7 @@
                                     <div class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
                                     <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
                                 </div>
-                                <footer id="footer_tarea" class="card-footer has-background-primary">
+                                <footer id="footer_tarea" class="card-footer has-background-primary-35">
                                     <button class="card-footer-item has-text-link" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                     <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}">Editar</a>
                                     <button class="card-footer-item has-text-link" onclick="tareaCompletada(${tarea.id})">Completada</button>
@@ -105,7 +105,7 @@
                         } else if (tarea.estado === "Completada") {
                             card_tareas.innerHTML += `
                             <div id="tarea-compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-85">
-                                <header id="header_tarea" class="card-header has-background-primary-70">
+                                <header id="header_tarea" class="card-header has-background-primary-65">
                                     <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                 </header>
                                 <div id="contenido_tarea" class="card-content">
@@ -114,14 +114,14 @@
                                     <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
                                     <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
                                 </div>
-                                <footer id="footer_tarea" class="card-footer has-background-primary-70">
+                                <footer id="footer_tarea" class="card-footer has-background-primary-65">
                                     <button id="ocultar" class="card-footer-item has-text-danger" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
                                 </footer>
                             </div>`
                         } else {
                             card_tareas.innerHTML += `
                             <div id="tarea-compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-85">
-                                <header id="header_tarea" class="card-header has-background-primary-70">
+                                <header id="header_tarea" class="card-header has-background-primary-65">
                                     <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                 </header>
                                 <div id="contenido_tarea" class="card-content is-hidden">
@@ -130,7 +130,7 @@
                                     <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
                                     <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
                                 </div>
-                                <footer id="footer_tarea" class="card-footer has-background-primary-70">
+                                <footer id="footer_tarea" class="card-footer has-background-primary-65">
                                     <button id="ocultar" class="card-footer-item has-text-danger" onclick="desocultarTarea(${tarea.id})">Ver</button>
                                 </footer>
                             </div>`
@@ -140,6 +140,10 @@
             }
             
             tareaCompletada = function(id) {
+                if (!confirm('Se marcará como completada la tarea ' + id)) {
+                    return false
+                }
+
                 let body = {
                     estado: "Completada"
                 }
@@ -153,7 +157,6 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    alert('Tarea ' + response.id + ' completada!')
                     mostrarTareas()
                     return
                 })
@@ -163,6 +166,7 @@
                 if (!confirm('Se eliminará la tarea ' + id)) {
                     return false
                 }
+
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
                     method: 'DELETE'
                 })
