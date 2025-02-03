@@ -87,7 +87,7 @@
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
-                        if (tarea.id_objetivo === id_objetivo) {
+                        if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             if (tarea.estado === "Pendiente") {
                                 card_tareas.innerHTML += `
                                 <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-65">

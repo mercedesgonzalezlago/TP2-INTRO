@@ -79,7 +79,7 @@
                     let card_pend = document.getElementById('card_pendientes')
                     card_pend.innerHTML = ''
                     tareas.forEach(tarea => {
-                        if (tarea.id_objetivo === id_objetivo) {
+                        if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             if (tarea.estado === "Pendiente") {
                                 card_pend.innerHTML += `
                                 <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
