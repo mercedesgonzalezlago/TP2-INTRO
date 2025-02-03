@@ -75,12 +75,14 @@
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
                 const fecha_fin = document.getElementById('fecha_fin').value
+                const estado = "Pendiente"
 
                 let body = {
                     nombre: nombre,
                     descripcion: descripcion,
                     inicio_tarea: fecha_inicio,
                     fin_tarea: fecha_fin,
+                    estado: estado,
                     id_objetivo: id_objetivo
                 }
 
