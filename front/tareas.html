@@ -47,7 +47,7 @@
             <div id="division_tareas" class="tabs is-centered">
                 <ul>
                     <li class="is-active">
-                        <a href="tareas.html">Todas</a>
+                        <a id="todas" href="tareas.html">Todas</a>
                     </li>
                     <li>
                         <a id="pendientes" class="has-text-light" href="#" target="_self">Pendientes</a>
@@ -102,7 +102,7 @@
                                     </div>
                                     <footer id="footer_tarea" class="card-footer has-background-primary-35">
                                         <button class="card-footer-item has-text-link" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                        <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}">Editar</a>
+                                        <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
                                         <button class="card-footer-item has-text-link" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
