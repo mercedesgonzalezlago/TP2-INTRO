@@ -46,44 +46,34 @@
         <section class="section">
             <div id="division_tareas" class="tabs is-centered">
                 <ul>
-                    <li class="is-active"><a>Todas</a></li>
-                    <li>
-                        <a id="pendientes" href="tareas_pendientes.html" target="_self">Pendientes</a>
+                    <li><a href="tareas.html">Todas</a></li>
+                    <li class="is-active">
+                        <a id="pendientes" href="tareas_pendientes.html" target="_self">
+                            Pendientes
+                        </a>
                     </li>
                     <li><a id="completadas">Completadas</a></li>
                 </ul>
             </div>
-            <div id="tareas"></div>
-            <div class="field is-grouped is-grouped-centered pt-4">
-                <a id="nueva_tarea" class="button is-primary is-rounded" href="#">
-                    Agregar tarea
-                </a>
-            </div>
+            <div id="card_pendientes"></div>
         </section>
+
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
             window.onload = function() {
-                mostrarTareas()
+                dividirTareas()
             }
 
-            mostrarTareas = function() {
-                // const params = new URLSearchParams(window.location.search)
-                // const id_objetivo = params.get('id')
-                const id_objetivo = 3
-                document.getElementById('nueva_tarea').href = `agregar_tarea.html?id=${id_objetivo}`
-
+            dividirTareas = function() {
                 fetch('http://127.0.0.1:3000/api/v1/tareas')
                 .then(response => response.json())
                 .then(tareas => {
-                    let card_tareas = document.getElementById('tareas')
-                    card_tareas.innerHTML = ''
+                    let card_pend = document.getElementById('card_pendientes')
+                    card_pend.innerHTML = ''
                     tareas.forEach(tarea => {
-                        const fecha_actual = new Date()
-                        const formato = { day: '2-digit', month: '2-digit', year: 'numeric'}
-                        const fecha_completada = fecha_actual.toLocaleDateString('es-ES', formato)
-                        if (tarea.estado !== "Completada") {
-                            card_tareas.innerHTML += `
-                            <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
+                        if (tarea.estado === "Pendiente") {
+                            card_pend.innerHTML += `
+                            <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
                                 <header id="header_tarea" class="card-header has-background-primary">
                                     <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                 </header>
@@ -99,24 +89,11 @@
                                     <button class="card-footer-item has-text-link" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                 </footer>
                             </div>`
-                        } else {
-                            card_tareas.innerHTML += `
-                            <div id="tarea-compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-85">
-                                <header id="header_tarea" class="card-header has-background-primary-70">
-                                    <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
-                                </header>
-                                <div class="card-content">
-                                    <div class="content">${tarea.descripcion}.</div>
-                                    <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
-                                    <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
-                                    <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
-                                </div>
-                            </div>`
                         }
                     })
                 })
             }
-            
+
             tareaCompletada = function(id) {
                 const objetivo = 3
                 let body = {
@@ -154,7 +131,6 @@
                 })
                 return true
             }
-        
         </script>
     </body>
 </html>
