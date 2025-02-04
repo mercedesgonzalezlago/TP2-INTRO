@@ -1,10 +1,10 @@
 import {Categoria} from "../model/CategoriaModel.js";
 
 export const crearCategoria = async (req, res) => {
-    const { nombre, descripcion } = req.body;
+    const { nombre, color, icono } = req.body;
     try {
-        const result = await Categoria.crearCategoria(nombre, descripcion);
-        res.status(201).json({ id: result.insertId, nombre, descripcion });
+        const result = await Categoria.crearCategoria(nombre, color, icono);
+        res.status(201).json({ id: result.insertId, nombre, color, icono });
     } catch (err) {
         res.status(500).json({ error: 'Error al crear la Categoria' });
     }
@@ -34,9 +34,9 @@ export const obtenerCategoriaPorId = async (req, res) => {
 
 export const actualizarCategoria = async (req, res) => {
     const { id } = req.params;
-    const { name, descripcion } = req.body;
+    const { nombre, color, icono } = req.body;
     try {
-        const result = await Categoria.actualizarCategoria(id, name, descripcion);
+        const result = await Categoria.actualizarCategoria(id, nombre, color, icono);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Categoria no encontrada' });
         }
