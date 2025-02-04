@@ -4,11 +4,10 @@ import personaRoutes from './routes/PersonaRoutes.js';
 import categoriaRoutes from "./routes/CategoriaRoutes.js";
 import objetivosRoutes from "./routes/ObjetivosRoutes.js";
 import tareaRoutes from "./routes/TareaRoutes.js";
-
-var cors = require('cors');
-app.use(cors());
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json());
 
