@@ -5,6 +5,9 @@ import categoriaRoutes from "./routes/CategoriaRoutes.js";
 import objetivosRoutes from "./routes/ObjetivosRoutes.js";
 import tareaRoutes from "./routes/TareaRoutes.js";
 
+var cors = require('cors');
+app.use(cors());
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -14,8 +17,8 @@ app.use('/api/v1/personas', personaRoutes);
 app.use('/api/v1/categorias', categoriaRoutes);
 app.use('/api/v1/objetivos', objetivosRoutes);
 app.use('/api/v1/tareas', tareaRoutes)
-const PORT = 8000;
 
+const PORT = 8000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
