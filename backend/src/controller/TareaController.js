@@ -1,10 +1,10 @@
 import {Tarea} from "../model/TareaModel.js";
 
 export const crearTarea = async (req, res) => {
-    const { descripcion, fechaLimite, estado, objetivoId } = req.body;
+    const { nombre, descripcion, inicio_tarea, fin_tarea, estado, id_objetivo } = req.body;
     try {
-        const result = await Tarea.crearTarea(descripcion, fechaLimite, estado, objetivoId);
-        res.status(201).json({ id: result.insertId, descripcion, fechaLimite, estado, objetivoId });
+        const result = await Tarea.crearTarea(nombre, descripcion, inicio_tarea, fin_tarea, estado, id_objetivo);
+        res.status(201).json({ id: result.insertId, nombre, descripcion, inicio_tarea, fin_tarea, estado, id_objetivo });
     } catch (err) {
         res.status(500).json({ error: 'Error al crear la tarea' });
     }
@@ -33,9 +33,10 @@ export const obtenerTareaPorId = async (req, res) => {
 };
 
 export const actualizarTarea = async (req, res) => {
-    const { descripcion, fechaLimite, estado } = req.body;
+    const { id } = req.params;
+    const { nombre, descripcion, inicio_tarea, fin_tarea, estado, id_objetivo } = req.body;
     try {
-        const result = await Tarea.actualizarTarea(id, descripcion, fechaLimite, estado);
+        const result = await Tarea.actualizarTarea(id, nombre, descripcion, inicio_tarea, fin_tarea, estado, id_objetivo);
         if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Tarea no encontrada' });
         }
