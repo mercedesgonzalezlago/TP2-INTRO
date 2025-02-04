@@ -175,7 +175,7 @@
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
-                                        <div class="content">Estado: ${tarea.estado}</div>
+                                        <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${tarea.id})">Ver</button>
@@ -357,6 +357,8 @@
             }
 
             actualizarCardOculta = function(id, id_objetivo) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Completada'
                 document.getElementById(`contenido_tarea_${id}`).classList.add("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `
@@ -383,6 +385,8 @@
             }
 
             actualizarCardVisible = function(id, id_objetivo) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Completada'
                 document.getElementById(`contenido_tarea_${id}`).classList.remove("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `
