@@ -89,9 +89,9 @@
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
                         const dia_siguente_fin = sumarDias(tarea.fin_tarea, 2)
                         const nuevo_fin = new Intl.DateTimeFormat('sv-SE').format(dia_siguente_fin)
-                        const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
-                        const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
+                            const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
+                            const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
                                 if (nuevo_fin === fecha_completada) {
                                     card_tareas.innerHTML += `
@@ -139,7 +139,7 @@
                                     <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
-                                        <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${fecha_formateda}</div>
+                                        <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
                                         <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
@@ -197,6 +197,7 @@
                 const params = new URLSearchParams(window.location.search)
                 const id_objetivo = params.get('id')
                 let body = {
+                    fin_tarea: fecha_nueva,
                     estado: "Pendiente - Actualizada"
                 }
 
@@ -209,6 +210,8 @@
                 })
                 .then(response => response.json())
                 .then(response => {
+                    let estado = document.getElementById(`estado_tarea_${id}`)
+                    estado.textContent = 'Estado: Pendiente - Actualizada'
                     let fecha = document.getElementById(`fecha_fin_${id}`)
                     fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
                     let boton = document.getElementById(`editar_${id}`)
