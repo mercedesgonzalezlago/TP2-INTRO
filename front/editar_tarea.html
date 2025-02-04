@@ -54,7 +54,7 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <a class="button is-danger" href="tareas.html">
+                                <a id="volver" class="button is-danger" href="#">
                                     Volver
                                 </a>
                             </div>
@@ -66,14 +66,17 @@
         
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
+            const params = new URLSearchParams(window.location.search)
+            const id = params.get('id')
+            const id_objetivo = params.get('id-objetivo')
+
+            document.getElementById('volver').href = `tareas.html?id=${id_objetivo}`
+
             document.addEventListener('DOMContentLoaded', function() {
-                cargarDatosActuales()
+                cargarDatosActuales(id)
             })
 
-            function cargarDatosActuales() {
-                const params = new URLSearchParams(window.location.search)
-                const id = params.get('id')
-
+            function cargarDatosActuales(id) {
                 fetch('http://localhost:3000/api/v1/tareas/' + id)
                 .then(response => response.json())
                 .then(tarea => {
@@ -102,8 +105,18 @@
                     fin_tarea: fecha_fin,
                 }
                 
+                if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
+                    alert("La tarea no debería quedar vacía")
+                    return
+                }
+
                 if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
                     alert('Fechas inválidas')
+                    return
+                }
+
+                if (new Date(body.fin_tarea) < new Date()) {
+                    alert('La fecha de finalización ya pasó')
                     return
                 }
 
