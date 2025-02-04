@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=backend_to_the_future
+      - POSTGRES_PASSWORD=ultra_secure_password
+      - POSTGRES_DB=pagina_objetivos
+    ports:
+      - 5432:5432
+    volumes:
+      - ./psql_data:/var/lib/postgresql/data
