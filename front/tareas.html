@@ -87,13 +87,13 @@
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
-                        const dia_siguente_fin = sumarDias(tarea.fin_tarea, 2)
-                        const nuevo_fin = new Intl.DateTimeFormat('sv-SE').format(dia_siguente_fin)
+                        
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
                             const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
-                                if (nuevo_fin === fecha_completada) {
+                                if (tarea.fin_tarea === fecha_completada) {
+                                    tareaIncompleta(tarea.id)
                                     card_tareas.innerHTML += `
                                     <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                         <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
@@ -191,6 +191,25 @@
                 let fecha_nueva = new Date(fecha)
                 fecha_nueva.setDate(fecha_nueva.getDate() + dias)
                 return fecha_nueva
+            }
+
+            tareaIncompleta = function(id) {
+                let body = {
+                    estado: "Incompleta"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    let estado = document.getElementById(`estado_tarea_${id}`)
+                    estado.textContent = 'Estado: Incompleta'
+                })
             }
 
             extenderFechaFin = function(id, fecha_nueva) {
