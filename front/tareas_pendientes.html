@@ -94,7 +94,7 @@
                                     </div>
                                     <footer id="footer_tarea" class="card-footer has-background-link-75">
                                         <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                        <a class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}">Editar</a>
+                                        <a id="editar" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
                                         <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
@@ -120,7 +120,7 @@
                 .then(response => response.json())
                 .then(response => {
                     alert('Tarea completada!')
-                    let card = document.getElementById('pendiente-' + response.id)
+                    let card = document.getElementById('pendiente-' + id)
                     card.remove()
                 })
             }
@@ -134,7 +134,7 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    let card = document.getElementById('pendiente-' + response.id)
+                    let card = document.getElementById('pendiente-' + id)
                     card.remove()
                 })
                 return true
