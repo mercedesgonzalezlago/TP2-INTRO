@@ -66,14 +66,17 @@
         
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
+            const params = new URLSearchParams(window.location.search)
+            const id = params.get('id')
+            const id_objetivo = params.get('id-objetivo')
+
+            document.getElementById('volver').href = `tareas.html?id=${id_objetivo}`
+
             document.addEventListener('DOMContentLoaded', function() {
-                cargarDatosActuales()
+                cargarDatosActuales(id)
             })
 
-            function cargarDatosActuales() {
-                const params = new URLSearchParams(window.location.search)
-                const id = params.get('id')
-
+            function cargarDatosActuales(id) {
                 fetch('http://localhost:3000/api/v1/tareas/' + id)
                 .then(response => response.json())
                 .then(tarea => {
@@ -90,8 +93,6 @@
                 const id = params.get('id')
                 const id_objetivo = params.get('id-objetivo')
 
-                document.getElementById('volver').href = `tareas.html?id_objetivo=${id_objetivo}`
-                
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value

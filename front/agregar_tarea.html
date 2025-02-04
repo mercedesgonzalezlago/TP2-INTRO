@@ -54,7 +54,7 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <a class="button is-danger" href="tareas.html">
+                                <a id="volver" class="button is-danger" href="#">
                                     Volver
                                 </a>
                             </div>
@@ -66,6 +66,10 @@
         
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
+            const params = new URLSearchParams(window.location.search)
+            const id_objetivo = params.get('id')
+            document.getElementById('volver').href = `tareas.html?id=${id_objetivo}`
+            
             function agregarTarea() {
                 event.preventDefault()
                 const params = new URLSearchParams(window.location.search)
