@@ -72,9 +72,9 @@
             }
 
             mostrarTareas = function() {
-                // const params = new URLSearchParams(window.location.search)
-                // const id_objetivo = params.get('id')
-                const id_objetivo = 3
+                const params = new URLSearchParams(window.location.search)
+                const id_objetivo = params.get('id')
+                // const id_objetivo = 3
 
                 document.getElementById('nueva_tarea').href = `agregar_tarea.html?id=${id_objetivo}`
                 document.getElementById('pendientes').href = `tareas_pendientes.html?id=${id_objetivo}`
@@ -117,7 +117,7 @@
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
-                                        <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
+                                        <div id="estado_tarea_compl_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
                                     <footer id="footer_tarea_compl_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
@@ -135,7 +135,7 @@
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
                                         <div class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer iid="footer_oculta_${tarea.id}" class="card-footer has-background-link-85">
+                                    <footer id="footer_oculta_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${tarea.id})">Ver</button>
                                     </footer>
                                 </div>`
@@ -180,7 +180,9 @@
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.classList.remove("has-background-link-75")
                 footer.classList.add("has-background-link-85")
-                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>`
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
+                `
             }
 
             eliminarTarea = function(id) {
@@ -198,6 +200,43 @@
                 })
                 return true
             }
+
+            // tareaPendiente = function(id, id_objetivo) {
+            //     let body = {
+            //         estado: "Pendiente"
+            //     }
+
+            //     fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+            //         method: 'PUT',
+            //         headers: {
+            //             'Content-Type': 'application/json'
+            //         },
+            //         body: JSON.stringify(body)
+            //     })
+            //     .then(response => response.json())
+            //     .then(response => {
+            //         actualizarCardPendiente(id, id_objetivo)
+            //     })
+            // }
+
+            // actualizarCardPendiente = function(id, id_objetivo) {
+            //     document.getElementById(`estado_tarea_compl_${id}`).innerText = 'Estado: Pendiente'
+            //     let fondo = document.getElementById(`tarea-compl-${id}`)
+            //     fondo.classList.remove("has-background-link-90")
+            //     fondo.classList.add("has-background-link-85")
+
+            //     let header = document.getElementById(`header_tarea_compl_${id}`)
+            //     header.classList.remove("has-background-link-85")
+            //     header.classList.add("has-background-link-75")
+
+            //     let footer = document.getElementById(`footer_tarea_compl_${id}`)
+            //     footer.classList.remove("has-background-link-85")
+            //     footer.classList.add("has-background-link-75")
+            //     footer.innerHTML = `
+            //     <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${id})">Eliminar</button>
+            //     <a class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&id-objetivo=${id_objetivo}">Editar</a>
+            //     <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${id}, ${id_objetivo})">Completada</button>`
+            // }
 
             ocultarTarea = function(id) {
                 let body = {
@@ -220,12 +259,11 @@
             actualizarCardOculta = function(id) {
                 document.getElementById(`contenido_tarea_compl_${id}`).classList.add("is-hidden")
                 let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id})">Ver</button>`
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id})">Ver</button>
+                `
             }
 
-            // tareaPendiente = function(id) {
-
-            // }
             desocultarTarea = function(id) {
                 let body = {
                     estado: "Completada"
@@ -247,7 +285,9 @@
             actualizarCardVisible = function(id) {
                 document.getElementById(`contenido_tarea_compl_${id}`).classList.remove("is-hidden")
                 let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>`
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
+                `
             }
         </script>
     </body>
