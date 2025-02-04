@@ -82,8 +82,8 @@
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             if (tarea.estado === "Pendiente") {
                                 card_pend.innerHTML += `
-                                <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-75">
-                                    <header id="header_tarea" class="card-header has-background-primary">
+                                <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                    <header id="header_tarea" class="card-header has-background-link-75">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
                                     <div class="card-content">
@@ -92,10 +92,10 @@
                                         <div class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
                                         <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer id="footer_tarea" class="card-footer has-background-primary">
-                                        <button class="card-footer-item has-text-link" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                        <a class="card-footer-item" href="editar_tarea.html?id=${tarea.id}">Editar</a>
-                                        <button class="card-footer-item has-text-link" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                    <footer id="footer_tarea" class="card-footer has-background-link-75">
+                                        <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                        <a class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}">Editar</a>
+                                        <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
                             }

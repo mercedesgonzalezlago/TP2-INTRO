@@ -84,8 +84,8 @@
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             if (tarea.estado === "Completada") {
                                 card_compl.innerHTML += `
-                                <div id="compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-primary-85">
-                                    <header class="card-header has-background-primary-65">
+                                <div id="compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-90">
+                                    <header class="card-header has-background-link-85">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
                                     <div id="contenido_tarea_compl_${tarea.id}" class="card-content">
@@ -94,14 +94,14 @@
                                         <div class="content">Fecha de finalización: ${fecha_completada}</div>
                                         <div class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer id="footer_tarea_compl_${tarea.id}" class="card-footer has-background-primary-65">
-                                        <button class="card-footer-item has-text-danger" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
+                                    <footer id="footer_tarea_compl_${tarea.id}" class="card-footer has-background-link-85">
+                                        <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
                                     </footer>
                                 </div>`
                             } else if (tarea.estado === "Oculta") {
                                 card_compl.innerHTML += `
-                                <div class="card column is-three-fifths is-offset-one-fifth has-background-primary-85">
-                                    <header class="card-header has-background-primary-65">
+                                <div class="card column is-three-fifths is-offset-one-fifth has-background-link-90">
+                                    <header class="card-header has-background-link-85">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
                                     <div class="card-content is-hidden">
@@ -110,8 +110,8 @@
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
                                         <div class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer class="card-footer has-background-primary-65">
-                                        <button class="card-footer-item has-text-danger" onclick="desocultarTarea(${tarea.id})">Ver</button>
+                                    <footer class="card-footer has-background-link-85">
+                                        <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${tarea.id})">Ver</button>
                                     </footer>
                                 </div>`
                             }
