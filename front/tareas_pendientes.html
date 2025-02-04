@@ -83,10 +83,10 @@
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
                         
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
-                            const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
+                            const nueva_fecha = sumarDias(fecha_actual, 7)
                             const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
-                                if (tarea.fin_tarea === fecha_completada) {
+                                if (tarea.fin_tarea < fecha_completada) {
                                     tareaIncompleta(tarea.id)
                                     card_pend.innerHTML += `
                                     <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
