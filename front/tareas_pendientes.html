@@ -89,7 +89,7 @@
                             if (tarea.estado === "Pendiente") {
                                 if (nuevo_fin === fecha_completada) {
                                     card_pend.innerHTML += `
-                                    <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                    <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                         <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
                                             <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                         </header>
@@ -107,7 +107,7 @@
                                     </div>`
                                 } else {
                                     card_pend.innerHTML += `
-                                    <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                    <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                         <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
                                             <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                         </header>
@@ -126,7 +126,7 @@
                                 }
                             } else if (tarea.estado === "Pendiente - Actualizada") {
                                 card_pend.innerHTML += `
-                                <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                     <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
