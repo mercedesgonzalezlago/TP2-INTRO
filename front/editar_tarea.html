@@ -54,7 +54,7 @@
                                 </button>
                             </div>
                             <div class="control">
-                                <a class="button is-danger" href="tareas.html">
+                                <a id="volver" class="button is-danger" href="#">
                                     Volver
                                 </a>
                             </div>
@@ -90,6 +90,8 @@
                 const id = params.get('id')
                 const id_objetivo = params.get('id-objetivo')
 
+                document.getElementById('volver').href = `tareas.html?id_objetivo=${id_objetivo}`
+                
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
