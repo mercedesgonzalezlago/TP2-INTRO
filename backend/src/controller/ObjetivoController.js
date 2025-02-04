@@ -12,11 +12,9 @@ export const obtenerObjetivos = async (req, res) => {
 export const obtenerObjetivoPorId = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await Objetivo.obtenerObjetivoPorId(id);
-        if (result.length === 0) {
-            return res.status(404).json({ error: 'Objetivo no encontrado' });
-        }
-        res.status(200).json(result[0]);
+        const objetivo = await Objetivo.obtenerObjetivoPorId(id);
+        if (!objetivo) return res.status(404).json({ error: "Objetivo no encontrado" });
+        res.status(200).json(objetivo);
     } catch (err) {
         res.status(500).json({ error: 'Error al obtener el Objetivo' });
     }
@@ -25,8 +23,8 @@ export const obtenerObjetivoPorId = async (req, res) => {
 export const crearObjetivo = async (req, res) => {
     const { titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id } = req.body;
     try {
-        const result = await Objetivo.crearObjetivo(titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id);
-        res.status(201).json({ id: result.insertId, titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id});
+        const objetivo = await Objetivo.crearObjetivo({titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id});
+        res.status(201).json(objetivo);
     } catch (err) {
         res.status(500).json({ error: 'Error al crear el Objetivo' });
     }
@@ -36,10 +34,10 @@ export const actualizarObjetivo = async (req, res) => {
     const { id } = req.params;
     const { titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id } = req.body;
     try {
-        const result = await Objetivo.actualizarObjetivo(id, titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id);
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Objetivo no encontrado' });
-        }
+        let objetivo = await Objetivo.obtenerObjetivoPorId(id);
+        if (!objetivo) return res.status(404).json({ error: "Objetivo no encontrado" });
+
+        objetivo = await Objetivo.actualizarObjetivo(id, {titulo, descripcion, categoria_id, fecha_inicio, fecha_fin, usuario_id});
         res.status(200).json({ message: 'Objetivo actualizado' });
     } catch (err) {
         res.status(500).json({ error: 'Error al actualizar el Objetivo' });
@@ -49,10 +47,10 @@ export const actualizarObjetivo = async (req, res) => {
 export const eliminarObjetivo = async (req, res) => {
     const { id } = req.params;
     try {
-        const result = await Objetivo.eliminarObjetivo(id);
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Objetivo no encontrado' });
-        }
+        let objetivo = await Objetivo.obtenerObjetivoPorId(id);
+        if (!objetivo) return res.status(404).json({ error: "Objetivo no encontrado" });
+
+        objetivo = await Objetivo.eliminarObjetivo(id);
         res.status(200).json({ message: 'Objetivo eliminado' });
     } catch (err) {
         res.status(500).json({ error: 'Error al eliminar el Objetivo' });
