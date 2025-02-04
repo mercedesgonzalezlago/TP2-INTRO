@@ -85,32 +85,33 @@
                             if (tarea.estado === "Completada") {
                                 card_compl.innerHTML += `
                                 <div id="compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-90">
-                                    <header class="card-header has-background-link-85">
+                                    <header id="header_tarea_${tarea.id}" class="card-header has-background-link-85">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
-                                    <div id="contenido_tarea_compl_${tarea.id}" class="card-content">
+                                    <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
-                                        <div class="content">Fecha de finalización: ${fecha_completada}</div>
-                                        <div class="content">Estado: ${tarea.estado}</div>
+                                        <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
+                                        <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer id="footer_tarea_compl_${tarea.id}" class="card-footer has-background-link-85">
+                                    <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
+                                        <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${tarea.id}, ${id_objetivo})">Pendiente</button>
                                     </footer>
                                 </div>`
                             } else if (tarea.estado === "Oculta") {
                                 card_compl.innerHTML += `
-                                <div class="card column is-three-fifths is-offset-one-fifth has-background-link-90">
+                                <div id="compl-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-90">
                                     <header class="card-header has-background-link-85">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
-                                    <div class="card-content is-hidden">
+                                    <div id="contenido_tarea_${tarea.id}" class="card-content is-hidden">
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
                                         <div class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer class="card-footer has-background-link-85">
+                                    <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${tarea.id})">Ver</button>
                                     </footer>
                                 </div>`
@@ -120,31 +121,11 @@
                 })
             }
 
-            ocultarTarea = function(id) {
-                let body = {
-                    estado: "Oculta"
+            tareaCompletada = function(id, id_objetivo) {
+                if (!confirm('Se marcará como Completada la tarea ' + id)) {
+                    return false
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                })
-                .then(response => response.json())
-                .then(response => {
-                    actualizarCardOculta(id)
-                })
-            }
-
-            actualizarCardOculta = function(id) {
-                document.getElementById(`contenido_tarea_compl_${id}`).classList.add("is-hidden")
-                let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id})">Ver</button>`
-            }
-
-            desocultarTarea = function(id) {
                 let body = {
                     estado: "Completada"
                 }
@@ -158,14 +139,103 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    actualizarCardVisible(id)
+                    actualizarCardCompletada(id, id_objetivo)
                 })
             }
 
-            actualizarCardVisible = function(id) {
-                document.getElementById(`contenido_tarea_compl_${id}`).classList.remove("is-hidden")
-                let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>`
+            actualizarCardCompletada = function(id, id_objetivo) {
+                document.getElementById(`estado_tarea_${id}`).innerText = 'Estado: Completada'
+                let fondo = document.getElementById(`compl-${id}`)
+                fondo.classList.remove("has-background-link-85")
+                fondo.classList.add("has-background-link-90")
+
+                let header = document.getElementById(`header_tarea_${id}`)
+                header.classList.remove("has-background-link-75")
+                header.classList.add("has-background-link-85")
+
+                let footer = document.getElementById(`footer_tarea_${id}`)
+                footer.classList.remove("has-background-link-75")
+                footer.classList.add("has-background-link-85")
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
+                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id}, ${id_objetivo})">Pendiente</button>
+                `
+            }
+
+            tareaPendiente = function(id, id_objetivo) {
+                if (!confirm('Se marcará como Pendiente la tarea ' + id)) {
+                    return false
+                }
+
+                let body = {
+                    estado: "Pendiente"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    let card = document.getElementById(`compl-${id}`)
+                    card.remove()
+                })
+            }
+
+            ocultarTarea = function(id, id_objetivo) {
+                let body = {
+                    estado: "Oculta"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    actualizarCardOculta(id, id_objetivo)
+                })
+            }
+
+            actualizarCardOculta = function(id, id_objetivo) {
+                document.getElementById(`contenido_tarea_${id}`).classList.add("is-hidden")
+                let footer = document.getElementById(`footer_tarea_${id}`)
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id}, ${id_objetivo})">Ver</button>
+                `
+            }
+
+            desocultarTarea = function(id, id_objetivo) {
+                let body = {
+                    estado: "Completada"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    actualizarCardVisible(id, id_objetivo)
+                })
+            }
+
+            actualizarCardVisible = function(id, id_objetivo) {
+                document.getElementById(`contenido_tarea_${id}`).classList.remove("is-hidden")
+                let footer = document.getElementById(`footer_tarea_${id}`)
+                footer.innerHTML = `
+                <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
+                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id}, ${id_objetivo})">Pendiente</button>
+                `
             }
         </script>
     </body>
