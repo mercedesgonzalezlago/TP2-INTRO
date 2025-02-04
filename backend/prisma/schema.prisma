@@ -14,13 +14,11 @@ model Persona {
   fecha_nacimiento       String
   email                  String
   telefono               String
-  usuario                String
+  usuario                String      @unique
   contrasenia            String
   fecha_creacion_usuario DateTime    @default(now())
   objetivo               Objetivo[]
   categoria              Categoria[]
-
-  @@unique([email, telefono, usuario])
 }
 
 model Categoria {
