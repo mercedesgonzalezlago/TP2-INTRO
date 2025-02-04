@@ -87,7 +87,7 @@
                     inicio_tarea: fecha_inicio,
                     fin_tarea: fecha_fin,
                     estado: estado,
-                    id_objetivo: id_objetivo
+                    id_objetivo: parseInt(id_objetivo)
                 }
 
                 if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
