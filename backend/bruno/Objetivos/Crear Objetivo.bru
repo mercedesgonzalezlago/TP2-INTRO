@@ -1,0 +1,22 @@
+meta {
+  name: Crear Objetivo
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:8000/api/v1/objetivos
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "titulo": "otro ejemplo",
+    "descripcion": "esto es un otro ejemplo",
+    "categoria_id": 2,
+    "fecha_inicio": "2025-02-24",
+    "fecha_fin": "2025-02-25",
+    "usuario_id": 5
+  }
+}

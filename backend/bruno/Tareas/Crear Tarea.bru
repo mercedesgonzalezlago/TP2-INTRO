@@ -1,0 +1,21 @@
+meta {
+  name: Crear Tarea
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:8000/api/v1/tareas
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "otro ejemplo",
+    "descripcion": "esto es otro ejemplo",
+    "inicio_tarea": "2025-02-25",
+    "fin_tarea": "2025-02-28",
+    "id_objetivo": 4
+  }
+}
