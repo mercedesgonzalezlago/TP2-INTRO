@@ -21,9 +21,9 @@ export const obtenerCategoriaPorId = async (req, res) => {
 };
 
 export const crearCategoria = async (req, res) => {
-    const { nombre, color, icono } = req.body;
+    const { nombre, color, icono, usuario_id } = req.body;
     try {
-        const categoria = await Categoria.crearCategoria({nombre, color, icono});
+        const categoria = await Categoria.crearCategoria({nombre, color, icono, usuario_id});
         res.status(201).json(categoria);
     } catch (err) {
         res.status(500).json({ error: 'Error al crear el Objetivo' });
@@ -32,12 +32,12 @@ export const crearCategoria = async (req, res) => {
 
 export const actualizarCategoria = async (req, res) => {
     const { id } = req.params;
-    const { nombre, color, icono } = req.body;
+    const { nombre, color, icono, usuario_id } = req.body;
     
         let categoria = await Categoria.obtenerCategoriaPorId(id);
         if (!categoria) return res.status(404).json({ error: "Categoria no encontrada" });
 
-        categoria = await Categoria.actualizarCategoria(id, {nombre, color, icono});
+        categoria = await Categoria.actualizarCategoria(id, {nombre, color, icono, usuario_id});
         res.status(200).json({ message: 'Categoria actualizada' });
    
 };
