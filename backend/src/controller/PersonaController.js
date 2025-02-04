@@ -21,9 +21,9 @@ export const obtenerPersonaPorId = async (req, res) => {
 };
 
 export const crearPersona = async (req, res) => {
-    const { nombre, email, telefono } = req.body;
+    const { nombre, apellido, fecha_nacimiento, email, telefono, usuario, contrasenia} = req.body;
     try {
-        const persona = await Persona.crearPersona({ nombre, email, telefono });
+        const persona = await Persona.crearPersona({ nombre, apellido, fecha_nacimiento, email, telefono, usuario, contrasenia });
         res.status(201).json(persona);
     } catch (error) {
         res.status(500).json({ error: "Error al crear persona" });
@@ -32,12 +32,12 @@ export const crearPersona = async (req, res) => {
 
 export const actualizarPersona = async (req, res) => {
     const { id } = req.params;
-    const { nombre, email, telefono } = req.body;
+    const { nombre, apellido, fecha_nacimiento, email, telefono, usuario, contrasenia } = req.body;
     try {
         let persona = await Persona.obtenerPersonaPorId(id);
         if (!persona) return res.status(404).json({ error: "Persona no encontrada" });
 
-        persona = await Persona.actualizarPersona(id, { nombre, email, telefono });
+        persona = await Persona.actualizarPersona(id, { nombre, apellido, fecha_nacimiento, email, telefono, usuario, contrasenia });
         res.status(200).json({ message: 'Persona actualizada' });
     } catch (error) {
         res.status(500).json({ error: "Error al actualizar persona" });
