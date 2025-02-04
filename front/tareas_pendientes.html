@@ -62,14 +62,14 @@
 
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
+            const params = new URLSearchParams(window.location.search)
+            const id_objetivo = params.get('id')
+
             window.onload = function() {
-                dividirTareas()
+                dividirTareas(id_objetivo)
             }
 
-            dividirTareas = function() {
-                const params = new URLSearchParams(window.location.search)
-                const id_objetivo = params.get('id')
-
+            dividirTareas = function(id_objetivo) {
                 document.getElementById('todas').href = `tareas.html?id=${id_objetivo}`
                 document.getElementById('completadas').href = `tareas_completadas.html?id=${id_objetivo}`
 
@@ -79,28 +79,104 @@
                     let card_pend = document.getElementById('card_pendientes')
                     card_pend.innerHTML = ''
                     tareas.forEach(tarea => {
+                        const fecha_actual = new Date()
+                        const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+                        const dia_siguente_fin = sumarDias(tarea.fin_tarea, 2)
+                        const nuevo_fin = new Intl.DateTimeFormat('sv-SE').format(dia_siguente_fin)
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
+                            const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
+                            const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
+                                if (nuevo_fin === fecha_completada) {
+                                    card_pend.innerHTML += `
+                                    <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                        <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
+                                            <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
+                                        </header>
+                                        <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
+                                            <div class="content">${tarea.descripcion}.</div>
+                                            <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                            <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                            <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
+                                        </div>
+                                        <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
+                                            <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                            <button id="editar_${tarea.id}" class="card-footer-item has-text-dark" onclick="extenderFechaFin(${tarea.id}, '${fecha_formateda}')">Agregar una semana</button>
+                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        </footer>
+                                    </div>`
+                                } else {
+                                    card_pend.innerHTML += `
+                                    <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                        <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
+                                            <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
+                                        </header>
+                                        <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
+                                            <div class="content">${tarea.descripcion}.</div>
+                                            <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                            <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                            <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
+                                        </div>
+                                        <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
+                                            <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                            <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
+                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        </footer>
+                                    </div>`
+                                }
+                            } else if (tarea.estado === "Pendiente - Actualizada") {
                                 card_pend.innerHTML += `
-                                <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
-                                    <header id="header_tarea" class="card-header has-background-link-75">
+                                <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                    <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
                                         <p class="card-header-title">${tarea.id}: ${tarea.nombre}</p>
                                     </header>
-                                    <div class="card-content">
+                                    <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
-                                        <div class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
-                                        <div id="estado_tarea" class="content">Estado: ${tarea.estado}</div>
+                                        <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                        <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
-                                    <footer id="footer_tarea" class="card-footer has-background-link-75">
+                                    <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                         <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                        <a id="editar" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
+                                        <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
                                         <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
                             }
                         }
                     })
+                })
+            }
+
+            sumarDias = function(fecha, dias) {
+                let fecha_nueva = new Date(fecha)
+                fecha_nueva.setDate(fecha_nueva.getDate() + dias)
+                return fecha_nueva
+            }
+
+            extenderFechaFin = function(id, fecha_nueva) {
+                const params = new URLSearchParams(window.location.search)
+                const id_objetivo = params.get('id')
+                let body = {
+                    fin_tarea: fecha_nueva,
+                    estado: "Pendiente - Actualizada"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    let estado = document.getElementById(`estado_tarea_${id}`)
+                    estado.textContent = 'Estado: Pendiente - Actualizada'
+                    let fecha = document.getElementById(`fecha_fin_${id}`)
+                    fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
+                    let boton = document.getElementById(`editar_${id}`)
+                    boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&id-objetivo=${id_objetivo}">Editar</a>`
                 })
             }
 
