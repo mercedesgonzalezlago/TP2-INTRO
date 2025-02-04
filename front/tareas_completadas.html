@@ -141,7 +141,7 @@
             actualizarCardOculta = function(id) {
                 document.getElementById(`contenido_tarea_compl_${id}`).classList.add("is-hidden")
                 let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-danger" onclick="desocultarTarea(${id})">Ver</button>`
+                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id})">Ver</button>`
             }
 
             desocultarTarea = function(id) {
@@ -165,7 +165,7 @@
             actualizarCardVisible = function(id) {
                 document.getElementById(`contenido_tarea_compl_${id}`).classList.remove("is-hidden")
                 let footer = document.getElementById(`footer_tarea_compl_${id}`)
-                footer.innerHTML = `<button class="card-footer-item has-text-danger" onclick="ocultarTarea(${id})">Ocultar</button>`
+                footer.innerHTML = `<button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>`
             }
         </script>
     </body>
