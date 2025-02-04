@@ -10,11 +10,11 @@ const app = express();
 app.use(bodyParser.json());
 
 // Usar las rutas definidas
-app.use('/persona', personaRoutes);
-app.use('/categoria', categoriaRoutes);
-app.use('/objetivo', objetivosRoutes);
-app.use('/tarea', tareaRoutes)
-const PORT = 3000;
+app.use('/api/v1/personas', personaRoutes);
+app.use('/api/v1/categorias', categoriaRoutes);
+app.use('/api/v1/objetivos', objetivosRoutes);
+app.use('/api/v1/tareas', tareaRoutes)
+const PORT = 8000;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
