@@ -9,7 +9,7 @@
 
     <body>
         <section class="section">
-            <div class="mt-5 container is-fullhd">
+            <!-- <div class="mt-5 container is-fullhd">
                 <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
                 <ul>
                     <li>
@@ -32,19 +32,33 @@
                     </li>
                 </ul>
                 </div>
-            </div>
-        </section>
-
-        <section class="section">
+            </div> -->
+            <nav class="navbar has-background-dark">
+                <a class="button is-dark" href="objetivos.html">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                        <i class="fas fa-lg fa-arrow-left"></i>
+                        </span>
+                        <span class="is-size-4">Objetivos</span>
+                    </span>
+                </a>
+                <div class="navbar-end">
+                    <a class="button is-dark" href="perfil.html">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                            </span>
+                            <span class="is-size-4">Perfil</span>
+                        </span>
+                    </a>
+                </div>
+            </nav>
             <div class="columns is-mobile is-multiline is-centered">
                 <div class="column is-narrow">
                     <h1 class="title is-1 has-text-light">Mis tareas</h1>
                 </div>
             </div>
-        </section>
-
-        <section class="section">
-            <div id="division_tareas" class="tabs is-centered">
+            <div id="division_tareas" class="tabs is-centered pt-3">
                 <ul>
                     <li class="is-active">
                         <a id="todas" href="tareas.html">Todas</a>
@@ -64,7 +78,7 @@
             </div>
             <div id="tareas"></div>
         </section>
-        
+
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
             const params = new URLSearchParams(window.location.search)
@@ -87,12 +101,12 @@
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
-                        
+
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
-                            const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
+                            const nueva_fecha = sumarDias(fecha_actual, 7)
                             const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
-                                if (tarea.fin_tarea === fecha_completada) {
+                                if (tarea.fin_tarea < fecha_completada) {
                                     tareaIncompleta(tarea.id)
                                     card_tareas.innerHTML += `
                                     <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
@@ -108,7 +122,7 @@
                                         <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                             <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                             <button id="editar_${tarea.id}" class="card-footer-item has-text-dark" onclick="extenderFechaFin(${tarea.id}, '${fecha_formateda}')">Agregar una semana</button>
-                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                            <button id="completada_${tarea.id}" class="card-footer-item has-text-dark is-hidden" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                         </footer>
                                     </div>`
                                 } else {
@@ -126,7 +140,7 @@
                                         <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                             <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                             <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
-                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                            <button id="completada_${tarea.id}" class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                         </footer>
                                     </div>`
                                 }
@@ -145,7 +159,7 @@
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                         <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                         <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
-                                        <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        <button id="completada_${tarea.id}" class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
                             } else if (tarea.estado === "Completada") {
@@ -175,7 +189,7 @@
                                         <div class="content">${tarea.descripcion}.</div>
                                         <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
                                         <div id="fecha_fin" class="content">Fecha de finalización: ${fecha_completada}</div>
-                                        <div class="content">Estado: ${tarea.estado}</div>
+                                        <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
                                     </div>
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${tarea.id})">Ver</button>
@@ -235,6 +249,8 @@
                     fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
                     let boton = document.getElementById(`editar_${id}`)
                     boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&id-objetivo=${id_objetivo}">Editar</a>`
+                    let completada = document.getElementById(`completada_${id}`)
+                    completada.classList.remove("is-hidden")
                 })
             }
 
@@ -355,6 +371,8 @@
             }
 
             actualizarCardOculta = function(id, id_objetivo) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Completada'
                 document.getElementById(`contenido_tarea_${id}`).classList.add("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `
@@ -381,6 +399,8 @@
             }
 
             actualizarCardVisible = function(id, id_objetivo) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Completada'
                 document.getElementById(`contenido_tarea_${id}`).classList.remove("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `

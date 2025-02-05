@@ -9,41 +9,31 @@
 
     <body>
         <section class="section">
-            <div class="mt-5 container is-fullhd">
-                <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
-                <ul>
-                    <li>
-                        <a class="has-background-link-85 has-text-link-85-invert" href="inicio.html">
-                            <span class="icon is-small"><i class="fas fa-house"></i></span>
-                            <span>Inicio</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="has-background-link-85 has-text-link-85-invert" href="usuarios.html">
-                            <span class="icon is-small"><i class="fas fa-user"></i></span>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="has-background-link-85 has-text-link-85-invert" href="grupos.html">
-                            <span class="icon is-small"><i class="fas fa-user-group"></i></span>
-                            <span>Grupos</span>
-                        </a>
-                    </li>
-                </ul>
+            <nav class="navbar has-background-dark">
+                <a class="button is-dark" href="objetivos.html">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                        <i class="fas fa-lg fa-arrow-left"></i>
+                        </span>
+                        <span class="is-size-4">Objetivos</span>
+                    </span>
+                </a>
+                <div class="navbar-end">
+                    <a class="button is-dark" href="perfil.html">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                            </span>
+                            <span class="is-size-4">Perfil</span>
+                        </span>
+                    </a>
                 </div>
-            </div>
-        </section>
-
-        <section class="section">
+            </nav>
             <div class="columns is-mobile is-multiline is-centered">
                 <div class="column is-narrow">
                     <h1 class="title is-1 has-text-light">Mis tareas</h1>
                 </div>
             </div>
-        </section>
-
-        <section class="section">
             <div id="division_tareas" class="tabs is-centered">
                 <ul>
                     <li>
@@ -81,13 +71,13 @@
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
-                        const dia_siguente_fin = sumarDias(tarea.fin_tarea, 2)
-                        const nuevo_fin = new Intl.DateTimeFormat('sv-SE').format(dia_siguente_fin)
+                        
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
-                            const nueva_fecha = sumarDias(tarea.fin_tarea, 8)
+                            const nueva_fecha = sumarDias(fecha_actual, 7)
                             const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
                             if (tarea.estado === "Pendiente") {
-                                if (nuevo_fin === fecha_completada) {
+                                if (tarea.fin_tarea < fecha_completada) {
+                                    tareaIncompleta(tarea.id)
                                     card_pend.innerHTML += `
                                     <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                         <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
@@ -102,7 +92,7 @@
                                         <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                             <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                             <button id="editar_${tarea.id}" class="card-footer-item has-text-dark" onclick="extenderFechaFin(${tarea.id}, '${fecha_formateda}')">Agregar una semana</button>
-                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                            <button class="card-footer-item has-text-dark is-hidden" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                         </footer>
                                     </div>`
                                 } else {
@@ -154,6 +144,25 @@
                 return fecha_nueva
             }
 
+            tareaIncompleta = function(id) {
+                let body = {
+                    estado: "Incompleta"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    let estado = document.getElementById(`estado_tarea_${id}`)
+                    estado.textContent = 'Estado: Incompleta'
+                })
+            }
+
             extenderFechaFin = function(id, fecha_nueva) {
                 const params = new URLSearchParams(window.location.search)
                 const id_objetivo = params.get('id')
@@ -177,6 +186,8 @@
                     fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
                     let boton = document.getElementById(`editar_${id}`)
                     boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&id-objetivo=${id_objetivo}">Editar</a>`
+                    let completada = document.getElementById(`completada_${id}`)
+                    completada.classList.remove("is-hidden")
                 })
             }
 
