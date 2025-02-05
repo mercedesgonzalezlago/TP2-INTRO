@@ -102,7 +102,7 @@
         document.getElementById('pagina-perfil').setAttribute("href", `perfil.html?id=${usuarioId}`);
         document.getElementById('pagina-objetivos').setAttribute("href", `objetivos.html?id=${usuarioId}`);
         document.getElementById('pagina-categorias').setAttribute("href", `categorias.html?id=${usuarioId}`);
-        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=categorias.html${usuarioId}&usuario=${usuarioId}`);
+        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=categorias&usuario=${usuarioId}`);
 
         window.onload = function () {
             mostrarCategorias()

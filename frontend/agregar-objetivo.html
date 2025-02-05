@@ -95,7 +95,7 @@
         const usuarioId = parseInt(parametrosUrl.get('id'));
         
         document.getElementById('volver').setAttribute("href", `objetivos.html?id=${usuarioId}`);
-        document.getElementById('crear-categoria').setAttribute("href", `crear_categoria.html?link=agregar_objetivo.html${usuarioId}&usuario=${usuarioId}`)
+        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=agregar&usuario=${usuarioId}`)
 
         window.onload = function () {
             agregarCategorias();

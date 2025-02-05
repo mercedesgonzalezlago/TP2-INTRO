@@ -96,7 +96,7 @@
         const usuarioId = parseInt(parametrosUrl.get('usuario'));
 
         document.getElementById('volver').setAttribute("href", `objetivos.html?id=${usuarioId}`);
-        document.getElementById('crear-categoria').setAttribute("href", `crear_categoria.html?link=editar-objetivo.html${objetivoId}&usuario=${usuarioId}`)
+        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=editar&usuario=${usuarioId}&objetivo=${objetivoId}`);
 
         window.onload = function () {
             agregarCategorias();
@@ -191,7 +191,6 @@
                 categoria_id: parseInt(categoria),
                 fecha_inicio: fechaInicio,
                 fecha_fin: fechaFin,
-                usuario_id: usuarioId
             }
 
 
