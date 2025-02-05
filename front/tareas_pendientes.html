@@ -182,15 +182,19 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    let estado = document.getElementById(`estado_tarea_${id}`)
-                    estado.textContent = 'Estado: Pendiente - Actualizada'
-                    let fecha = document.getElementById(`fecha_fin_${id}`)
-                    fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
-                    let boton = document.getElementById(`editar_${id}`)
-                    boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>`
-                    let completada = document.getElementById(`completada_${id}`)
-                    completada.classList.remove("is-hidden")
+                    actualizarExtensionFecha(id, fecha_nueva)
                 })
+            }
+
+            actualizarExtensionFecha = function(id, fecha_nueva) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Pendiente - Actualizada'
+                let fecha = document.getElementById(`fecha_fin_${id}`)
+                fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
+                let boton = document.getElementById(`editar_${id}`)
+                boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>`
+                let completada = document.getElementById(`completada_${id}`)
+                completada.classList.remove("is-hidden")
             }
 
             tareaCompletada = function(id) {
@@ -209,8 +213,7 @@
                 .then(response => response.json())
                 .then(response => {
                     alert('Tarea completada!')
-                    let card = document.getElementById('pendiente-' + id)
-                    card.remove()
+                    eliminarCard(id)
                 })
             }
 
@@ -223,10 +226,15 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    let card = document.getElementById('pendiente-' + id)
-                    card.remove()
+                    eliminarCard(id)
                 })
             }
+
+            eliminarCard = function(id) {
+                let card = document.getElementById('pendiente-' + id)
+                card.remove()
+            }
+
         </script>
     </body>
 </html>
