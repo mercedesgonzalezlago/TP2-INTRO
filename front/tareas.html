@@ -105,7 +105,7 @@
                                     card_tareas.innerHTML += `
                                     <div id="tarea-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
                                         <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
-                                            <p class="card-header-title${tarea.nombre}</p>
+                                            <p class="card-header-title">${tarea.nombre}</p>
                                         </header>
                                         <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
                                             <div class="content">${tarea.descripcion}.</div>
@@ -135,7 +135,7 @@
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                         <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
                                         <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
-                                        <button id="completada_${tarea.id}" class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        <button id="completada_${tarea.id}" class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id}, ${id_objetivo})">Completada</button>
                                     </footer>
                                 </div>`
                             } else if (tarea.estado === "Completada") {
@@ -273,7 +273,7 @@
 
             eliminarTarea = function(id) {
                 if (!confirm('Se eliminará la tarea ' + id)) {
-                    return false
+                    return
                 }
 
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
@@ -281,10 +281,9 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    let card = document.getElementById('tarea-' + response.id)
+                    let card = document.getElementById('tarea-' + id)
                     card.remove()
                 })
-                return true
             }
 
             tareaPendiente = function(id, id_objetivo) {
