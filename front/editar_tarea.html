@@ -110,13 +110,11 @@
                     return
                 }
 
-                if (new Date(body.inicio_tarea) > new Date(body.fin_tarea)) {
+                const fecha_actual = new Date()
+                const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+                
+                if ((body.inicio_tarea > body.fin_tarea) || (body.fin_tarea < hoy) || (body.inicio_tarea < hoy)) {
                     alert('Fechas inválidas')
-                    return
-                }
-
-                if (new Date(body.fin_tarea) < new Date()) {
-                    alert('La fecha de finalización ya pasó')
                     return
                 }
 
