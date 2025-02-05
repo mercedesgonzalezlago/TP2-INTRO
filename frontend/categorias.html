@@ -33,14 +33,14 @@
         <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
             <ul>
                 <li>
-                    <a class="has-background-link-85 has-text-link-85-invert" href="objetivos.html">
+                    <a id="pagina-objetivos" class="has-background-link-85 has-text-link-85-invert">
                         <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
                         <span>Objetivos</span>
                     </a>
                 </li>
 
                 <li class="is-active">
-                    <a href="categorias.html">
+                    <a id="pagina-categorias">
                         <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
                         <span>Categorias</span>
                     </a>
@@ -59,7 +59,7 @@
         </div>
         <div class="columns is-mobile is-multiline is-centered">
             <div class="column is-narrow">
-                <a class="button has-background-link-85 has-text-link-85-invert is-rounded" href="crear-categoria.html?link=categorias">
+                <a id="crear-categoria" class="button has-background-link-85 has-text-link-85-invert is-rounded">
                     <div class="icon-text">
                         <span class="icon">
                             <i class="fas fa-solid fa-plus"></i>
@@ -96,6 +96,14 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
 
     <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const usuarioId = parseInt(parametrosUrl.get('id'));
+
+        document.getElementById('pagina-perfil').setAttribute("href", `perfil.html?id=${usuarioId}`);
+        document.getElementById('pagina-objetivos').setAttribute("href", `objetivos.html?id=${usuarioId}`);
+        document.getElementById('pagina-categorias').setAttribute("href", `categorias.html?id=${usuarioId}`);
+        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=categorias.html${usuarioId}&usuario=${usuarioId}`);
+
         window.onload = function () {
             mostrarCategorias()
         }
