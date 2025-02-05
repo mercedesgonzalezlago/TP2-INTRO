@@ -2,7 +2,8 @@ import { Persona } from '../model/PersonaModel.js';
 
 export const obtenerPersonas = async (req, res) => {
     try {
-        const personas = await Persona.obtenerPersonas();
+        let personas = await Persona.obtenerPersonas();
+        personas.sort((a, b) => a.id - b.id);
         res.status(200).json(personas);
     } catch (error) {
         res.status(500).json({ error: "Error al obtener personas" });

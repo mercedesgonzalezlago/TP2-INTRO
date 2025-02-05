@@ -2,7 +2,8 @@ import {Objetivo} from "../model/ObjetivosModel.js";
 
 export const obtenerObjetivos = async (req, res) => {
     try {
-        const objetivos = await Objetivo.obtenerObjetivos();
+        let objetivos = await Objetivo.obtenerObjetivos();
+        objetivos.sort((a, b) => a.id - b.id);
         res.status(200).json(objetivos);
     } catch (err) {
         res.status(500).json({ error: 'Error al obtener los Objetivos' });

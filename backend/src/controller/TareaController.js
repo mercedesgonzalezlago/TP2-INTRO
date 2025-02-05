@@ -2,7 +2,8 @@ import {Tarea} from "../model/TareaModel.js";
 
 export const obtenerTarea = async (req, res) => {
     try {
-        const tareas = await Tarea.obtenerTareas();
+        let tareas = await Tarea.obtenerTareas();
+        tareas.sort((a, b) => a.id - b.id);
         res.status(200).json(tareas);
     } catch (err) {
         res.status(500).json({ error: 'Error al obtener las tareas' });

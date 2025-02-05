@@ -2,7 +2,8 @@ import {Categoria} from "../model/CategoriaModel.js";
 
 export const obtenerCategoria = async (req, res) => {
     try {
-        const categorias = await Categoria.obtenerCategorias();
+        let categorias = await Categoria.obtenerCategorias();
+        categorias.sort((a, b) => a.id - b.id);
         res.status(200).json(categorias);
     } catch (err) {
         res.status(500).json({ error: 'Error al obtener las Categoria' });
