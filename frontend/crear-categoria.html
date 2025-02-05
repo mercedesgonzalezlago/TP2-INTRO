@@ -16,6 +16,7 @@
                     <h1 class="title is-2 is-size-2-mobile has-text-link">CREAR CATEGORIA</h1>
                 </div>
             </div>
+
             <div class="card-content py-2">
                 <div class="content">
                     <div class="field">
@@ -162,9 +163,9 @@
                         </div>
 
                         <div class="control">
-                            <button class="button is-danger" onclick="regresar()">
+                            <a id="volver" class="button is-danger">
                                 Volver
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -175,12 +176,27 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
     <script>
         const parametrosUrl = new URLSearchParams(window.location.search);
-        const paginaUrl = parametrosUrl.get('link');
+        const pagina = parametrosUrl.get('link');
+        const usuarioId = parseInt(parametrosUrl.get('usuario'));
 
-        function regresar() {
-            window.location = `${paginaUrl}.html`
+        let paginaAnterior = "";
+        
+        switch (pagina) {
+            case "agregar":
+                paginaAnterior = `agregar-objetivo.html?id=${usuarioId}`;
+                break;
+            case "editar":
+                const objetivoId = parametrosUrl.get('objetivo')
+                paginaAnterior = `editar-objetivo.html?objetivo=${objetivoId}&usuario=${usuarioId}`;
+                break;
+            case "categorias":
+            paginaAnterior = `categorias.html?id=${usuarioId}`;
+                break;
         }
 
+        console.log(paginaAnterior)
+        document.getElementById('volver').setAttribute("href", `${paginaAnterior}`)
+        
         function limpiarFormulario() {
             document.getElementById('nombre').value = "";
             document.querySelectorAll('[name=color]').forEach((element) => element.checked = false);
@@ -222,7 +238,8 @@
             let body = {
                 nombre: nombre,
                 color: color.value,
-                icono: icono.value
+                icono: icono.value,
+                usuario: usuarioId
             }
 
             fetch('http://127.0.0.1:8000/api/v1/categorias', {
@@ -240,7 +257,7 @@
                         alert('Error al crear la categoria');
                     }
                 })
-            window.location = `${url}.html`
+            window.location = `${paginaAnterior}`
         }
     </script>
 </body>
