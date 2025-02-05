@@ -163,7 +163,7 @@
                         </div>
 
                         <div class="control">
-                            <a class="button is-danger" href="categorias.html">
+                            <a id="volver" class="button is-danger">
                                 Volver
                             </a>
                         </div>
@@ -178,7 +178,10 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
     <script>
         const parametrosUrl = new URLSearchParams(window.location.search);
-        const categoriaId = parseInt(parametrosUrl.get('id'));
+        const categoriaId = parseInt(parametrosUrl.get('categoria'));
+        const usuarioId = parseInt(parametrosUrl.get('usuario'));
+
+        document.getElementById('volver').setAttribute("href", `categorias.html?id=${usuarioId}`)
 
         window.onload = function () {
             cargarDatos()
@@ -251,7 +254,7 @@
                         alert('Error al crear la categoria');
                     }
                 })
-            window.location = "categorias.html"
+            window.location = `categorias.html?id=${usuarioId}`
         }
     </script>
 </body>
