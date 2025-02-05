@@ -1,0 +1,19 @@
+meta {
+  name: Crear Categoria
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:8000/api/v1/categorias
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "ejemplo",
+    "color": "primary",
+    "icono": "gift"
+  }
+}

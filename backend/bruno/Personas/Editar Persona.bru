@@ -1,0 +1,21 @@
+meta {
+  name: Editar Persona
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://127.0.0.1:8000/api/v1/personas/:id
+  body: json
+  auth: none
+}
+
+params:path {
+  id: 3
+}
+
+body:json {
+  {
+    "usuario_id": 75
+  }
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Crear Persona
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:8000/api/v1/personas
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "fulanito", 
+    "apellido": "de tal", 
+    "fecha_nacimiento": "2008-10-20" , 
+    "email": "email2@gmail.com", 
+    "telefono": "23123123911", 
+    "usuario": "ejemploUsuario2", 
+    "contrasenia": "asdasdasd"
+  }
+}

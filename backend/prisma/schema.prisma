@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Persona {
+  id                     Int         @id @default(autoincrement())
+  nombre                 String
+  apellido               String
+  fecha_nacimiento       String
+  email                  String
+  telefono               String
+  usuario                String      @unique
+  contrasenia            String
+  fecha_creacion_usuario DateTime    @default(now())
+  objetivo               Objetivo[]
+  categoria              Categoria[]
+}
+
+model Categoria {
+  id         Int        @id @default(autoincrement())
+  nombre     String
+  color      String
+  icono      String
+  usuario    Persona    @relation(fields: [usuario_id], references: [id])
+  usuario_id Int
+  objetivo   Objetivo[]
+}
+
+model Objetivo {
+  id           Int       @id @default(autoincrement())
+  titulo       String
+  descripcion  String
+  categoria    Categoria @relation(fields: [categoria_id], references: [id])
+  categoria_id Int
+  fecha_inicio String
+  fecha_fin    String
+  usuario      Persona   @relation(fields: [usuario_id], references: [id])
+  usuario_id   Int
+  tarea        Tarea[]
+}
+
+model Tarea {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  descripcion  String
+  inicio_tarea String
+  fin_tarea    String
+  estado       String   @default("Pendiente")
+  objetivo     Objetivo @relation(fields: [id_objetivo], references: [id])
+  id_objetivo  Int
+}
