@@ -36,8 +36,9 @@
                             </div>
                             <div class="field is-grouped is-grouped-centered pt-4">
                                 <div class="control">
-                                    <a class="button has-background-link-75" href="crear-categoria2.html">Crear nueva
-                                        categoria</a>
+                                    <a id="crear-categoria" class="button has-background-link-75">
+                                        Crear nueva categoria
+                                    </a>
                                 </div>
 
                             </div>
@@ -76,7 +77,7 @@
                             </div>
 
                             <div class="control">
-                                <a class="button is-danger" href="objetivos.html">
+                                <a id="volver" class="button is-danger" href="objetivos.html">
                                     Volver
                                 </a>
                             </div>
@@ -91,11 +92,14 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
     <script>
         const parametrosUrl = new URLSearchParams(window.location.search);
-        const objetivoId = parseInt(parametrosUrl.get('id'));
+        const objetivoId = parseInt(parametrosUrl.get('objetivo'));
+        const usuarioId = parseInt(parametrosUrl.get('usuario'));
+
+        document.getElementById('volver').setAttribute("href", `objetivos.html?id=${usuarioId}`);
+        document.getElementById('crear-categoria').setAttribute("href", `crear_categoria.html?link=editar-objetivo.html${objetivoId}&usuario=${usuarioId}`)
 
         window.onload = function () {
-            agregarCategorias()
-            cargarDatos()
+            agregarCategorias();
         }
 
         function validarTexto(texto, campo) {
@@ -111,14 +115,17 @@
             fetch(`http://127.0.0.1:8000/api/v1/categorias`)
                 .then(response => response.json())
                 .then(categorias => {
-                    let opciones = document.getElementById("categorias")
+                    let opciones = document.getElementById("categorias");
                     categorias.forEach(categoria => {
-                        let opcion = document.createElement('option');
-                        opcion.id = `opcion-${categoria.id}`;
-                        opcion.value = `${categoria.id}`;
-                        opcion.textContent = `${categoria.nombre}`;
-                        opciones.appendChild(opcion);
+                        if (categoria.usuario_id === usuarioId) {
+                            let opcion = document.createElement('option');
+                            opcion.id = `opcion-${categoria.id}`;
+                            opcion.value = `${categoria.id}`;
+                            opcion.textContent = `${categoria.nombre}`;
+                            opciones.appendChild(opcion);
+                        }
                     });
+                    cargarDatos();
                 });
         }
 
@@ -126,13 +133,12 @@
             fetch(`http://127.0.0.1:8000/api/v1/objetivos/${objetivoId}`)
                 .then(response => response.json())
                 .then(objetivo => {
-                    let titulo = objetivo.titulo
-                    let descripcion = objetivo.descripcion
-                    let fechaInicio = objetivo.fecha_inicio
-                    let fechaFin = objetivo.fecha_fin
-                    let categoria = objetivo.categoria_id
+                    let titulo = objetivo.titulo;
+                    let descripcion = objetivo.descripcion;
+                    let fechaInicio = objetivo.fecha_inicio;
+                    let fechaFin = objetivo.fecha_fin;
+                    let categoria = objetivo.categoria_id;
 
-                    console.log(titulo, descripcion, fechaInicio, fechaFin, categoria)
                     document.getElementById('titulo').value = `${titulo}`;
                     document.getElementById('descripcion').value = `${descripcion}`;
                     document.getElementById('fecha-inicio').value = `${fechaInicio}`;
@@ -143,7 +149,7 @@
         }
 
         function deshacerFormulario() {
-            cargarDatos()
+            cargarDatos();
         }
 
         function editarObjetivo() {
@@ -154,18 +160,28 @@
             const categoria = document.getElementById('categorias').value;
             let datosValidos = true
 
-            datosValidos = validarTexto(titulo, "el titulo")
-            datosValidos = validarTexto(descripcion, "la descripcion")
-            datosValidos = validarTexto(fechaInicio, "la Fecha de inicio")
-            datosValidos = validarTexto(fechaFin, "la Fecha de Fin")
-            datosValidos = validarTexto(categoria, "la categoria")
-    
+            datosValidos = validarTexto(titulo, "el titulo");
+            datosValidos = validarTexto(descripcion, "la descripcion");
+            datosValidos = validarTexto(fechaInicio, "la Fecha de inicio");
+            datosValidos = validarTexto(fechaFin, "la Fecha de Fin");
+            datosValidos = validarTexto(categoria, "la categoria");
+
             if (!datosValidos) {
                 return
             }
 
             if (new Date(fechaInicio) > new Date(fechaFin)) {
-                alert('Fechas inválidas')
+                alert('Fechas inválidas');
+                return
+            }
+
+            if (new Date(fechaInicio) < new Date()) {
+                alert('La fecha de inicio ya pasó');
+                return
+            }
+
+            if (new Date(fechaFin) < new Date()) {
+                alert('La fecha de fin ya pasó');
                 return
             }
 
@@ -175,7 +191,7 @@
                 categoria_id: parseInt(categoria),
                 fecha_inicio: fechaInicio,
                 fecha_fin: fechaFin,
-                usuario_id: 5
+                usuario_id: usuarioId
             }
 
 
@@ -187,13 +203,12 @@
                 body: JSON.stringify(body)
             }).then(response => {
                 if (response.status === 201) {
-                    alert('Objetivo Creado con exito');
-                    limpiarFormulario()
+                    alert('Objetivo EDitado con exito');
                 } else {
-                    alert('Error al crear el objetivo');
+                    alert('Error al editar el objetivo');
                 }
             })
-            window.location = "objetivos.html"
+            window.location = `objetivos.html?id=${usuarioId}`
         }
     </script>
 </body>
