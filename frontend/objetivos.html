@@ -6,19 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Objetivos</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+        #menu {
+            position: sticky !important;
+            top: 0px;
+            z-index: 200;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="section">
+    <section id="menu" class="section has-background-dark pt-0">
+        <nav class="navbar has-background-dark mt-3">
+            <div class="navbar-end">
+                <a class="button is-dark" href="perfil.html">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                        </span>
+                        <span class="is-size-4">Perfil</span>
+                    </span>
+                </a>
+            </div>
+        </nav>
         <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
             <ul>
-                <li>
-                    <a class="has-background-link-85 has-text-link-85-invert" href="inicio.html">
-                        <span class="icon is-small"><i class="fas fa-house"></i></span>
-                        <span>Inicio</span>
-                    </a>
-                </li>
-
                 <li class="is-active">
                     <a href="objetivos.html">
                         <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
@@ -46,8 +58,7 @@
         </div>
         <div class="columns is-mobile is-multiline is-centered">
             <div class="column is-narrow">
-                <a class="button has-background-link-85 has-text-link-85-invert is-rounded"
-                    href="agregar-objetivo.html">
+                <a id="agregar" class="button has-background-link-85 has-text-link-85-invert is-rounded">
                     <div class="icon-text">
                         <span class="icon">
                             <i class="fas fa-solid fa-plus"></i>
@@ -64,13 +75,18 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
 
     <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const usuarioId = parseInt(parametrosUrl.get('id'));
+
+        document.getElementById('agregar').setAttribute("href", `agregar-objetivo.html?id=${usuarioId}`);
+
         window.onload = function () {
             mostrarObjetivos()
         }
 
-        function agregarClase(campo, texto) {
-            for (let i = 0; i < campo.length; i++) {
-                campo[i].classList.add(`${texto}`)
+        function agregarClase(etiqueta, clase) {
+            for (let i = 0; i < etiqueta.length; i++) {
+                etiqueta[i].classList.add(`${clase}`)
             }
         }
 
@@ -85,39 +101,37 @@
                     agregarClase(document.getElementsByClassName(`color-progreso-${id}`), `is-${color}`);
                     agregarClase(document.getElementsByClassName(`icono-${id}`), `fa-${icono}`);
                     agregarClase(document.getElementsByClassName(`color-texto-${id}`), `has-text-${color}`);
+                    agregarClase(document.getElementsByClassName(`color-tareas-${id}`), `has-text-${color}-85`);
                 });
         }
 
         function mostrarProgreso(id) {
-            /*
             fetch(`http://127.0.0.1:8000/api/v1/tareas`)
                 .then(response => response.json())
                 .then(tareas => {
-
+                    let cantTareas = 0;
+                    let cantTareasCompletadas = 0;
                     tareas.forEach(tarea => {
-                        let cantTareas = 0;
-                        let cantTareasCompletadas = 0;
-                        tareas.forEach(tarea => {
-                            if (tarea.id === id) {
-                                cant_tareas++;
-                                if (tarea.estado === "finalizado") {
-                                    cant_tareas_completadas++;
-                                }
+                        if (tarea.id_objetivo == id) {
+                            cantTareas++;
+                            if (tarea.estado === "Oculta" || tarea.estado === "Completada") {
+                                cantTareasCompletadas++;
                             }
-                        document.getElementById(`progreso-${id}`).setAttribute("value", `${cantTareasCompletadas}`)
-                        document.getElementById(`progreso-${id}`).setAttribute("max", ${cantTareas})
-                        });
+                        }
                     });
-
-                    })
-                    */
-
-
-            //datos para probar
-            document.getElementById(`progreso-${id}`).setAttribute("value", 3)
-            document.getElementById(`progreso-${id}`).setAttribute("max", 5)
-
+                    document.getElementById(`progreso-${id}`).setAttribute("value", `${cantTareasCompletadas}`)
+                    document.getElementById(`progreso-${id}`).setAttribute("max", `${cantTareas}`)
+                    document.getElementById(`cant-tareas-${id}`).innerText = `Se completaron ${cantTareasCompletadas} de ${cantTareas} tareas.`
+                })
         }
+
+        // PROBAR
+        function eliminarTarea(id){
+            fetch(`http://127.0.0.1:8000/api/v1/tareas/${id}`, {
+                method: 'DELETE'
+            })
+        }
+        //
 
         function eliminarObjetivo(id, titulo) {
             if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)) {
@@ -132,6 +146,17 @@
                     let objetivo = document.getElementById(`objetivo-${id}`);
                     objetivo.remove();
                 })
+            // PROBAR
+            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+                .then(response => response.json())
+                .then(tareas => {
+                    tareas.forEach(tarea => {
+                        if (tarea.id_objetivo == id) {
+                            eliminarTarea(tarea.id)
+                        }
+                    })
+                })
+            //
         }
 
         function mostrarObjetivos() {
@@ -161,8 +186,11 @@
                                 </header>
     
                                 <div class="card-content">
-                                    <div class="content color-descripcion-${categoria_id}">${descripcion}.</div>
-                                    <progress id="progreso-${id}" class="progress color-progreso-${categoria_id} value="" max=""></progress>
+                                    <div id="descripcion-${id}"class="content color-descripcion-${categoria_id}">${descripcion}.</div>
+                                    <div class="is-flex is-flex-direction-column is-align-items-center">
+                                        <progress id="progreso-${id}" class="progress color-progreso-${categoria_id} value="" max=""></progress>
+                                        <h1 id="cant-tareas-${id}" class="color-tareas-${categoria_id}"><h1>
+                                    </div>
                                 </div>
                                 
                                 <footer class="card-footer">
@@ -174,7 +202,7 @@
                                             <span>Ver Tareas</span>
                                         </div>
                                     </a>
-                                    <a href="editar-objetivo.html?id=${id}" class="card-footer-item color-texto-${categoria_id}">
+                                    <a href="editar-objetivo.html?objetivo=${id}&usuario=${usuarioId}" class="card-footer-item color-texto-${categoria_id}">
                                         <div class="icon-text">
                                             <span class="icon">
                                                 <i class="fa-solid fa-pencil"></i>
@@ -187,7 +215,7 @@
                                             <span class="icon">
                                                 <i class="fa-solid fa-trash"></i>
                                             </span>
-                                            <span id="objetivo-${id}">Eliminar</span>
+                                            <span>Eliminar</span>
                                         </div>
                                     </button>
                                 </footer>
