@@ -56,7 +56,7 @@
             const id_objetivo = params.get('objetivo')
             const id_usuario = params.get('usuario')
 
-            document.getElementById('volver_objetivos').href = `objetivos.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('volver_objetivos').href = `objetivos.html?usuario=${id_usuario}`
             document.getElementById('perfil').href = `perfil.html?usuario=${id_usuario}`
             document.getElementById('todas').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
             document.getElementById('pendientes').href = `tareas_pendientes.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
