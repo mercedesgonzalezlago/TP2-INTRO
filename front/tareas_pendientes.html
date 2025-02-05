@@ -19,7 +19,7 @@
                     </span>
                 </a>
                 <div class="navbar-end">
-                    <a class="button is-dark" href="perfil.html">
+                    <a id="perfil" class="button is-dark" href="#">
                         <span class="icon-text">
                             <span class="icon is-large">
                             <i class="fas fa-lg fa-user"></i>
@@ -57,6 +57,7 @@
             const id_usuario = params.get('usuario')
 
             document.getElementById('volver_objetivos').href = `objetivos.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('perfil').href = `perfil.html?usuario=${id_usuario}`
             document.getElementById('completadas').href = `tareas_completadas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
             document.getElementById('todas').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
 
