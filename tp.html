@@ -10,7 +10,7 @@
         <section class="section">
             <div class="columns is-mobile is-multiline is-centered">
                 <div class="column is-narrow">
-                    <h1 class="title is-1 has-text-light">Bienvenido a la pagina de metas personales</h1>
+                    <h1 class="title is-1 has-text-light">Bienvenido a la página de metas personales</h1>
                 </div>
             </div>
         </section>
@@ -74,28 +74,37 @@
             document.getElementById("user-form").addEventListener("submit", async function (event) {
                 event.preventDefault();
 
-                const data = {
-                    username: document.getElementById("username").value,
-                    password: document.getElementById("password").value,
-                };
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+
+                let endpoint;
+                let options = {};
 
                 if (currentAction === "register") {
-                    data.nombre = document.getElementById("nombre").value;
-                    data.apellido = document.getElementById("apellido").value;
-                    data.fecha_nacimiento = document.getElementById("fecha_nacimiento").value;
-                    data.mail = document.getElementById("mail").value;
-                    data.telefono = document.getElementById("telefono").value;
-                }
-
-                const endpoint = currentAction === "register" ? "http://localhost:3000/register" : "http://localhost:3000/login";
-
-                try {
-                    const response = await fetch(endpoint, {
+                    endpoint = "http://localhost:3000/api/v1/personas/register";
+                    options = {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(data)
-                    });
-                    
+                        body: JSON.stringify({
+                            nombre: document.getElementById("nombre").value,
+                            apellido: document.getElementById("apellido").value,
+                            fecha_nacimiento: document.getElementById("fecha_nacimiento").value,
+                            email: document.getElementById("mail").value,
+                            telefono: document.getElementById("telefono").value,
+                            usuario: username,
+                            contrasenia: password
+                        })
+                    };
+                } else {
+                    endpoint = `http://localhost:3000/api/v1/personas/login?usuario=${encodeURIComponent(username)}&contrasenia=${encodeURIComponent(password)}`;
+                    options = {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" }
+                    };
+                }
+
+                try {
+                    const response = await fetch(endpoint, options);
                     const result = await response.json();
                     alert(result.message || result.error);
                     if (response.ok) cerrarFormulario();
