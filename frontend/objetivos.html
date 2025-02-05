@@ -19,7 +19,7 @@
     <section id="menu" class="section has-background-dark pt-0">
         <nav class="navbar has-background-dark mt-3">
             <div class="navbar-end">
-                <a class="button is-dark" href="perfil.html">
+                <a id="pagina-perfil" class="button is-dark">
                     <span class="icon-text">
                         <span class="icon is-large">
                             <i class="fas fa-lg fa-user"></i>
@@ -32,14 +32,14 @@
         <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
             <ul>
                 <li class="is-active">
-                    <a href="objetivos.html">
+                    <a id="pagina-objetivos">
                         <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
                         <span>Objetivos</span>
                     </a>
                 </li>
 
                 <li>
-                    <a class="has-background-link-85 has-text-link-85-invert" href="categorias.html">
+                    <a id="pagina-categorias" class="has-background-link-85 has-text-link-85-invert">
                         <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
                         <span>Categorias</span>
                     </a>
@@ -78,6 +78,9 @@
         const parametrosUrl = new URLSearchParams(window.location.search);
         const usuarioId = parseInt(parametrosUrl.get('id'));
 
+        document.getElementById('pagina-perfil').setAttribute("href", `perfil.html?id=${usuarioId}`);
+        document.getElementById('pagina-objetivos').setAttribute("href", `objetivos.html?id=${usuarioId}`);
+        document.getElementById('pagina-categorias').setAttribute("href", `categorias.html?id=${usuarioId}`);
         document.getElementById('agregar').setAttribute("href", `agregar-objetivo.html?id=${usuarioId}`);
 
         window.onload = function () {
