@@ -10,7 +10,7 @@
     <body>
         <section class="section">
             <nav class="navbar has-background-dark">
-                <a class="button is-dark" href="objetivos.html">
+                <a id="volver_objetivos" class="button is-dark" href="#">
                     <span class="icon-text">
                         <span class="icon is-large">
                         <i class="fas fa-lg fa-arrow-left"></i>
@@ -53,16 +53,18 @@
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
             const params = new URLSearchParams(window.location.search)
-            const id_objetivo = params.get('id')
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
+
+            document.getElementById('volver_objetivos').href = `objetivos.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('completadas').href = `tareas_completadas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('todas').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
 
             window.onload = function() {
-                dividirTareas(id_objetivo)
+                dividirTareas()
             }
 
-            dividirTareas = function(id_objetivo) {
-                document.getElementById('todas').href = `tareas.html?id=${id_objetivo}`
-                document.getElementById('completadas').href = `tareas_completadas.html?id=${id_objetivo}`
-
+            dividirTareas = function() {
                 fetch('http://127.0.0.1:3000/api/v1/tareas')
                 .then(response => response.json())
                 .then(tareas => {
@@ -75,6 +77,7 @@
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             const nueva_fecha = sumarDias(fecha_actual, 7)
                             const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
+
                             if (tarea.estado === "Pendiente") {
                                 if (tarea.fin_tarea < fecha_completada) {
                                     tareaIncompleta(tarea.id)
@@ -109,7 +112,7 @@
                                         </div>
                                         <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                             <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                            <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
+                                            <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>
                                             <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                         </footer>
                                     </div>`
@@ -128,7 +131,7 @@
                                     </div>
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
                                         <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                                        <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&id-objetivo=${id_objetivo}">Editar</a>
+                                        <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>
                                         <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
                                     </footer>
                                 </div>`
@@ -164,8 +167,6 @@
             }
 
             extenderFechaFin = function(id, fecha_nueva) {
-                const params = new URLSearchParams(window.location.search)
-                const id_objetivo = params.get('id')
                 let body = {
                     fin_tarea: fecha_nueva,
                     estado: "Pendiente - Actualizada"
@@ -185,7 +186,7 @@
                     let fecha = document.getElementById(`fecha_fin_${id}`)
                     fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
                     let boton = document.getElementById(`editar_${id}`)
-                    boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&id-objetivo=${id_objetivo}">Editar</a>`
+                    boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>`
                     let completada = document.getElementById(`completada_${id}`)
                     completada.classList.remove("is-hidden")
                 })
@@ -214,7 +215,7 @@
 
             eliminarTarea = function(id) {
                 if (!confirm('Se eliminará la tarea ' + id)) {
-                    return false
+                    return
                 }
                 fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
                     method: 'DELETE'
@@ -224,7 +225,6 @@
                     let card = document.getElementById('pendiente-' + id)
                     card.remove()
                 })
-                return true
             }
         </script>
     </body>

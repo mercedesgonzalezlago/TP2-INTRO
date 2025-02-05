@@ -67,14 +67,13 @@
     <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
             const params = new URLSearchParams(window.location.search)
-            const id_objetivo = params.get('id')
-            document.getElementById('volver').href = `tareas.html?id=${id_objetivo}`
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
+
+            document.getElementById('volver').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
             
             function agregarTarea() {
                 event.preventDefault()
-                const params = new URLSearchParams(window.location.search)
-                const id_objetivo = params.get('id')
-
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
@@ -114,7 +113,7 @@
                     if (response.status === 201) {
                         alert('Tarea agregada con éxito')
                         limpiarFormulario()
-                        window.location.href = `tareas.html?id=${id_objetivo}`
+                        window.location.href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
                         return
                     } else {
                         alert('Error al agregar la tarea')

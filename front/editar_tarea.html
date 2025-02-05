@@ -68,15 +68,16 @@
         <script>
             const params = new URLSearchParams(window.location.search)
             const id = params.get('id')
-            const id_objetivo = params.get('id-objetivo')
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
 
-            document.getElementById('volver').href = `tareas.html?id=${id_objetivo}`
+            document.getElementById('volver').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
 
             document.addEventListener('DOMContentLoaded', function() {
-                cargarDatosActuales(id)
+                cargarDatosActuales()
             })
 
-            function cargarDatosActuales(id) {
+            function cargarDatosActuales() {
                 fetch('http://localhost:3000/api/v1/tareas/' + id)
                 .then(response => response.json())
                 .then(tarea => {
@@ -89,10 +90,6 @@
 
             function editarTarea() {
                 event.preventDefault()
-                const params = new URLSearchParams(window.location.search)
-                const id = params.get('id')
-                const id_objetivo = params.get('id-objetivo')
-
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
                 const fecha_inicio = document.getElementById('fecha_inicio').value
@@ -129,7 +126,7 @@
                     if (response.status === 200) {
                         alert('Tarea editada con éxito')
                         limpiarFormulario()
-                        window.location.href = `tareas.html?id=${id_objetivo}`
+                        window.location.href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
                         return
                     } else {
                         alert('Error al editar la tarea')

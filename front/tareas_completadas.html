@@ -10,7 +10,7 @@
     <body>
         <section class="section">
             <nav class="navbar has-background-dark">
-                <a class="button is-dark" href="objetivos.html">
+                <a id="volver_objetivos" class="button is-dark" href="#">
                     <span class="icon-text">
                         <span class="icon is-large">
                         <i class="fas fa-lg fa-arrow-left"></i>
@@ -52,17 +52,19 @@
 
         <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
         <script>
+            const params = new URLSearchParams(window.location.search)
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
+
+            document.getElementById('volver_objetivos').href = `objetivos.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('todas').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('pendientes').href = `tareas_pendientes.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+
             window.onload = function() {
                 dividirTareas()
             }
 
             dividirTareas = function() {
-                const params = new URLSearchParams(window.location.search)
-                const id_objetivo = params.get('id')
-
-                document.getElementById('todas').href = `tareas.html?id=${id_objetivo}`
-                document.getElementById('pendientes').href = `tareas_pendientes.html?id=${id_objetivo}`
-
                 fetch('http://127.0.0.1:3000/api/v1/tareas')
                 .then(response => response.json())
                 .then(tareas => {
@@ -71,6 +73,7 @@
                     tareas.forEach(tarea => {
                         const fecha_actual = new Date()
                         const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+
                         if (tarea.id_objetivo === parseInt(id_objetivo)) {
                             if (tarea.estado === "Completada") {
                                 card_compl.innerHTML += `
@@ -86,7 +89,7 @@
                                     </div>
                                     <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-85">
                                         <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${tarea.id})">Ocultar</button>
-                                        <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${tarea.id}, ${id_objetivo})">Pendiente</button>
+                                        <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${tarea.id})">Pendiente</button>
                                     </footer>
                                 </div>`
                             } else if (tarea.estado === "Oculta") {
@@ -111,7 +114,7 @@
                 })
             }
 
-            tareaCompletada = function(id, id_objetivo) {
+            tareaCompletada = function(id) {
                 if (!confirm('Se marcará como Completada la tarea ' + id)) {
                     return false
                 }
@@ -129,11 +132,11 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    actualizarCardCompletada(id, id_objetivo)
+                    actualizarCardCompletada(id)
                 })
             }
 
-            actualizarCardCompletada = function(id, id_objetivo) {
+            actualizarCardCompletada = function(id) {
                 document.getElementById(`estado_tarea_${id}`).innerText = 'Estado: Completada'
                 let fondo = document.getElementById(`compl-${id}`)
                 fondo.classList.remove("has-background-link-85")
@@ -148,11 +151,11 @@
                 footer.classList.add("has-background-link-85")
                 footer.innerHTML = `
                 <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
-                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id}, ${id_objetivo})">Pendiente</button>
+                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id})">Pendiente</button>
                 `
             }
 
-            tareaPendiente = function(id, id_objetivo) {
+            tareaPendiente = function(id) {
                 if (!confirm('Se marcará como Pendiente la tarea ' + id)) {
                     return false
                 }
@@ -175,7 +178,7 @@
                 })
             }
 
-            ocultarTarea = function(id, id_objetivo) {
+            ocultarTarea = function(id) {
                 let body = {
                     estado: "Oculta"
                 }
@@ -189,19 +192,19 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    actualizarCardOculta(id, id_objetivo)
+                    actualizarCardOculta(id)
                 })
             }
 
-            actualizarCardOculta = function(id, id_objetivo) {
+            actualizarCardOculta = function(id) {
                 document.getElementById(`contenido_tarea_${id}`).classList.add("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `
-                <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id}, ${id_objetivo})">Ver</button>
+                <button class="card-footer-item has-text-dark" onclick="desocultarTarea(${id})">Ver</button>
                 `
             }
 
-            desocultarTarea = function(id, id_objetivo) {
+            desocultarTarea = function(id) {
                 let body = {
                     estado: "Completada"
                 }
@@ -215,16 +218,16 @@
                 })
                 .then(response => response.json())
                 .then(response => {
-                    actualizarCardVisible(id, id_objetivo)
+                    actualizarCardVisible(id)
                 })
             }
 
-            actualizarCardVisible = function(id, id_objetivo) {
+            actualizarCardVisible = function(id) {
                 document.getElementById(`contenido_tarea_${id}`).classList.remove("is-hidden")
                 let footer = document.getElementById(`footer_tarea_${id}`)
                 footer.innerHTML = `
                 <button class="card-footer-item has-text-dark" onclick="ocultarTarea(${id})">Ocultar</button>
-                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id}, ${id_objetivo})">Pendiente</button>
+                <button class="card-footer-item has-text-dark" onclick="tareaPendiente(${id})">Pendiente</button>
                 `
             }
         </script>
