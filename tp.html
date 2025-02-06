@@ -59,24 +59,24 @@
 
         <script>
             let currentAction = "";
-
+        
             function mostrarFormulario(action) {
                 currentAction = action;
                 document.getElementById("modal-title").textContent = action === "register" ? "Registrarse" : "Iniciar Sesión";
                 document.getElementById("extra-fields").style.display = action === "register" ? "block" : "none";
                 document.getElementById("modal-form").classList.add("is-active");
             }
-
+        
             function cerrarFormulario() {
                 document.getElementById("modal-form").classList.remove("is-active");
             }
-
+        
             document.getElementById("user-form").addEventListener("submit", async function (event) {
                 event.preventDefault();
-
+        
                 const username = document.getElementById("username").value;
                 const password = document.getElementById("password").value;
-
+        
                 if (currentAction === "register") {
                     let body = {
                         nombre: document.getElementById("nombre").value,
@@ -87,31 +87,53 @@
                         usuario: username,
                         contrasenia: password
                     };
-
-                    console.log("Datos a enviar:", body); 
-
-                    const response = await fetch("http://localhost:3000/api/v1/personas", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(body)
-                    });
-
-                    const result = await response.json();
-                    alert(result.message || result.error);
-                    if (response.ok) cerrarFormulario();
+        
+                    try {
+                        const checkResponse = await fetch(`http://localhost:3000/api/v1/personas/login`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ usuario: username, contrasenia: password })
+                        });
+        
+                        if (checkResponse.ok) {
+                            alert("El usuario ya está registrado. Intenta con otro nombre de usuario.");
+                            return;
+                        }
+        
+                        const response = await fetch("http://localhost:3000/api/v1/personas/register", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body)
+                        });
+        
+                        const result = await response.json();
+        
+                        if (response.ok) {
+                            alert("Usuario registrado correctamente.");
+                            cerrarFormulario();
+                        } else {
+                            alert(result.error || "Error al registrar el usuario.");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor.");
+                    }
+        
                 } else {
                     try {
-                        const response = await fetch("http://localhost:3000/api/v1/personas");
-                        if (!response.ok) throw new Error("Error al obtener los datos");
-                        
-                        const personas = await response.json();
-                        let usuarioEncontrado = personas.find(persona => persona.usuario === username && persona.contrasenia === password);
-                        
-                        if (usuarioEncontrado) {
+                        const response = await fetch("http://localhost:3000/api/v1/personas/login", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ usuario: username, contrasenia: password })
+                        });
+        
+                        const result = await response.json();
+        
+                        if (response.ok) {
                             alert("Inicio de sesión exitoso");
-                            window.location.href = `objetivos.html?id=${usuarioEncontrado.id}`;
+                            window.location.href = `objetivos.html?id=${result.persona.id}`;
                         } else {
-                            alert("Usuario o contraseña incorrectos");
+                            alert(result.error || "Usuario o contraseña incorrectos");
                         }
                     } catch (error) {
                         console.error("Error:", error);
@@ -120,5 +142,6 @@
                 }
             });
         </script>
+        
     </body>
 </html>
