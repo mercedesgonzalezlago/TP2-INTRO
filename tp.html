@@ -77,12 +77,8 @@
                 const username = document.getElementById("username").value;
                 const password = document.getElementById("password").value;
 
-                let endpoint;
-                let options = {};
-
                 if (currentAction === "register") {
-                    endpoint = "http://localhost:3000/api/v1/personas/register";
-                    options = {
+                    const response = await fetch("http://localhost:3000/api/v1/personas/register", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
@@ -94,23 +90,28 @@
                             usuario: username,
                             contrasenia: password
                         })
-                    };
-                } else {
-                    endpoint = `http://localhost:3000/api/v1/personas/login?usuario=${encodeURIComponent(username)}&contrasenia=${encodeURIComponent(password)}`;
-                    options = {
-                        method: "GET",
-                        headers: { "Content-Type": "application/json" }
-                    };
-                }
-
-                try {
-                    const response = await fetch(endpoint, options);
+                    });
                     const result = await response.json();
                     alert(result.message || result.error);
                     if (response.ok) cerrarFormulario();
-                } catch (error) {
-                    console.error("Error en la conexión:", error);
-                    alert("No se pudo conectar al servidor.");
+                } else {
+                    try {
+                        const response = await fetch("http://localhost:3000/api/v1/personas");
+                        if (!response.ok) throw new Error("Error al obtener los datos");
+                        
+                        const personas = await response.json();
+                        let usuarioEncontrado = personas.find(persona => persona.usuario === username && persona.contrasenia === password);
+                        
+                        if (usuarioEncontrado) {
+                            alert("Inicio de sesión exitoso");
+                            window.location.href = `objetivos.html?id=${usuarioEncontrado.id}`;
+                        } else {
+                            alert("Usuario o contraseña incorrectos");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor.");
+                    }
                 }
             });
         </script>
