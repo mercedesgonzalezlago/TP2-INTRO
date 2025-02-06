@@ -34,11 +34,11 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <label class="label has-text-link">Fecha de inicio (*)</label>
+                                <label id="inicio_nombre" class="label has-text-link"></label>
                                 <input id="fecha_inicio" class="input has-background-link-75" type="date">
                             </div>
                             <div class="mt-2 control">
-                                <label class="label has-text-link">Fecha de finalización (*)</label>
+                                <label id="fin_nombre" class="label has-text-link"></label>
                                 <input id="fecha_fin" class="input has-background-link-75" type="date">
                             </div>
                         </div>
@@ -72,6 +72,19 @@
 
             document.getElementById('volver').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
             
+            document.addEventListener('DOMContentLoaded', function() {
+                obtenerFechasObjetivo()
+            })
+
+            obtenerFechasObjetivo = function() {
+                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
+                .then(response => response.json())
+                .then(objetivo => {
+                    document.getElementById('inicio_nombre').textContent = `Fecha de inicio (posterior a ${objetivo.fecha_inicio}) (*)`
+                    document.getElementById('fin_nombre').textContent = `Fecha de finalización (anterior a ${objetivo.fecha_fin}) (*)`
+                })
+            }
+
             function agregarTarea() {
                 event.preventDefault()
                 const nombre = document.getElementById('nombre').value
@@ -96,6 +109,15 @@
 
                 const fecha_actual = new Date()
                 const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+
+                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
+                .then(response => response.json())
+                .then(objetivo => {
+                    if ((body.inicio_tarea < objetivo.fecha_inicio) || (body.fin_tarea > objetivo.fecha_fin)) {
+                        alert('Las fechas están ppr fuera del rango de tiempo del objetivo')
+                        return
+                    }
+                })
 
                 if ((body.inicio_tarea > body.fin_tarea) || (body.fin_tarea < hoy) || (body.inicio_tarea < hoy)) {
                     alert('Fechas inválidas')

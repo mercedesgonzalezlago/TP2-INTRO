@@ -34,11 +34,11 @@
                         </div>
                         <div class="field">
                             <div class="control">
-                                <label class="label has-text-link">Fecha de inicio</label>
+                                <label id="inicio_nombre" class="label has-text-link"></label>
                                 <input id="fecha_inicio" class="input has-background-link-75" type="date">
                             </div>
                             <div class="control">
-                                <label class="label has-text-link">Fecha de finalización</label>
+                                <label id="fin_nombre" class="mt-2 label has-text-link"></label>
                                 <input id="fecha_fin" class="input has-background-link-75" type="date">
                             </div>
                         </div>
@@ -75,6 +75,7 @@
 
             document.addEventListener('DOMContentLoaded', function() {
                 cargarDatosActuales()
+                obtenerFechasObjetivo()
             })
 
             function cargarDatosActuales() {
@@ -88,12 +89,21 @@
                 })
             }
 
+            obtenerFechasObjetivo = function() {
+                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
+                .then(response => response.json())
+                .then(objetivo => {
+                    document.getElementById('inicio_nombre').textContent = `Fecha de inicio (posterior a ${objetivo.fecha_inicio})`
+                    document.getElementById('fin_nombre').textContent = `Fecha de finalización (anterior a ${objetivo.fecha_fin})`
+                })
+            }
+
             function editarTarea() {
                 event.preventDefault()
                 const nombre = document.getElementById('nombre').value
                 const descripcion = document.getElementById('descripcion').value
-                const fecha_inicio = document.getElementById('fecha_inicio').value
-                const fecha_fin = document.getElementById('fecha_fin').value
+                let fecha_inicio = document.getElementById('fecha_inicio').value
+                let fecha_fin = document.getElementById('fecha_fin').value
 
                 let body = {
                     nombre: nombre,
@@ -109,12 +119,12 @@
 
                 const fecha_actual = new Date()
                 const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
-                
+
                 if ((body.inicio_tarea > body.fin_tarea) || (body.fin_tarea < hoy) || (body.inicio_tarea < hoy)) {
                     alert('Fechas inválidas')
                     return
                 }
-
+                
                 fetch('http://localhost:3000/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
@@ -125,14 +135,12 @@
                 .then(response => {
                     if (response.status === 200) {
                         alert('Tarea editada con éxito')
-                        limpiarFormulario()
                         window.location.href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
-                        return
                     } else {
                         alert('Error al editar la tarea')
-                        return
                     }
                 })
+
             }
 
             function limpiarFormulario() {
