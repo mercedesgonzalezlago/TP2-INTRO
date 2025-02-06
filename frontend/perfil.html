@@ -66,9 +66,9 @@
                             </button>
                         </div>
                         <div class="control">
-                            <a class="button is-warning" href="login.html">
+                            <button class="button is-warning" onclick="cerrarSesion()">
                                 Cerrar Sesión
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -107,6 +107,13 @@
             }
         });
 
+        function cerrarSesion() {
+            if (!confirm('¿Seguro que quieres cerrar sesion?')) {
+                    return
+            }
+            window.location = login.html;
+        }
+        
         async function eliminarCuenta() {
             try {
                 const response = await fetch(`https://tp2-intro-1.onrender.com/api/v1/personas/${personaId}`, {
