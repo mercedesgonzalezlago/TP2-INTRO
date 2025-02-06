@@ -90,7 +90,7 @@
 
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`);
+                const response = await fetch(`https://tp2-intro-1.onrender.com/api/v1/personas/${personaId}`);
                 if (!response.ok) throw new Error("Error al obtener los datos del perfil");
 
                 const datos = await response.json();
@@ -109,7 +109,7 @@
 
         async function eliminarCuenta() {
             try {
-                const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`, {
+                const response = await fetch(`https://tp2-intro-1.onrender.com/api/v1/personas/${personaId}`, {
                     method: "DELETE",
                     headers: {
                         "Content-Type": "application/json"

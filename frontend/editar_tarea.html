@@ -79,7 +79,7 @@
             })
 
             function cargarDatosActuales() {
-                fetch('http://localhost:3000/api/v1/tareas/' + id)
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id)
                 .then(response => response.json())
                 .then(tarea => {
                     document.getElementById('nombre').value = tarea.nombre
@@ -90,7 +90,7 @@
             }
 
             obtenerFechasObjetivo = function() {
-                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
+                fetch('https://tp2-intro-1.onrender.com/api/v1/objetivos/' + id_objetivo)
                 .then(response => response.json())
                 .then(objetivo => {
                     document.getElementById('inicio_nombre').textContent = `Fecha de inicio (posterior a ${objetivo.fecha_inicio})`
@@ -125,7 +125,7 @@
                     return
                 }
                 
-                fetch('http://localhost:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'

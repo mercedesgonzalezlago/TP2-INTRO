@@ -91,7 +91,7 @@
         }
 
         function mostrarCategoria(id) {
-            fetch(`http://127.0.0.1:3000/api/v1/categorias/${id}`)
+            fetch(`https://tp2-intro-1.onrender.com/api/v1/categorias/${id}`)
                 .then(response => response.json())
                 .then(categoria => {
                     color = categoria.color;
@@ -106,7 +106,7 @@
         }
 
         function mostrarProgreso(id) {
-            fetch(`http://127.0.0.1:3000/api/v1/tareas`)
+            fetch(`https://tp2-intro-1.onrender.com/api/v1/tareas`)
                 .then(response => response.json())
                 .then(tareas => {
                     let cantTareas = 0;
@@ -130,7 +130,7 @@
                 return
             };
 
-            fetch('http://127.0.0.1:3000/api/v1/objetivos/' + id, {
+            fetch('https://tp2-intro-1.onrender.com/api/v1/objetivos/' + id, {
                 method: 'DELETE'
             })
             .then(response => response.json())
@@ -141,7 +141,7 @@
         }
 
         function mostrarObjetivos() {
-            fetch('http://127.0.0.1:3000/api/v1/objetivos')
+            fetch('https://tp2-intro-1.onrender.com/api/v1/objetivos')
                 .then(response => response.json())
                 .then(objetivos => {
                     const tarjetas_objetivos = document.getElementById('objetivos');

@@ -112,7 +112,7 @@
         }
 
         function agregarCategorias() {
-            fetch(`http://127.0.0.1:3000/api/v1/categorias`)
+            fetch(`https://tp2-intro-1.onrender.com/api/v1/categorias`)
                 .then(response => response.json())
                 .then(categorias => {
                     let opciones = document.getElementById("categorias");
@@ -130,7 +130,7 @@
         }
 
         function cargarDatos() {
-            fetch(`http://127.0.0.1:3000/api/v1/objetivos/${objetivoId}`)
+            fetch(`https://tp2-intro-1.onrender.com/api/v1/objetivos/${objetivoId}`)
                 .then(response => response.json())
                 .then(objetivo => {
                     let titulo = objetivo.titulo;
@@ -195,7 +195,7 @@
             }
 
 
-            fetch(`http://127.0.0.1:3000/api/v1/objetivos/${objetivoId}`, {
+            fetch(`https://tp2-intro-1.onrender.com/api/v1/objetivos/${objetivoId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

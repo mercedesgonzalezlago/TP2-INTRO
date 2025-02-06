@@ -72,7 +72,7 @@
             }
 
             mostrarTareas = function() {
-                fetch('http://127.0.0.1:3000/api/v1/tareas')
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas')
                 .then(response => response.json())
                 .then(tareas => {
                     let card_tareas = document.getElementById('tareas')
@@ -192,7 +192,7 @@
                     estado: "Incompleta"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -212,7 +212,7 @@
                     estado: "Pendiente - Actualizada"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -245,7 +245,7 @@
                     estado: "Completada"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -282,7 +282,7 @@
                     return
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'DELETE'
                 })
                 .then(response => response.json())
@@ -301,7 +301,7 @@
                     estado: "Pendiente"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -338,7 +338,7 @@
                     estado: "Oculta"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -366,7 +366,7 @@
                     estado: "Completada"
                 }
 
-                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                fetch('https://tp2-intro-1.onrender.com/api/v1/tareas/' + id, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
