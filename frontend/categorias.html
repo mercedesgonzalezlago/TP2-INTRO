@@ -109,7 +109,7 @@
         }
 
         function eliminarCategoria(id) {
-            fetch(`http://127.0.0.1:8000/api/v1/categorias/${id}`, {
+            fetch(`http://127.0.0.1:3000/api/v1/categorias/${id}`, {
                 method: 'DELETE'
             })
                 .then(response => response.json())
@@ -120,7 +120,7 @@
         }
 
         function verificarEliminacion(id, nombre) {
-            fetch(`http://127.0.0.1:8000/api/v1/objetivos`)
+            fetch(`http://127.0.0.1:3000/api/v1/objetivos`)
                 .then(response => response.json())
                 .then(objetivos => {
 
@@ -139,7 +139,7 @@
         }
 
         function mostrarCategorias() {
-            fetch(`http://127.0.0.1:8000/api/v1/categorias`)
+            fetch(`http://127.0.0.1:3000/api/v1/categorias`)
                 .then(response => response.json())
                 .then(categorias => {
 

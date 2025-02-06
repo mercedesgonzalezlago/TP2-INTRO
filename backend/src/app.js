@@ -17,7 +17,7 @@ app.use('/api/v1/categorias', categoriaRoutes);
 app.use('/api/v1/objetivos', objetivosRoutes);
 app.use('/api/v1/tareas', tareaRoutes)
 
-const PORT = 8000;
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });

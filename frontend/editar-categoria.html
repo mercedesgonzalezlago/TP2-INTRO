@@ -188,7 +188,7 @@
         }
 
         function cargarDatos() {
-            fetch(`http://127.0.0.1:8000/api/v1/categorias/${categoriaId}`)
+            fetch(`http://127.0.0.1:3000/api/v1/categorias/${categoriaId}`)
                 .then(response => response.json())
                 .then(categoria => {
                     let nombre = categoria.nombre;
@@ -239,7 +239,7 @@
                 icono: icono.value
             }
 
-            fetch(`http://127.0.0.1:8000/api/v1/categorias/${categoriaId}`, {
+            fetch(`http://127.0.0.1:3000/api/v1/categorias/${categoriaId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

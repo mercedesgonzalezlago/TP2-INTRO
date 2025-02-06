@@ -111,7 +111,7 @@
         }
 
         function agregarCategorias() {
-            fetch(`http://127.0.0.1:8000/api/v1/categorias`)
+            fetch(`http://127.0.0.1:3000/api/v1/categorias`)
                 .then(response => response.json())
                 .then(categorias => {
                     let opciones = document.getElementById("categorias");
@@ -178,7 +178,7 @@
                 usuario_id: usuarioId
             }
 
-            fetch('http://127.0.0.1:8000/api/v1/objetivos', {
+            fetch('http://127.0.0.1:3000/api/v1/objetivos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

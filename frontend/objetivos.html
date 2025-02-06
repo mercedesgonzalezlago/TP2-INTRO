@@ -91,7 +91,7 @@
         }
 
         function mostrarCategoria(id) {
-            fetch(`http://127.0.0.1:8000/api/v1/categorias/${id}`)
+            fetch(`http://127.0.0.1:3000/api/v1/categorias/${id}`)
                 .then(response => response.json())
                 .then(categoria => {
                     color = categoria.color;
@@ -106,7 +106,7 @@
         }
 
         function mostrarProgreso(id) {
-            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+            fetch(`http://127.0.0.1:3000/api/v1/tareas`)
                 .then(response => response.json())
                 .then(tareas => {
                     let cantTareas = 0;
@@ -127,7 +127,7 @@
 
 
         function eliminarTarea(id) {
-            fetch(`http://127.0.0.1:8000/api/v1/tareas/${id}`, {
+            fetch(`http://127.0.0.1:3000/api/v1/tareas/${id}`, {
                 method: 'DELETE'
             })
         }
@@ -137,7 +137,7 @@
                 return
             };
 
-            fetch(`http://127.0.0.1:8000/api/v1/objetivos/${id}`, {
+            fetch(`http://127.0.0.1:3000/api/v1/objetivos/${id}`, {
                 method: 'DELETE'
             })
                 .then(response => response.json())
@@ -146,7 +146,7 @@
                     objetivo.remove();
                 })
 
-            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+            fetch(`http://127.0.0.1:3000/api/v1/tareas`)
                 .then(response => response.json())
                 .then(tareas => {
                     tareas.forEach(tarea => {
@@ -158,7 +158,7 @@
         }
 
         function mostrarObjetivos() {
-            fetch('http://127.0.0.1:8000/api/v1/objetivos')
+            fetch('http://127.0.0.1:3000/api/v1/objetivos')
                 .then(response => response.json())
                 .then(objetivos => {
 
