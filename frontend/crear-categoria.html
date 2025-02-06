@@ -194,7 +194,6 @@
                 break;
         }
 
-        console.log(paginaAnterior)
         document.getElementById('volver').setAttribute("href", `${paginaAnterior}`)
         
         function limpiarFormulario() {
@@ -239,7 +238,7 @@
                 nombre: nombre,
                 color: color.value,
                 icono: icono.value,
-                usuario: usuarioId
+                usuario_id: usuarioId
             }
 
             fetch('http://127.0.0.1:8000/api/v1/categorias', {
