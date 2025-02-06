@@ -112,11 +112,11 @@
             fetch(`http://127.0.0.1:3000/api/v1/categorias/${id}`, {
                 method: 'DELETE'
             })
-                .then(response => response.json())
-                .then(response => {
-                    let categoria = document.getElementById(`categoria-${id}`);
-                    categoria.remove();
-                })
+            .then(response => response.json())
+            .then(response => {
+                let categoria = document.getElementById(`categoria-${id}`);
+                categoria.remove();
+            })
         }
 
         function verificarEliminacion(id, nombre) {
@@ -146,30 +146,32 @@
                     const tablaCategorias = document.getElementById('tabla-categorias')
 
                     categorias.forEach(categoria => {
-                        const id = categoria.id;
-                        const nombre = categoria.nombre;
-                        const color = categoria.color;
-                        const icono = categoria.icono;
-                        const linkEditar = `editar-categoria.html?categoria=${id}&usuario=${usuarioId}`;
+                        if (categoria.usuario_id === usuarioId) {
+                            const id = categoria.id;
+                            const nombre = categoria.nombre;
+                            const color = categoria.color;
+                            const icono = categoria.icono;
+                            const linkEditar = `editar-categoria.html?categoria=${id}&usuario=${usuarioId}`;
 
-                        tablaCategorias.innerHTML += `
-                        <tr id="categoria-${id}">
-                            <td class="has-text-centered">${id}</th>
+                            tablaCategorias.innerHTML += `
+                            <tr id="categoria-${id}">
+                                <td class="has-text-centered">${id}</th>
 
-                            <td class="has-text-centered">${nombre}</td>
+                                <td class="has-text-centered">${nombre}</td>
 
-                            <td class="has-text-centered"><i class=" fa-solid fa-square fa-xl has-text-${color}"></i></td>
+                                <td class="has-text-centered"><i class=" fa-solid fa-square fa-xl has-text-${color}"></i></td>
 
-                            <td class="has-text-centered"><i class="fa-solid fa-${icono} fa-xl"></i> </td>
+                                <td class="has-text-centered"><i class="fa-solid fa-${icono} fa-xl"></i> </td>
 
-                            <td>
-                                <a href='${linkEditar}'>
-                                    <i class="button fa-solid fa-pencil is-small is-fullwidth is-rounded is-warning"></i>
-                                </a>
-                            </td>
+                                <td>
+                                    <a href='${linkEditar}'>
+                                        <i class="button fa-solid fa-pencil is-small is-fullwidth is-rounded is-warning"></i>
+                                    </a>
+                                </td>
 
-                            <td><i class="button fa-solid fa-trash is-small is-fullwidth is-rounded is-danger" onclick="verificarEliminacion(${id}, '${nombre}')"></i></td>
-                        </tr>`
+                                <td><i class="button fa-solid fa-trash is-small is-fullwidth is-rounded is-danger" onclick="verificarEliminacion(${id}, '${nombre}')"></i></td>
+                            </tr>`
+                        }
                     });
                 });
         }

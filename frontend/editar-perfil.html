@@ -9,144 +9,158 @@
 </head>
 
 <body>
-<section class="section">
-  <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
-    <div class="columns is-mobile is-multiline is-centered">
-      <div class="column is-narrow">
-        <h1 class="title is-2 is-size-2-mobile has-text-link">EDITAR PERFIL</h1>
+  <section class="section">
+    <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+      <div class="columns is-mobile is-multiline is-centered">
+        <div class="column is-narrow">
+          <h1 class="title is-2 is-size-2-mobile has-text-link">EDITAR PERFIL</h1>
+        </div>
       </div>
-    </div>
-    <div class="card-content py-2">
-      <div class="content">
-        <div class="field">
-          <label class="label has-text-link">Nombre:</label>
-          <div class="control">
-            <input id="nombre" class="input has-background-link-75" type="text" readonly>
+      <div class="card-content py-2">
+        <div class="content">
+          <div class="field">
+            <label class="label has-text-link">Nombre:</label>
+            <div class="control">
+              <input id="nombre" class="input has-background-link-75" type="text" readonly>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Apellido:</label>
-          <div class="control">
-            <input id="apellido" class="input has-background-link-75" type="text"
-                   readonly>
+          <div class="field">
+            <label class="label has-text-link">Apellido:</label>
+            <div class="control">
+              <input id="apellido" class="input has-background-link-75" type="text" readonly>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Fecha de nacimiento:</label>
-          <div class="control">
-            <input id="fecha_nacimiento" class="input has-background-link-75" type="text"
-                   readonly>
+          <div class="field">
+            <label class="label has-text-link">Fecha de nacimiento:</label>
+            <div class="control">
+              <input id="fecha_nacimiento" class="input has-background-link-75" type="text" readonly>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Email:</label>
-          <div class="control">
-            <input id="email" class="input has-background-link-75" type="text"
-                   placeholder="Ingrese un Email">
+          <div class="field">
+            <label class="label has-text-link">Email:</label>
+            <div class="control">
+              <input id="email" class="input has-background-link-75" type="text" placeholder="Ingrese un Email">
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Telefono:</label>
-          <div class="control">
-            <input id="telefono" class="input has-background-link-75" type="text"
-                   placeholder="Ingrese un Telefono">
+          <div class="field">
+            <label class="label has-text-link">Telefono:</label>
+            <div class="control">
+              <input id="telefono" class="input has-background-link-75" type="text" placeholder="Ingrese un Telefono">
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Usuario:</label>
-          <div class="control">
-            <input id="usuario" class="input has-background-link-75" type="text" readonly>
+          <div class="field">
+            <label class="label has-text-link">Usuario:</label>
+            <div class="control">
+              <input id="usuario" class="input has-background-link-75" type="text" readonly>
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label has-text-link">Contraseña:</label>
-          <div class="control">
-            <input id="password" class="input has-background-link-75" type="text"
-                   placeholder="Ingrese una nueva contraseña">
+          <div class="field">
+            <label class="label has-text-link">Contraseña:</label>
+            <div class="control">
+              <input id="password" class="input has-background-link-75" type="password"
+                placeholder="Ingrese una nueva contraseña">
+            </div>
           </div>
-        </div>
-        <div class="field is-grouped is-grouped-centered pt-4">
-          <div class="control">
-            <button class="button is-primary" onclick="editarPerfil()">
-              Editar
-            </button>
-          </div>
-          <div class="control">
-            <a class="button is-danger" href="perfil.html">
-              Volver
-            </a>
+          <div class="field is-grouped is-grouped-centered pt-4">
+            <div class="control">
+              <button class="button is-primary" onclick="editarPerfil()">
+                Editar
+              </button>
+            </div>
+            <div class="control">
+              <a id="volver" class="button is-danger" href="#">
+                Volver
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-</section>
+  </section>
 
-<script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
 
-<script>
-  let datosOriginales = {};
+  <script>
+    let datosOriginales = {};
 
-  const parametrosUrl = new URLSearchParams(window.location.search);
-  const personaId = parseInt(parametrosUrl.get('id'));
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    const personaId = parseInt(parametrosUrl.get('id'));
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`);
-      if (!response.ok) throw new Error("Error al obtener los datos del perfil");
+    document.getElementById('volver').href = `perfil.html?id=${personaId}`
 
-      const datos = await response.json();
-      datosOriginales = { ...datos };
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`);
+        if (!response.ok) throw new Error("Error al obtener los datos del perfil");
 
-      document.getElementById("nombre").value = datos.nombre || "";
-      document.getElementById("apellido").value = datos.apellido || "";
-      document.getElementById("fecha_nacimiento").value = datos.fecha_nacimiento || "";
-      document.getElementById("email").value = datos.email || "";
-      document.getElementById("telefono").value = datos.telefono || "";
-      document.getElementById("usuario").value = datos.usuario || "";
-      document.getElementById("password").value = datos.contrasenia || "";
-    } catch (error) {
-      console.error("Error cargando el perfil:", error);
+        const datos = await response.json();
+        datosOriginales = { ...datos };
+
+        document.getElementById("nombre").value = datos.nombre || "";
+        document.getElementById("apellido").value = datos.apellido || "";
+        document.getElementById("fecha_nacimiento").value = datos.fecha_nacimiento || "";
+        document.getElementById("email").value = datos.email || "";
+        document.getElementById("telefono").value = datos.telefono || "";
+        document.getElementById("usuario").value = datos.usuario || "";
+        document.getElementById("password").value = datos.contrasenia || "";
+      } catch (error) {
+        console.error("Error cargando el perfil:", error);
+      }
+    });
+
+    async function editarPerfil() {
+      const datosActualizados = {
+        email: document.getElementById("email").value,
+        telefono: document.getElementById("telefono").value,
+        contrasenia: document.getElementById("password").value
+      };
+
+      let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(datosActualizados.email)) {
+        alert("Por favor, ingresa un email válido.");
+        return
+      }
+
+      if (!/^\d+$/.test(datosActualizados.telefono)) {  
+        alert("El número de teléfono solo debe contener dígitos (0-9).");
+        return
+      }
+
+      if (datosActualizados.telefono.length < 7 || datosActualizados.telefono.length > 15) {
+        alert('Número de teléfono inválido')
+        return
+      }
+
+      try {
+        const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(datosActualizados)
+        });
+        if (!response.ok) throw new Error("Error al actualizar el perfil");
+
+        alert("Perfil actualizado correctamente");
+        window.location = `perfil.html?id=${personaId}`;
+      } catch (error) {
+        console.error("Error actualizando el perfil:", error);
+        alert("Hubo un error al actualizar el perfil");
+      }
     }
-  });
 
-  async function editarPerfil() {
-    const datosActualizados = {
-      email: document.getElementById("email").value,
-      telefono: document.getElementById("telefono").value,
-      contrasenia: document.getElementById("password").value
-    };
-
-    try {
-      const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(datosActualizados)
-      });
-      if (!response.ok) throw new Error("Error al actualizar el perfil");
-
-      alert("Perfil actualizado correctamente");
-      window.location = `perfil.html?id=${personaId}`;
-    } catch (error) {
-      console.error("Error actualizando el perfil:", error);
-      alert("Hubo un error al actualizar el perfil");
+    function deshacerFormulario() {
+      document.getElementById("nombre").value = datosOriginales.nombre || "";
+      document.getElementById("apellido").value = datosOriginales.apellido || "";
+      document.getElementById("fecha_nacimiento").value = datosOriginales.fecha_nacimiento || "";
+      document.getElementById("email").value = datosOriginales.email || "";
+      document.getElementById("telefono").value = datosOriginales.telefono || "";
+      document.getElementById("usuario").value = datosOriginales.usuario || "";
+      document.getElementById("password").value = datosOriginales.password || "";
     }
-  }
 
-  function deshacerFormulario() {
-    document.getElementById("nombre").value = datosOriginales.nombre || "";
-    document.getElementById("apellido").value = datosOriginales.apellido || "";
-    document.getElementById("fecha_nacimiento").value = datosOriginales.fecha_nacimiento || "";
-    document.getElementById("email").value = datosOriginales.email || "";
-    document.getElementById("telefono").value = datosOriginales.telefono || "";
-    document.getElementById("usuario").value = datosOriginales.usuario || "";
-    document.getElementById("password").value = datosOriginales.password || "";
-  }
-
-</script>
+  </script>
 
 </body>
 

@@ -47,13 +47,13 @@ export const actualizarObjetivo = async (req, res) => {
 
 export const eliminarObjetivo = async (req, res) => {
     const { id } = req.params;
-    try {
-        let objetivo = await Objetivo.obtenerObjetivoPorId(id);
-        if (!objetivo) return res.status(404).json({ error: "Objetivo no encontrado" });
+    // try {
+    let objetivo = await Objetivo.obtenerObjetivoPorId(id);
+    if (!objetivo) return res.status(404).json({ error: "Objetivo no encontrado" });
 
-        objetivo = await Objetivo.eliminarObjetivo(id);
-        res.status(200).json({ message: 'Objetivo eliminado' });
-    } catch (err) {
-        res.status(500).json({ error: 'Error al eliminar el Objetivo' });
-    }
+    objetivo = await Objetivo.eliminarObjetivo(id);
+    res.status(200).json({ message: 'Objetivo eliminado' });
+    // } catch (err) {
+    //     res.status(500).json({ error: 'Error al eliminar el Objetivo' });
+    // }
 };

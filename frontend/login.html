@@ -88,6 +88,22 @@
                         contrasenia: password
                     };
 
+                    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(body.email)) {
+                        alert("Por favor, ingresa un email válido.");
+                        return
+                    }
+
+                    if (!/^\d+$/.test(body.telefono)) {  
+                        alert("El número de teléfono solo debe contener dígitos (0-9).");
+                        return
+                    }
+
+                    if (body.telefono.length < 7 || body.telefono.length > 15) {
+                        alert('Número de teléfono inválido')
+                        return
+                    }
+
                     try {
                         const response = await fetch("http://localhost:3000/api/v1/personas");
                         if (!response.ok) throw new Error("Error al obtener los datos");
@@ -110,8 +126,7 @@
                         body: JSON.stringify(body)
                     });
 
-                    const result = await response.json();
-                    alert(result.message || result.error);
+                    alert("Usuario creado con éxito");
                     if (response.ok) cerrarFormulario();
                 } else {
                     try {

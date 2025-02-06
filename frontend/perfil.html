@@ -9,118 +9,139 @@
 </head>
 
 <body>
-<section class="section is-flex is-justify-content-center is-align-items-center is-fullheight">
-    <div class="card column is-two-fifths has-background-link-85">
-        <div class="columns is-mobile is-multiline is-centered">
-            <div class="column is-narrow">
-                <h1 class="title is-2 is-size-2-mobile has-text-link">VER PERFIL</h1>
-            </div>
-        </div>
-        <div class="card-content py-2">
-            <div class="content box has-background-white p-4 rounded">
-                <div class="field">
-                    <label class="label has-text-grey-dark">Nombre:</label>
-                    <input class="input" id="nombre">
-                </div>
-                <div class="field">
-                    <label class="label has-text-grey-dark">Apellido:</label>
-                    <input class="input" id="apellido"></p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-grey-dark">Fecha de nacimiento:</label>
-                    <input class="input" id="fecha_nacimiento"></p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-grey-dark">Email:</label>
-                    <input class="input" id="email"></p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-grey-dark">Teléfono:</label>
-                    <input class="input" id="telefono"></p>
-                </div>
-                <div class="field">
-                    <label class="label has-text-grey-dark">Usuario:</label>
-                    <input class="input" id="usuario"></p>
-                </div>
-                <div class="field is-grouped is-grouped-centered pt-4">
-                    <div class="control">
-                        <a id="editarId" class="button is-primary">
-                            Editar Perfil
-                        </a>
-                    </div>
-                    <div class="control" onclick="eliminarCuenta()">
-                        <button class="button is-danger">
-                            Eliminar Cuenta
-                        </button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-warning">
-                            Cerrar Sesión
-                        </button>
-                    </div>
+    <section class="mt-1 section pb-0">
+        <nav class="navbar has-background-dark">
+            <a id="volver_objetivos" class="button is-dark" href="#">
+                <span class="icon-text">
+                    <span class="icon is-large">
+                        <i class="fas fa-lg fa-arrow-left"></i>
+                    </span>
+                    <span class="is-size-4">Objetivos</span>
+                </span>
+            </a>
+        </nav>
+    </section>
+    <section class="section is-flex is-justify-content-center is-align-items-center is-fullheight pt-0">
+        <div class="card column is-two-fifths has-background-link-85">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-2 is-size-2-mobile has-text-link">VER PERFIL</h1>
                 </div>
             </div>
+            <div class="card-content py-2">
+                <div class="content box has-background-white p-4 rounded">
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Nombre:</label>
+                        <input class="input" id="nombre" readonly>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Apellido:</label>
+                        <input class="input" id="apellido" readonly>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Fecha de nacimiento:</label>
+                        <input class="input" id="fecha_nacimiento" readonly>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Email:</label>
+                        <input class="input" id="email" readonly>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Teléfono:</label>
+                        <input class="input" id="telefono" readonly>
+                    </div>
+                    <div class="field">
+                        <label class="label has-text-grey-dark">Usuario:</label>
+                        <input class="input" id="usuario" readonly>
+                    </div>
+                    <div class="field is-grouped is-grouped-centered pt-4">
+                        <div class="control">
+                            <a id="editarId" class="button is-primary">
+                                Editar Perfil
+                            </a>
+                        </div>
+                        <div class="control" onclick="eliminarCuenta()">
+                            <button class="button is-danger">
+                                Eliminar Cuenta
+                            </button>
+                        </div>
+                        <div class="control">
+                            <a class="button is-warning" href="login.html">
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
 
-<script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
 
-<script>
-    let datosOriginales = {};
+    <script>
+        let datosOriginales = {};
 
-    const parametrosUrl = new URLSearchParams(window.location.search);
-    const personaId = parseInt(parametrosUrl.get('id'));
-    document.getElementById("editarId").href = `editar-perfil.html?id=${personaId}`;
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const personaId = parseInt(parametrosUrl.get('id'));
 
-    document.addEventListener("DOMContentLoaded", async () => {
-        try {
-            const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`);
-            if (!response.ok) throw new Error("Error al obtener los datos del perfil");
+        document.getElementById('volver_objetivos').href = `objetivos.html?id=${personaId}`
+        document.getElementById("editarId").href = `editar-perfil.html?id=${personaId}`;
 
-            const datos = await response.json();
-            datosOriginales = { ...datos };
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`);
+                if (!response.ok) throw new Error("Error al obtener los datos del perfil");
 
-            document.getElementById("nombre").value = datos.nombre || "";
-            document.getElementById("apellido").value = datos.apellido || "";
-            document.getElementById("fecha_nacimiento").value = datos.fecha_nacimiento || "";
-            document.getElementById("email").value = datos.email || "";
-            document.getElementById("telefono").value = datos.telefono || "";
-            document.getElementById("usuario").value = datos.usuario || "";
-        } catch (error) {
-            console.error("Error cargando el perfil:", error);
+                const datos = await response.json();
+                datosOriginales = { ...datos };
+
+                document.getElementById("nombre").value = datos.nombre || "";
+                document.getElementById("apellido").value = datos.apellido || "";
+                document.getElementById("fecha_nacimiento").value = datos.fecha_nacimiento || "";
+                document.getElementById("email").value = datos.email || "";
+                document.getElementById("telefono").value = datos.telefono || "";
+                document.getElementById("usuario").value = datos.usuario || "";
+            } catch (error) {
+                console.error("Error cargando el perfil:", error);
+            }
+        });
+
+        async function eliminarCuenta() {
+            try {
+                const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+                if (!response.ok) throw new Error("Error al eliminar el perfil");
+
+                if (!confirm('¿Seguro que quieres eliminar la cuenta?')) {
+                    return
+                }
+                alert("Perfil eliminado correctamente");
+                window.location = "login.html"
+            } catch (error) {
+                console.error("Error eliminando el perfil:", error);
+                alert("Hubo un error al eliminar el perfil");
+            }
         }
-    });
-
-    async function eliminarCuenta() {
-        try {
-            const response = await fetch(`http://localhost:3000/api/v1/personas/${personaId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            });
-            if (!response.ok) throw new Error("Error al eliminar el perfil");
-
-            alert("Perfil eliminado correctamente");
-            window.location = "login.html"
-        } catch (error) {
-            console.error("Error eliminando el perfil:", error);
-            alert("Hubo un error al eliminar el perfil");
-        }
-    }
-</script>
+    </script>
 
 </body>
 
-</html><!DOCTYPE html>
+</html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
 
 </body>
+
 </html>

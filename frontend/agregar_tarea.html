@@ -110,15 +110,6 @@
                 const fecha_actual = new Date()
                 const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
 
-                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
-                .then(response => response.json())
-                .then(objetivo => {
-                    if ((body.inicio_tarea < objetivo.fecha_inicio) || (body.fin_tarea > objetivo.fecha_fin)) {
-                        alert('Las fechas están ppr fuera del rango de tiempo del objetivo')
-                        return
-                    }
-                })
-
                 if ((body.inicio_tarea > body.fin_tarea) || (body.fin_tarea < hoy) || (body.inicio_tarea < hoy)) {
                     alert('Fechas inválidas')
                     return

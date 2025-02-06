@@ -221,6 +221,7 @@
         }
 
         function crearCategoria() {
+            event.preventDefault()
             const nombre = document.getElementById('nombre').value;
             const color = document.querySelector('input[name="color"]:checked')
             const icono = document.querySelector('input[name="icono"]:checked')
@@ -241,22 +242,22 @@
                 usuario_id: usuarioId
             }
 
-            fetch('http://127.0.0.1:8000/api/v1/categorias', {
+            fetch('http://localhost:3000/api/v1/categorias', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(body)
             })
-                .then(response => {
-                    if (response.status === 201) {
-                        alert('Categoria creada con exito');
-                        limpiarFormulario()
-                    } else {
-                        alert('Error al crear la categoria');
-                    }
-                })
-            window.location = `${paginaAnterior}`
+            .then(response => {
+                if (response.status === 201) {
+                    alert('Categoria creada con éxito');
+                    limpiarFormulario()
+                    window.location = `${paginaAnterior}`
+                } else {
+                    alert('Error al crear la categoria');
+                }
+            })
         }
     </script>
 </body>

@@ -153,6 +153,7 @@
         }
 
         function editarObjetivo() {
+            event.preventDefault()
             const titulo = document.getElementById('titulo').value;
             const descripcion = document.getElementById('descripcion').value;
             const fechaInicio = document.getElementById('fecha-inicio').value;
@@ -201,13 +202,13 @@
                 },
                 body: JSON.stringify(body)
             }).then(response => {
-                if (response.status === 201) {
+                if (response.status === 200) {
                     alert('Objetivo EDitado con exito');
+                    window.location = `objetivos.html?id=${usuarioId}`
                 } else {
                     alert('Error al editar el objetivo');
                 }
             })
-            window.location = `objetivos.html?id=${usuarioId}`
         }
     </script>
 </body>

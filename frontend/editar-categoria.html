@@ -247,14 +247,13 @@
                 body: JSON.stringify(body)
             })
                 .then(response => {
-                    if (response.status === 201) {
-                        alert('Categoria creada con exito');
-                        limpiarFormulario()
+                    if (response.status === 200) {
+                        alert('Categoria editada con éxito');
+                        window.location = `categorias.html?id=${usuarioId}`
                     } else {
-                        alert('Error al crear la categoria');
+                        alert('Error al editar la categoria');
                     }
                 })
-            window.location = `categorias.html?id=${usuarioId}`
         }
     </script>
 </body>
