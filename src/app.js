@@ -18,6 +18,12 @@ personasRouter.post("/register", async (req, res) => {
     }
 
     try {
+        const usuarioExistente = await prisma.persona.findUnique({ where: { usuario } });
+
+        if (usuarioExistente) {
+            return res.status(409).json({ error: "El usuario ya está registrado" });
+        }
+
         const hashedPassword = await bcrypt.hash(contrasenia, 10);
 
         const persona = await prisma.persona.create({
@@ -40,33 +46,21 @@ personasRouter.post("/register", async (req, res) => {
     }
 });
 
-personasRouter.get("/", async (req, res) => {
-    try {
-        const personas = await prisma.persona.findMany();
-        res.status(200).json(personas);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Error al obtener las personas" });
-    }
-});
-
-personasRouter.get("/login", async (req, res) => {
-    const { usuario, contrasenia } = req.query; 
+personasRouter.post("/login", async (req, res) => {
+    const { usuario, contrasenia } = req.body;
 
     if (!usuario || !contrasenia) {
         return res.status(400).json({ error: "Faltan datos de usuario o contraseña" });
     }
 
     try {
-        const personas = await prisma.persona.findMany();
-
-        const persona = personas.find(p => p.usuario === usuario);
+        const persona = await prisma.persona.findUnique({ where: { usuario } });
 
         if (!persona) {
             return res.status(404).json({ error: "Usuario no encontrado" });
         }
 
-        const validPassword = persona.contrasenia === contrasenia;
+        const validPassword = await bcrypt.compare(contrasenia, persona.contrasenia);
         if (!validPassword) {
             return res.status(401).json({ error: "Contraseña incorrecta" });
         }
@@ -83,3 +77,4 @@ app.use("/api/v1/personas", personasRouter);
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
