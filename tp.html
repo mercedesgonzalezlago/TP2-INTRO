@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Registro / Login</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    </head>
+    <body>
+        <section class="section">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-1 has-text-light">Bienvenido a la página de metas personales</h1>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                <div class="card-content py-2">
+                    <div class="content has-text-centered">
+                        <button class="button is-primary" onclick="mostrarFormulario('register')">Registrarse</button>
+                        <button class="button is-link" onclick="mostrarFormulario('login')">Iniciar Sesión</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-form" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title" id="modal-title"></p>
+                    <button class="delete" aria-label="close" onclick="cerrarFormulario()"></button>
+                </header>
+                <section class="modal-card-body">
+                    <form id="user-form">
+                        <div class="field" id="extra-fields" style="display: none;">
+                            <label class="label">Nombre</label>
+                            <input class="input" type="text" id="nombre" placeholder="Ingrese su nombre">
+                            <label class="label">Apellido</label>
+                            <input class="input" type="text" id="apellido" placeholder="Ingrese su apellido">
+                            <label class="label">Fecha de nacimiento</label>
+                            <input class="input" type="date" id="fecha_nacimiento">
+                            <label class="label">Mail</label>
+                            <input class="input" type="email" id="mail" placeholder="Ingrese su email">
+                            <label class="label">Teléfono</label>
+                            <input class="input" type="tel" id="telefono" placeholder="Ingrese su teléfono">
+                        </div>
+                        <label class="label">Nombre de usuario</label>
+                        <input class="input" type="text" id="username" placeholder="Ingrese su usuario" required>
+                        <label class="label">Contraseña</label>
+                        <input class="input" type="password" id="password" placeholder="Ingrese su contraseña" required>
+                        <button type="submit" class="button is-success mt-3">Ingresar</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+
+        <script>
+            let currentAction = "";
+        
+            function mostrarFormulario(action) {
+                currentAction = action;
+                document.getElementById("modal-title").textContent = action === "register" ? "Registrarse" : "Iniciar Sesión";
+                document.getElementById("extra-fields").style.display = action === "register" ? "block" : "none";
+                document.getElementById("modal-form").classList.add("is-active");
+            }
+        
+            function cerrarFormulario() {
+                document.getElementById("modal-form").classList.remove("is-active");
+            }
+        
+            document.getElementById("user-form").addEventListener("submit", async function (event) {
+                event.preventDefault();
+        
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+        
+                if (currentAction === "register") {
+                    let body = {
+                        nombre: document.getElementById("nombre").value,
+                        apellido: document.getElementById("apellido").value,
+                        fecha_nacimiento: document.getElementById("fecha_nacimiento").value,
+                        email: document.getElementById("mail").value,
+                        telefono: document.getElementById("telefono").value,
+                        usuario: username,
+                        contrasenia: password
+                    };
+        
+                    try {
+                        const checkResponse = await fetch(`http://localhost:3000/api/v1/personas/login`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ usuario: username, contrasenia: password })
+                        });
+        
+                        if (checkResponse.ok) {
+                            alert("El usuario ya está registrado. Intenta con otro nombre de usuario.");
+                            return;
+                        }
+        
+                        const response = await fetch("http://localhost:3000/api/v1/personas/register", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body)
+                        });
+        
+                        const result = await response.json();
+        
+                        if (response.ok) {
+                            alert("Usuario registrado correctamente.");
+                            cerrarFormulario();
+                        } else {
+                            alert(result.error || "Error al registrar el usuario.");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor.");
+                    }
+        
+                } else {
+                    try {
+                        const response = await fetch("http://localhost:3000/api/v1/personas/login", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ usuario: username, contrasenia: password })
+                        });
+        
+                        const result = await response.json();
+        
+                        if (response.ok) {
+                            alert("Inicio de sesión exitoso");
+                            window.location.href = `objetivos.html?id=${result.persona.id}`;
+                        } else {
+                            alert(result.error || "Usuario o contraseña incorrectos");
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                        alert("No se pudo conectar al servidor.");
+                    }
+                }
+            });
+        </script>
+        
+    </body>
+</html>
