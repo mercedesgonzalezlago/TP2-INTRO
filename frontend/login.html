@@ -93,12 +93,12 @@
                         if (!response.ok) throw new Error("Error al obtener los datos");
                         
                         const personas = await response.json();
-                        let usuarioEncontrado = personas.find(persona => persona.usuario === username && persona.contrasenia === password);
-                        
-                        if (!usuarioEncontrado) {
+                        let usuarioEncontrado = personas.find(persona => persona.usuario === username);
+                        if (usuarioEncontrado != null) {
                             alert("El usuario ya existe");
+                            return
                         }
-                        
+
                     } catch (error) {
                         console.error("Error:", error);
                         alert("No se pudo conectar al servidor.");
