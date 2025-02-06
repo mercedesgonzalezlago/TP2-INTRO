@@ -125,13 +125,12 @@
                 })
         }
 
-        // PROBAR
+
         function eliminarTarea(id) {
             fetch(`http://127.0.0.1:8000/api/v1/tareas/${id}`, {
                 method: 'DELETE'
             })
         }
-        //
 
         function eliminarObjetivo(id, titulo) {
             if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)) {
@@ -146,7 +145,7 @@
                     let objetivo = document.getElementById(`objetivo-${id}`);
                     objetivo.remove();
                 })
-            // PROBAR
+
             fetch(`http://127.0.0.1:8000/api/v1/tareas`)
                 .then(response => response.json())
                 .then(tareas => {
@@ -156,7 +155,6 @@
                         }
                     })
                 })
-            //
         }
 
         function mostrarObjetivos() {
