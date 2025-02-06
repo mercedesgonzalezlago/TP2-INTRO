@@ -171,17 +171,20 @@
                 return
             }
 
-            if (new Date(fechaInicio) > new Date(fechaFin)) {
+            if (fechaInicio > fechaFin) {
                 alert('Fechas inválidas');
                 return
             }
 
-            if (new Date(fechaInicio) < new Date()) {
+            const fecha_actual = new Date()
+            const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+
+            if (fechaInicio < hoy)) {
                 alert('La fecha de inicio ya pasó');
                 return
             }
 
-            if (new Date(fechaFin) < new Date()) {
+            if (fechaFin < hoy) {
                 alert('La fecha de fin ya pasó');
                 return
             }
