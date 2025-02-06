@@ -1,0 +1,13 @@
+name: backend_to_the_fronture
+
+on:
+    push:
+          branches:
+          - main
+
+jobs:
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+              github_token: $({ secrets.GITHUB_TOKEN })
+              publish_dir: ./frontend/dist
