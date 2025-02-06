@@ -55,8 +55,7 @@
         <div class="field">
           <label class="label has-text-link">Usuario:</label>
           <div class="control">
-            <input id="usuario" class="input has-background-link-75" type="text"
-                   placeholder="Ingrese un Usuario">
+            <input id="usuario" class="input has-background-link-75" type="text" readonly>
           </div>
         </div>
         <div class="field">
@@ -116,8 +115,7 @@
     const datosActualizados = {
       email: document.getElementById("email").value,
       telefono: document.getElementById("telefono").value,
-      usuario: document.getElementById("usuario").value,
-      password: document.getElementById("password").value
+      contrasenia: document.getElementById("password").value
     };
 
     try {
