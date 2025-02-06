@@ -12,7 +12,7 @@ copiar las variables del .example.env en un .env,  y editar los datos con la inf
 La función del sistema es poder crear tus propios objetivos junto a tareas que se incluyen en el mismo con el fin de llevar a cabo dicho objetivo.
 
 # Capturas de pantalla
-![categorias] (./assests/categorias.png)
-![objetivos] (./assests/objetivos.png)
-![tareas] (./assests/tareas.png)
-![personas] (./assests/personas.png)
+![categorias](assests/categorias.png)
+![objetivos](assests/objetivos.png)
+![tareas](assests/tareas.png)
+![personas](assests/personas.png)
