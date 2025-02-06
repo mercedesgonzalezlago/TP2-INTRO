@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Mis tareas pendientes</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    </head>
+
+    <body>
+        <section class="section">
+            <nav class="navbar has-background-dark">
+                <a id="volver_objetivos" class="button is-dark" href="#">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                        <i class="fas fa-lg fa-arrow-left"></i>
+                        </span>
+                        <span class="is-size-4">Objetivos</span>
+                    </span>
+                </a>
+                <div class="navbar-end">
+                    <a id="perfil" class="button is-dark" href="#">
+                        <span class="icon-text">
+                            <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                            </span>
+                            <span class="is-size-4">Perfil</span>
+                        </span>
+                    </a>
+                </div>
+            </nav>
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-1 has-text-light">Mis tareas</h1>
+                </div>
+            </div>
+            <div id="division_tareas" class="tabs is-centered">
+                <ul>
+                    <li>
+                        <a id="todas" class="has-text-light" href="#">Todas</a>
+                    </li>
+                    <li class="is-active">
+                        <a id="pendientes" href="tareas_pendientes.html" target="_self">Pendientes</a>
+                    </li>
+                    <li>
+                        <a id="completadas" class="has-text-light" href="#" target="_self">Completadas</a>
+                    </li>
+                </ul>
+            </div>
+            <div id="card_pendientes"></div>
+        </section>
+
+        <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+        <script>
+            const params = new URLSearchParams(window.location.search)
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
+
+            document.getElementById('volver_objetivos').href = `objetivos.html?usuario=${id_usuario}`
+            document.getElementById('perfil').href = `perfil.html?usuario=${id_usuario}`
+            document.getElementById('completadas').href = `tareas_completadas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+            document.getElementById('todas').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+
+            window.onload = function() {
+                dividirTareas()
+            }
+
+            dividirTareas = function() {
+                fetch('http://127.0.0.1:3000/api/v1/tareas')
+                .then(response => response.json())
+                .then(tareas => {
+                    let card_pend = document.getElementById('card_pendientes')
+                    card_pend.innerHTML = ''
+                    tareas.forEach(tarea => {
+                        const fecha_actual = new Date()
+                        const fecha_completada = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+                        
+                        if (tarea.id_objetivo === parseInt(id_objetivo)) {
+                            const nueva_fecha = sumarDias(fecha_actual, 7)
+                            const fecha_formateda = new Intl.DateTimeFormat('sv-SE').format(nueva_fecha)
+
+                            if (tarea.estado === "Pendiente") {
+                                if (tarea.fin_tarea < fecha_completada) {
+                                    tareaIncompleta(tarea.id)
+                                    card_pend.innerHTML += `
+                                    <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                        <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
+                                            <p class="card-header-title">${tarea.nombre}</p>
+                                        </header>
+                                        <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
+                                            <div class="content">${tarea.descripcion}.</div>
+                                            <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                            <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                            <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
+                                        </div>
+                                        <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
+                                            <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                            <button id="editar_${tarea.id}" class="card-footer-item has-text-dark" onclick="extenderFechaFin(${tarea.id}, '${fecha_formateda}')">Agregar una semana</button>
+                                            <button class="card-footer-item has-text-dark is-hidden" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        </footer>
+                                    </div>`
+                                } else {
+                                    card_pend.innerHTML += `
+                                    <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                        <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
+                                            <p class="card-header-title">${tarea.nombre}</p>
+                                        </header>
+                                        <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
+                                            <div class="content">${tarea.descripcion}.</div>
+                                            <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                            <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                            <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
+                                        </div>
+                                        <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
+                                            <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                            <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>
+                                            <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                        </footer>
+                                    </div>`
+                                }
+                            } else if (tarea.estado === "Pendiente - Actualizada") {
+                                card_pend.innerHTML += `
+                                <div id="pendiente-${tarea.id}" class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                                    <header id="header_tarea_${tarea.id}" class="card-header has-background-link-75">
+                                        <p class="card-header-title">${tarea.nombre}</p>
+                                    </header>
+                                    <div id="contenido_tarea_${tarea.id}" class="card-content has-text-dark">
+                                        <div class="content">${tarea.descripcion}.</div>
+                                        <div class="content">Fecha de inicio: ${tarea.inicio_tarea}</div>
+                                        <div id="fecha_fin_${tarea.id}" class="content">Fecha de finalización: ${tarea.fin_tarea}</div>
+                                        <div id="estado_tarea_${tarea.id}" class="content">Estado: ${tarea.estado}</div>
+                                    </div>
+                                    <footer id="footer_tarea_${tarea.id}" class="card-footer has-background-link-75">
+                                        <button class="card-footer-item has-text-dark" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                                        <a id="editar_${tarea.id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${tarea.id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>
+                                        <button class="card-footer-item has-text-dark" onclick="tareaCompletada(${tarea.id})">Completada</button>
+                                    </footer>
+                                </div>`
+                            }
+                        }
+                    })
+                })
+            }
+
+            sumarDias = function(fecha, dias) {
+                let fecha_nueva = new Date(fecha)
+                fecha_nueva.setDate(fecha_nueva.getDate() + dias)
+                return fecha_nueva
+            }
+
+            tareaIncompleta = function(id) {
+                let body = {
+                    estado: "Incompleta"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    let estado = document.getElementById(`estado_tarea_${id}`)
+                    estado.textContent = 'Estado: Incompleta'
+                })
+            }
+
+            extenderFechaFin = function(id, fecha_nueva) {
+                let body = {
+                    fin_tarea: fecha_nueva,
+                    estado: "Pendiente - Actualizada"
+                }
+
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    actualizarExtensionFecha(id, fecha_nueva)
+                })
+            }
+
+            actualizarExtensionFecha = function(id, fecha_nueva) {
+                let estado = document.getElementById(`estado_tarea_${id}`)
+                estado.textContent = 'Estado: Pendiente - Actualizada'
+                let fecha = document.getElementById(`fecha_fin_${id}`)
+                fecha.textContent = `Fecha de finalización: ${fecha_nueva}`
+                let boton = document.getElementById(`editar_${id}`)
+                boton.outerHTML = `<a id="editar_${id}" class="card-footer-item has-text-dark" href="editar_tarea.html?id=${id}&objetivo=${id_objetivo}&usuario=${id_usuario}">Editar</a>`
+                let completada = document.getElementById(`completada_${id}`)
+                completada.classList.remove("is-hidden")
+            }
+
+            tareaCompletada = function(id) {
+                let body = {
+                    estado: "Completada",
+                }
+
+                let card_tareas = document.getElementById('tareas')
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => response.json())
+                .then(response => {
+                    alert('Tarea completada!')
+                    eliminarCard(id)
+                })
+            }
+
+            eliminarTarea = function(id) {
+                if (!confirm('Se eliminará la tarea ' + id)) {
+                    return
+                }
+                fetch('http://127.0.0.1:3000/api/v1/tareas/' + id, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(response => {
+                    eliminarCard(id)
+                })
+            }
+
+            eliminarCard = function(id) {
+                let card = document.getElementById('pendiente-' + id)
+                card.remove()
+            }
+
+        </script>
+    </body>
+</html>

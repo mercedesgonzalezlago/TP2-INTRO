@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Editar tarea</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    </head>
+
+    <body>
+        <section class="section">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-1 has-text-light">Editar tarea</h1>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+                <div class="card-content py-2">
+                    <div class="content">
+                        <div class="field">
+                            <label class="label has-text-link">Nombre</label>
+                            <div class="control">
+                                <input id="nombre" class="input has-background-link-75" type="text" placeholder="Nombre de la tarea">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label has-text-link">Descripción</label>
+                            <div class="control">
+                                <input id="descripcion" class="input has-background-link-75" type="text" placeholder="Descripción breve">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label id="inicio_nombre" class="label has-text-link"></label>
+                                <input id="fecha_inicio" class="input has-background-link-75" type="date">
+                            </div>
+                            <div class="control">
+                                <label id="fin_nombre" class="mt-2 label has-text-link"></label>
+                                <input id="fecha_fin" class="input has-background-link-75" type="date">
+                            </div>
+                        </div>
+                        <div class="field is-grouped is-grouped-centered pt-4">
+                            <div class="control">
+                                <button id="editar" class="button is-primary" onclick="editarTarea()">
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="control">
+                                <button class="button is-warning" onclick="limpiarFormulario()">
+                                    Eliminar
+                                </button>
+                            </div>
+                            <div class="control">
+                                <a id="volver" class="button is-danger" href="#">
+                                    Volver
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+        <script>
+            const params = new URLSearchParams(window.location.search)
+            const id = params.get('id')
+            const id_objetivo = params.get('objetivo')
+            const id_usuario = params.get('usuario')
+
+            document.getElementById('volver').href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+
+            document.addEventListener('DOMContentLoaded', function() {
+                cargarDatosActuales()
+                obtenerFechasObjetivo()
+            })
+
+            function cargarDatosActuales() {
+                fetch('http://localhost:3000/api/v1/tareas/' + id)
+                .then(response => response.json())
+                .then(tarea => {
+                    document.getElementById('nombre').value = tarea.nombre
+                    document.getElementById('descripcion').value = tarea.descripcion
+                    document.getElementById('fecha_inicio').value = tarea.inicio_tarea
+                    document.getElementById('fecha_fin').value = tarea.fin_tarea
+                })
+            }
+
+            obtenerFechasObjetivo = function() {
+                fetch('http://localhost:3000/api/v1/objetivos/' + id_objetivo)
+                .then(response => response.json())
+                .then(objetivo => {
+                    document.getElementById('inicio_nombre').textContent = `Fecha de inicio (posterior a ${objetivo.fecha_inicio})`
+                    document.getElementById('fin_nombre').textContent = `Fecha de finalización (anterior a ${objetivo.fecha_fin})`
+                })
+            }
+
+            function editarTarea() {
+                event.preventDefault()
+                const nombre = document.getElementById('nombre').value
+                const descripcion = document.getElementById('descripcion').value
+                let fecha_inicio = document.getElementById('fecha_inicio').value
+                let fecha_fin = document.getElementById('fecha_fin').value
+
+                let body = {
+                    nombre: nombre,
+                    descripcion: descripcion,
+                    inicio_tarea: fecha_inicio,
+                    fin_tarea: fecha_fin,
+                }
+                
+                if (!body.nombre || !body.descripcion || !body.inicio_tarea || !body.fin_tarea) {
+                    alert("La tarea no debería quedar vacía")
+                    return
+                }
+
+                const fecha_actual = new Date()
+                const hoy = new Intl.DateTimeFormat('sv-SE').format(fecha_actual)
+
+                if ((body.inicio_tarea > body.fin_tarea) || (body.fin_tarea < hoy) || (body.inicio_tarea < hoy)) {
+                    alert('Fechas inválidas')
+                    return
+                }
+                
+                fetch('http://localhost:3000/api/v1/tareas/' + id, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                })
+                .then(response => {
+                    if (response.status === 200) {
+                        alert('Tarea editada con éxito')
+                        window.location.href = `tareas.html?objetivo=${id_objetivo}&usuario=${id_usuario}`
+                    } else {
+                        alert('Error al editar la tarea')
+                    }
+                })
+
+            }
+
+            function limpiarFormulario() {
+                document.getElementById('nombre').value = ""
+                document.getElementById('descripcion').value = ""
+                document.getElementById('fecha_inicio').value = ""
+                document.getElementById('fecha_fin').value = ""
+            }
+        </script>
+    </body>
+</html>
