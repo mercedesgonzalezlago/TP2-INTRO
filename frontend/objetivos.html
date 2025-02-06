@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Objetivos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+        #menu {
+            position: sticky !important;
+            top: 0px;
+            z-index: 200;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="menu" class="section has-background-dark py-0">
+        <nav class="navbar has-background-dark mt-3">
+            <div class="navbar-end">
+                <a id="pagina-perfil" class="button is-dark">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                        </span>
+                        <span class="is-size-4">Perfil</span>
+                    </span>
+                </a>
+            </div>
+        </nav>
+        <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
+            <ul>
+                <li class="is-active">
+                    <a id="pagina-objetivos">
+                        <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
+                        <span>Objetivos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a id="pagina-categorias" class="has-background-link-85 has-text-link-85-invert">
+                        <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
+                        <span>Categorias</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <h1 class="title is-1 is-size-2-mobile has-text-primary">
+                    OBJETIVOS PERSONALES
+                </h1>
+            </div>
+        </div>
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <a id="agregar" class="button has-background-link-85 has-text-link-85-invert is-rounded">
+                    <div class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-solid fa-plus"></i>
+                        </span>
+                        <span>Agregar Objetivo</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="objetivos" class="section pt-0 m-6"></section>
+
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+
+    <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const usuarioId = parseInt(parametrosUrl.get('id'));
+
+        document.getElementById('pagina-perfil').setAttribute("href", `perfil.html?id=${usuarioId}`);
+        document.getElementById('pagina-objetivos').setAttribute("href", `objetivos.html?id=${usuarioId}`);
+        document.getElementById('pagina-categorias').setAttribute("href", `categorias.html?id=${usuarioId}`);
+        document.getElementById('agregar').setAttribute("href", `agregar-objetivo.html?id=${usuarioId}`);
+
+        window.onload = function () {
+            mostrarObjetivos()
+        }
+
+        function agregarClase(etiqueta, clase) {
+            for (let i = 0; i < etiqueta.length; i++) {
+                etiqueta[i].classList.add(`${clase}`)
+            }
+        }
+
+        function mostrarCategoria(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias/${id}`)
+                .then(response => response.json())
+                .then(categoria => {
+                    color = categoria.color;
+                    icono = categoria.icono;
+                    agregarClase(document.getElementsByClassName(`color-fondo-${id}`), `has-background-${color}-dark`);
+                    agregarClase(document.getElementsByClassName(`color-descripcion-${id}`), `has-text-${color}-85`);
+                    agregarClase(document.getElementsByClassName(`color-progreso-${id}`), `is-${color}`);
+                    agregarClase(document.getElementsByClassName(`icono-${id}`), `fa-${icono}`);
+                    agregarClase(document.getElementsByClassName(`color-texto-${id}`), `has-text-${color}`);
+                    agregarClase(document.getElementsByClassName(`color-tareas-${id}`), `has-text-${color}-85`);
+                });
+        }
+
+        function mostrarProgreso(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+                .then(response => response.json())
+                .then(tareas => {
+                    let cantTareas = 0;
+                    let cantTareasCompletadas = 0;
+                    tareas.forEach(tarea => {
+                        if (tarea.id_objetivo == id) {
+                            cantTareas++;
+                            if (tarea.estado === "Oculta" || tarea.estado === "Completada") {
+                                cantTareasCompletadas++;
+                            }
+                        }
+                    });
+                    document.getElementById(`progreso-${id}`).setAttribute("value", `${cantTareasCompletadas}`)
+                    document.getElementById(`progreso-${id}`).setAttribute("max", `${cantTareas}`)
+                    document.getElementById(`cant-tareas-${id}`).innerText = `Se completaron ${cantTareasCompletadas} de ${cantTareas} tareas.`
+                })
+        }
+
+
+        function eliminarTarea(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/tareas/${id}`, {
+                method: 'DELETE'
+            })
+        }
+
+        function eliminarObjetivo(id, titulo) {
+            if (!confirm(`Se va a eliminar el objetivo '${titulo}'`)) {
+                return
+            };
+
+            fetch(`http://127.0.0.1:8000/api/v1/objetivos/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    let objetivo = document.getElementById(`objetivo-${id}`);
+                    objetivo.remove();
+                })
+
+            fetch(`http://127.0.0.1:8000/api/v1/tareas`)
+                .then(response => response.json())
+                .then(tareas => {
+                    tareas.forEach(tarea => {
+                        if (tarea.id_objetivo == id) {
+                            eliminarTarea(tarea.id)
+                        }
+                    })
+                })
+        }
+
+        function mostrarObjetivos() {
+            fetch('http://127.0.0.1:8000/api/v1/objetivos')
+                .then(response => response.json())
+                .then(objetivos => {
+
+                    const tarjetas_objetivos = document.getElementById('objetivos');
+
+                    objetivos.forEach(objetivo => {
+                        if (objetivo.usuario_id == usuarioId) {
+                            const id = objetivo.id;
+                            const titulo = objetivo.titulo;
+                            const descripcion = objetivo.descripcion;
+                            const categoria_id = objetivo.categoria_id;
+                            const link_tareas = `tareas.html?objetivo=${id}&usuario=${usuarioId}`;
+
+                            tarjetas_objetivos.innerHTML +=
+                                `<div id="objetivo-${id}" class="card column is-three-fifths is-offset-one-fifth color-fondo-${categoria_id}">
+                                <header class="card-header">
+                                    <p class="card-header-title color-texto-${categoria_id}">${titulo}</p>
+                                    
+                                    <div class="card-header-icon">
+                                        <span class="icon">
+                                            <i class="fa-solid icono-${categoria_id}"></i>
+                                        </span>
+                                    </div>
+                                </header>
+    
+                                <div class="card-content">
+                                    <div id="descripcion-${id}"class="content color-descripcion-${categoria_id}">${descripcion}.</div>
+                                    <div class="is-flex is-flex-direction-column is-align-items-center">
+                                        <progress id="progreso-${id}" class="progress color-progreso-${categoria_id} value="" max=""></progress>
+                                        <h1 id="cant-tareas-${id}" class="color-tareas-${categoria_id}"><h1>
+                                    </div>
+                                </div>
+                                
+                                <footer class="card-footer">
+                                    <a href="${link_tareas}" class="card-footer-item color-texto-${categoria_id}">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-list"></i>
+                                            </span>
+                                            <span>Ver Tareas</span>
+                                        </div>
+                                    </a>
+                                    <a href="editar-objetivo.html?objetivo=${id}&usuario=${usuarioId}" class="card-footer-item color-texto-${categoria_id}">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-pencil"></i>
+                                            </span>
+                                            <span>Editar</span>
+                                        </div>
+                                    </a>
+                                    <button class="card-footer-item color-texto-${categoria_id}" onclick="eliminarObjetivo(${id}, '${titulo}')">
+                                        <div class="icon-text">
+                                            <span class="icon">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </span>
+                                            <span>Eliminar</span>
+                                        </div>
+                                    </button>
+                                </footer>
+                            </div>`;
+                            mostrarCategoria(categoria_id);
+                            mostrarProgreso(id);
+                        }
+                    });
+                })
+        }
+    </script>
+
+</body>
+
+</html>

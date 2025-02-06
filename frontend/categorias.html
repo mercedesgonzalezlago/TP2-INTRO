@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Categorias</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <style>
+        #menu {
+            position: sticky !important;
+            top: 0px;
+            z-index: 200;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="menu" class="section pt-0">
+        <nav class="navbar has-background-dark mt-3 ">
+            <div class="navbar-end">
+                <a id="pagina-perfil" class="button is-dark">
+                    <span class="icon-text">
+                        <span class="icon is-large">
+                            <i class="fas fa-lg fa-user"></i>
+                        </span>
+                        <span class="is-size-4">Perfil</span>
+                    </span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="tabs is-toggle is-toggle-rounded is-fullwidth is-medium">
+            <ul>
+                <li>
+                    <a id="pagina-objetivos" class="has-background-link-85 has-text-link-85-invert">
+                        <span class="icon is-small"><i class="fa-solid fa-bullseye"></i></span>
+                        <span>Objetivos</span>
+                    </a>
+                </li>
+
+                <li class="is-active">
+                    <a id="pagina-categorias">
+                        <span class="icon is-small"><i class="fa-solid fa-tag"></i></span>
+                        <span>Categorias</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section pt-1">
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <h1 class="title is-1 is-size-2-mobile has-text-primary">
+                    CATEGORIAS CREADAS
+                </h1>
+            </div>
+        </div>
+        <div class="columns is-mobile is-multiline is-centered">
+            <div class="column is-narrow">
+                <a id="crear-categoria" class="button has-background-link-85 has-text-link-85-invert is-rounded">
+                    <div class="icon-text">
+                        <span class="icon">
+                            <i class="fas fa-solid fa-plus"></i>
+                        </span>
+                        <span>Crear Categoria</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-0 ">
+        <div class="field is-grouped is-grouped-centered">
+            <table class="table table is-fullwidth mx-6 ">
+                <thead>
+                    <tr class="has-background-link">
+                        <th class="has-text-centered">ID</th>
+                        <th class="has-text-centered">Nombre</th>
+                        <th class="has-text-centered">Color</th>
+                        <th class="has-text-centered">Icono</th>
+                        <th class="has-text-centered">Editar</th>
+                        <th class="has-text-centered">Eliminar</th>
+                    </tr>
+                </thead>
+
+
+                <tbody id="tabla-categorias" class="has-background-link-75"></tbody>
+            </table>
+        </div>
+
+
+    </section>
+
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+
+    <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const usuarioId = parseInt(parametrosUrl.get('id'));
+
+        document.getElementById('pagina-perfil').setAttribute("href", `perfil.html?id=${usuarioId}`);
+        document.getElementById('pagina-objetivos').setAttribute("href", `objetivos.html?id=${usuarioId}`);
+        document.getElementById('pagina-categorias').setAttribute("href", `categorias.html?id=${usuarioId}`);
+        document.getElementById('crear-categoria').setAttribute("href", `crear-categoria.html?link=categorias&usuario=${usuarioId}`);
+
+        window.onload = function () {
+            mostrarCategorias()
+        }
+
+        function eliminarCategoria(id) {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(response => {
+                    let categoria = document.getElementById(`categoria-${id}`);
+                    categoria.remove();
+                })
+        }
+
+        function verificarEliminacion(id, nombre) {
+            fetch(`http://127.0.0.1:8000/api/v1/objetivos`)
+                .then(response => response.json())
+                .then(objetivos => {
+
+                    let objetivos_existentes = objetivos.find(({ categoria_id }) => categoria_id === id)
+
+                    if (objetivos_existentes === undefined) {
+                        if (!confirm(`Se va a eliminar el objetivo '${nombre}'`)) {
+                            return
+                        };
+
+                        eliminarCategoria(id)
+                    } else {
+                        alert("No se puede eliminar la categoria porque hay un objetivo asociado")
+                    }
+                })
+        }
+
+        function mostrarCategorias() {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias`)
+                .then(response => response.json())
+                .then(categorias => {
+
+                    const tablaCategorias = document.getElementById('tabla-categorias')
+
+                    categorias.forEach(categoria => {
+                        const id = categoria.id;
+                        const nombre = categoria.nombre;
+                        const color = categoria.color;
+                        const icono = categoria.icono;
+                        const linkEditar = `editar-categoria.html?categoria=${id}&usuario=${usuarioId}`;
+
+                        tablaCategorias.innerHTML += `
+                        <tr id="categoria-${id}">
+                            <td class="has-text-centered">${id}</th>
+
+                            <td class="has-text-centered">${nombre}</td>
+
+                            <td class="has-text-centered"><i class=" fa-solid fa-square fa-xl has-text-${color}"></i></td>
+
+                            <td class="has-text-centered"><i class="fa-solid fa-${icono} fa-xl"></i> </td>
+
+                            <td>
+                                <a href='${linkEditar}'>
+                                    <i class="button fa-solid fa-pencil is-small is-fullwidth is-rounded is-warning"></i>
+                                </a>
+                            </td>
+
+                            <td><i class="button fa-solid fa-trash is-small is-fullwidth is-rounded is-danger" onclick="verificarEliminacion(${id}, '${nombre}')"></i></td>
+                        </tr>`
+                    });
+                });
+        }
+    </script>
+
+</body>
+
+</html>

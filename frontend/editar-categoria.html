@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="has-background-dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Objetivos Personales</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+</head>
+
+<body>
+    <section class="section">
+        <div class="card column is-three-fifths is-offset-one-fifth has-background-link-85">
+            <div class="columns is-mobile is-multiline is-centered">
+                <div class="column is-narrow">
+                    <h1 class="title is-2 is-size-2-mobile has-text-link">EDITAR CATEGORIA</h1>
+                </div>
+            </div>
+            <div class="card-content py-2">
+                <div class="content">
+                    <div class="field">
+                        <label class="label has-text-link">Nombre:</label>
+                        <div class="control">
+                            <input id="nombre" class="input has-background-link-75" type="text"
+                                placeholder="Ingrese un nombre">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label has-text-link">Color:</label>
+                        <div class="radios has-text-black">
+                            <label class="radio">
+                                <input id="color-primary" type="radio" name="color" value="primary" />
+                                Verde Claro
+                            </label>
+                            <label class="radio">
+                                <input id="color-link" type="radio" name="color" value="link" />
+                                Azul
+                            </label>
+                            <label class="radio">
+                                <input id="color-info" type="radio" name="color" value="info" />
+                                Celeste
+                            </label>
+                            <label class="radio">
+                                <input id="color-success" type="radio" name="color" value="success" />
+                                Verde Oscuro
+                            </label>
+                            <label class="radio">
+                                <input id="color-warning" type="radio" name="color" value="warning" />
+                                Amarillo
+                            </label>
+                            <label class="radio">
+                                <input id="color-danger" type="radio" name="color" value="danger" />
+                                Rojo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label has-text-link">Icono:</label>
+                        <div class="control">
+                            <div class="radios has-text-black">
+
+                                <label class="radio">
+                                    <input id="icono-laptop-code" type="radio" name="icono" value="laptop-code" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-laptop-code"></i>
+                                    </span>
+
+                                </label>
+                                <label class="radio">
+                                    <input id="icono-heart" type="radio" name="icono" value="heart" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-house" type="radio" name="icono" value="house" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-house"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-cart-shopping" type="radio" name="icono" value="cart-shopping" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-gift" type="radio" name="icono" value="gift" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-gift"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-plane" type="radio" name="icono" value="plane" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-plane"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-business-time" type="radio" name="icono" value="business-time" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-business-time"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-coins" type="radio" name="icono" value="coins" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-coins"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-paw" type="radio" name="icono" value="paw" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-paw"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-clapperboard" type="radio" name="icono" value="clapperboard" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-clapperboard"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-cake-candles" type="radio" name="icono" value="cake-candles" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-cake-candles"></i>
+                                    </span>
+                                </label>
+
+                                <label class="radio">
+                                    <input id="icono-school" type="radio" name="icono" value="school" />
+                                    <span class="icon">
+                                        <i class="fa-solid fa-school"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="field is-grouped is-grouped-centered pt-4">
+                        <div class="control">
+                            <button class="button is-primary" onclick="editarCategoria()">
+                                Editar
+                            </button>
+                        </div>
+
+                        <div class="control">
+                            <button class="button is-warning" onclick="window.location.reload()">
+                                Deshacer
+                            </button>
+                        </div>
+
+                        <div class="control">
+                            <a id="volver" class="button is-danger">
+                                Volver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <script src="https://kit.fontawesome.com/2c37e7fca6.js" crossorigin="anonymous"></script>
+    <script>
+        const parametrosUrl = new URLSearchParams(window.location.search);
+        const categoriaId = parseInt(parametrosUrl.get('categoria'));
+        const usuarioId = parseInt(parametrosUrl.get('usuario'));
+
+        document.getElementById('volver').setAttribute("href", `categorias.html?id=${usuarioId}`)
+
+        window.onload = function () {
+            cargarDatos()
+        }
+
+        function cargarDatos() {
+            fetch(`http://127.0.0.1:8000/api/v1/categorias/${categoriaId}`)
+                .then(response => response.json())
+                .then(categoria => {
+                    let nombre = categoria.nombre;
+                    let color = categoria.color;
+                    let icono = categoria.icono;
+
+                    document.getElementById('nombre').value = `${nombre}`;
+                    document.getElementById(`color-${color}`).setAttribute("checked", "true")
+                    document.getElementById(`icono-${icono}`).setAttribute("checked", "true")
+                })
+        }
+
+        function validarTexto(texto, campo) {
+            if (texto === "") {
+                alert(`Falta el ${campo}`);
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function validarSeleccion(seleccion, campo) {
+            if (seleccion === null) {
+                alert(`Falta el ${campo}`);
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function editarCategoria() {
+            const nombre = document.getElementById('nombre').value;
+            const color = document.querySelector('input[name="color"]:checked')
+            const icono = document.querySelector('input[name="icono"]:checked')
+            let datosValidos = true
+
+            datosValidos = validarTexto(nombre, "nombre")
+            datosValidos = validarSeleccion(color, "color")
+            datosValidos = validarSeleccion(icono, "icono")
+
+            if (!datosValidos) {
+                return
+            }
+
+            let body = {
+                nombre: nombre,
+                color: color.value,
+                icono: icono.value
+            }
+
+            fetch(`http://127.0.0.1:8000/api/v1/categorias/${categoriaId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(response => {
+                    if (response.status === 201) {
+                        alert('Categoria creada con exito');
+                        limpiarFormulario()
+                    } else {
+                        alert('Error al crear la categoria');
+                    }
+                })
+            window.location = `categorias.html?id=${usuarioId}`
+        }
+    </script>
+</body>
+
+</html>
